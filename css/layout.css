@@ -2,6 +2,12 @@
   layout.css
   Flexbox-first layout utilities, grid utilities for multi-column layout,
   spacing/text helpers, and the page container.
+
+  Breakpoints: mobile-portrait <480px, mobile-landscape 480–767px,
+  tablet 768–1023px, desktop >=1024px.
+  These exact px values (479, 480, 767, 768, 1023, 1024) are the only
+  breakpoints used anywhere in this kit's media queries — reuse them
+  literally, do not introduce other arbitrary breakpoints.
 */
 
 /* ==========================================================================
@@ -69,6 +75,29 @@
 .grid-4 {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+/* Responsive collapse: tablet rules first, mobile rules after so the
+   narrower breakpoint wins the cascade where both would otherwise match. */
+
+@media (max-width: 1023px) {
+  .grid-3,
+  .grid-4 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 767px) {
+  .grid-3,
+  .grid-4 {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 479px) {
+  .grid-2 {
+    grid-template-columns: 1fr;
+  }
 }
 
 /* ==========================================================================
@@ -173,4 +202,11 @@
   margin-right: auto;
   padding-left: 1.5rem;
   padding-right: 1.5rem;
+}
+
+@media (max-width: 479px) {
+  .container {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
 }

@@ -44,6 +44,12 @@
     <!-- 1. Colors & Tokens -->
     <div class="tab-content is-active">
       <div class="flex flex-col gap-6">
+        <details class="component-info">
+          <summary>Опис і нюанси</summary>
+          <p>Кольорові токени — єдине джерело правди для кольору в усьому кіті: жоден компонент не хардкодить власний колір, а лише посилається на змінну на кшталт <span class="font-mono">--primary</span>. Ця вкладка потрібна, щоб звірити, який саме відтінок стоїть за назвою змінної в поточній темі.</p>
+          <p>Змінні зберігаються як трійка HSL-каналів без обгортки <span class="font-mono">hsl()</span> (наприклад, <span class="font-mono">--primary: 240 5.9% 10%</span>), тому в CSS їх завжди потрібно явно обгортати: <span class="font-mono">hsl(var(--primary))</span> або з альфа-модифікатором <span class="font-mono">hsl(var(--primary) / 0.5)</span>. Редагувати значення в theme.css можна, але це одразу вплине на всі компоненти в обох темах.</p>
+          <p>Типовий кейс: перевірка контрасту <span class="font-mono">--foreground</span> на <span class="font-mono">--background</span> перед додаванням нового тексту. Другий кейс: підбір м'якшого розділювача через альфа-модифікатор <span class="font-mono">--border / 0.5</span> замість введення нового кольору.</p>
+        </details>
         <div>
           <h2 class="section-title">Кольорові токени</h2>
           <p class="text-sm text-muted mb-3">Кожна кольорова CSS-змінна з <span class="font-mono">theme.css</span>.</p>
@@ -72,6 +78,12 @@
 
     <!-- 2. Typography -->
     <div class="tab-content">
+      <details class="component-info mb-4">
+        <summary>Опис і нюанси</summary>
+        <p>Типографічна шкала базується на <span class="font-mono">--font-sans</span> (Montserrat) для основного тексту та <span class="font-mono">--font-mono</span> для коду й значень змінних. Заголовки h1–h3 масштабуються плавно через <span class="font-mono">clamp()</span> між мобільним і десктопним viewport, тож розмір не «стрибає» різко на певній ширині екрана.</p>
+        <p>Текстові утиліти (<span class="font-mono">.text-sm</span>/<span class="font-mono">.text-lg</span>/<span class="font-mono">.font-semibold</span>/<span class="font-mono">.font-mono</span>/<span class="font-mono">.text-muted</span>) з layout.css — це модифікатори розміру/ваги/кольору, а не заміна семантичним тегам. Використовуйте їх поверх правильного тега (h1–h6, p), а не замість нього.</p>
+        <p>Типовий кейс: підпис під полем форми дрібним приглушеним текстом (<span class="font-mono">.text-sm.text-muted</span>). Другий кейс: показ значення CSS-змінної чи фрагмента коду моноширинним шрифтом (<span class="font-mono">.font-mono</span>).</p>
+      </details>
       <div class="demo">
         <div class="demo-preview flex flex-col gap-2">
           <h1>Заголовок 1</h1>
@@ -100,6 +112,13 @@
     <!-- 3. Buttons -->
     <div class="tab-content">
       <div class="flex flex-col gap-4">
+
+        <details class="component-info">
+          <summary>Опис і нюанси</summary>
+          <p>Кнопки ініціюють дії (відправити форму, підтвердити, відкрити діалог). <span class="font-mono">.btn-primary</span> — для головної дії на екрані (лише одна на екран), <span class="font-mono">.btn-secondary</span>/<span class="font-mono">.btn-outline</span> — для другорядних дій, <span class="font-mono">.btn-ghost</span> — для дій у щільних інтерфейсах (тулбари, картки), <span class="font-mono">.btn-destructive</span> — лише для незворотних/небезпечних операцій (видалення, відкликання доступу).</p>
+          <p>Не комбінуйте два акцентні кольори (primary + destructive) в одному ряду дій без чіткої ієрархії — користувач має одразу бачити, яка дія головна. <span class="font-mono">.btn-icon</span> обов'язково потребує <span class="font-mono">aria-label</span>, бо не має текстового вмісту для скрінрідерів. Розмірні модифікатори (<span class="font-mono">.btn-sm</span>/<span class="font-mono">.btn-lg</span>) не задають колір — комбінуйте їх із варіантом (<span class="font-mono">.btn-primary</span> тощо).</p>
+          <p>Типовий кейс: пара кнопок «Підтвердити» (.btn-primary) / «Скасувати» (.btn-ghost) у футері картки чи модального вікна. Другий кейс: кнопка видалення запису в таблиці — <span class="font-mono">.btn-destructive.btn-sm</span>.</p>
+        </details>
 
         <div class="demo">
           <div class="demo-preview flex flex-wrap gap-3">
@@ -147,6 +166,12 @@
 
     <!-- 4. Forms -->
     <div class="tab-content">
+      <details class="component-info mb-4">
+        <summary>Опис і нюанси</summary>
+        <p><span class="font-mono">.field</span> — обгортка для пари label+control+hint, яка гарантує однакові вертикальні відступи для будь-якого поля форми. Використовуйте <span class="font-mono">.input</span> для тексту/чисел, <span class="font-mono">.textarea</span> для багаторядкового вводу, <span class="font-mono">.checkbox</span>/<span class="font-mono">.radio</span> для бінарного чи одиничного вибору зі списку.</p>
+        <p>Завжди пов'язуйте <span class="font-mono">&lt;label&gt;</span> з полем через <span class="font-mono">for</span>/<span class="font-mono">id</span> — це не лише доступність, а й збільшення області кліку. <span class="font-mono">.field-hint</span> розташовується під полем і не повинен дублювати те, що вже сказано в label. <span class="font-mono">.checkbox</span>/<span class="font-mono">.radio</span> стилізовані через <span class="font-mono">appearance: none</span>, тому додатковий wrapper для кастомної позначки не потрібен.</p>
+        <p>Типовий кейс: форма профілю користувача (ім'я, роль через select, короткий опис у textarea). Другий кейс: група з кількох checkbox для мультизначного фільтра над таблицею.</p>
+      </details>
       <div class="grid-2 gap-6">
 
         <div class="demo">
@@ -212,6 +237,12 @@
 
     <!-- 5. Cards & Panels -->
     <div class="tab-content">
+      <details class="component-info mb-4">
+        <summary>Опис і нюанси</summary>
+        <p><span class="font-mono">.card</span> — акцентований контейнер із тінню та рамкою для самодостатнього блоку контенту (профіль, товар, налаштування). <span class="font-mono">.panel</span> — менш акцентований контейнер без тіні, для групування вмісту всередині вже акцентованої області.</p>
+        <p>Не вкладайте <span class="font-mono">.card</span> у <span class="font-mono">.card</span> — це створює подвійну рамку/тінь і зайвий візуальний шум; для вкладеного угруповання використовуйте <span class="font-mono">.panel</span>. <span class="font-mono">.card-footer</span> призначений саме для кнопок дій, не для довільного тексту. <span class="font-mono">.divider</span> — це <span class="font-mono">&lt;hr&gt;</span>, зберігайте цю семантику розділювача, а не border-top на довільному елементі.</p>
+        <p>Типовий кейс: картка налаштувань із заголовком, описом, вмістом і кнопками «Зберегти»/«Скасувати» у футері. Другий кейс: панель із коротким поясненням під формою, відокремлена divider.</p>
+      </details>
       <div class="grid-2 gap-6">
 
         <div class="demo">
@@ -277,6 +308,12 @@
 
     <!-- 6. Badges -->
     <div class="tab-content">
+      <details class="component-info mb-4">
+        <summary>Опис і нюанси</summary>
+        <p>Бейдж — маленький некликабельний індикатор статусу чи категорії, а не замінник кнопки чи посилання. <span class="font-mono">.badge-success</span>/<span class="font-mono">.badge-destructive</span> — для семантичних станів (активний/помилка), <span class="font-mono">.badge-secondary</span>/<span class="font-mono">.badge-outline</span> — для нейтральних міток.</p>
+        <p>Не покладайтесь лише на колір, щоб передати критичну інформацію — додавайте текст («Активний», а не тільки зелену крапку), інакше це проблема доступності для людей з порушенням кольоросприйняття. Бейджі не мають стану hover/focus, оскільки вони не інтерактивні.</p>
+        <p>Типовий кейс: статус рядка в таблиці («Активний»/«Відсутній»/«У відставці»). Другий кейс: лічильник чи мітка категорії поруч із заголовком картки.</p>
+      </details>
       <div class="demo">
         <div class="demo-preview flex flex-wrap gap-3">
           <span class="badge">Основний</span>
@@ -301,6 +338,12 @@
 
     <!-- 7. Tabs -->
     <div class="tab-content">
+      <details class="component-info mb-4">
+        <summary>Опис і нюанси</summary>
+        <p><span class="font-mono">.tabs</span> — патерн для перемикання між кількома панелями контенту в межах одного екрана без переходу на іншу сторінку. Використовуйте, коли вміст логічно розбивається на незалежні секції, які переглядають по черзі, а не одночасно.</p>
+        <p><span class="font-mono">initTabs()</span> працює по контейнеру <span class="font-mono">.tabs</span> через <span class="font-mono">:scope</span>, тому кожен <span class="font-mono">.tabs</span> незалежний — вкладені вкладки (наприклад, усередині картки) не конфліктують із зовнішніми. Кількість <span class="font-mono">.tab-trigger</span> має точно відповідати кількості <span class="font-mono">.tab-content</span> за порядком — прив'язка через id не потрібна. Клас <span class="font-mono">.is-active</span> виставляється одночасно і на тригері, і на відповідній панелі.</p>
+        <p>Типовий кейс: ця сама галерея компонентів (14 вкладок). Другий кейс: вкладки «Огляд»/«Активність»/«Налаштування» всередині картки профілю, як у демо нижче.</p>
+      </details>
       <div class="demo">
         <div class="demo-preview">
           <div class="tabs">
@@ -334,6 +377,13 @@
     <!-- 8. Tables -->
     <div class="tab-content">
       <div class="flex flex-col gap-4">
+
+        <details class="component-info">
+          <summary>Опис і нюанси</summary>
+          <p><span class="font-mono">.table</span> + <span class="font-mono">.table-wrapper</span> — для табличних даних з однаковою структурою рядків (список користувачів, замовлень тощо). <span class="font-mono">.table-wrapper</span> обов'язковий: саме він забезпечує <span class="font-mono">overflow-x: auto</span>, а не сама <span class="font-mono">.table</span>.</p>
+          <p>Варіанти <span class="font-mono">.table-striped</span>/<span class="font-mono">.table-bordered</span>/<span class="font-mono">.table-compact</span> — модифікатори, які можна комбінувати між собою (наприклад, <span class="font-mono">table table-striped table-compact</span>), вони не змінюють структуру, лише візуальний стиль. Індикатор <span class="font-mono">.sortable</span> суто візуальний (статична стрілка) — він не сортує дані сам, JS-логіку сортування потрібно писати окремо.</p>
+          <p>Типовий кейс: список користувачів зі статусом-бейджем в останній колонці. Другий кейс: компактна таблиця (<span class="font-mono">.table-compact</span>) для щільного адмін-інтерфейсу з великою кількістю рядків.</p>
+        </details>
 
         <div class="demo">
           <div class="demo-preview">
@@ -489,6 +539,12 @@
 
     <!-- 9. Preview -->
     <div class="tab-content">
+      <details class="component-info mb-4">
+        <summary>Опис і нюанси</summary>
+        <p><span class="font-mono">.preview-area</span> — нейтральний контейнер-підложка для демонстрації графіки (SVG-іконки, ілюстрації, прев'ю зображення) окремо від решти інтерфейсу; пунктирна рамка одразу сигналізує «це зона попереднього перегляду, не звичайний контент».</p>
+        <p><span class="font-mono">.preview-svg</span> керує лише максимальною шириною/висотою та кольором (через <span class="font-mono">currentColor</span>) — самі розміри SVG (width/height/viewBox) задаються в розмітці, компонент їх не нав'язує.</p>
+        <p>Типовий кейс: попередній перегляд іконки перед її використанням в іншому місці інтерфейсу. Другий кейс: заглушка (placeholder) для зображення, яке ще не завантажено.</p>
+      </details>
       <div class="demo">
         <div class="demo-preview">
           <div class="preview-area">
@@ -516,6 +572,13 @@
     <!-- 10. Alerts -->
     <div class="tab-content">
       <div class="flex flex-col gap-4">
+
+        <details class="component-info">
+          <summary>Опис і нюанси</summary>
+          <p><span class="font-mono">.alert</span> — статичне повідомлення, вбудоване в потік сторінки (лишається, поки користувач не піде з екрана чи не закриє його вручну). <span class="font-mono">.toast</span> — тимчасове спливне повідомлення, що з'являється поверх інтерфейсу і зникає автоматично.</p>
+          <p>Варіанти alert (destructive/success/warning) передають семантику через колір і рамку, але текст усередині (заголовок + опис) має пояснювати ситуацію без опори лише на колір. <span class="font-mono">.toast</span> керується класом <span class="font-mono">.is-visible</span> і JS-таймером — сам по собі CSS не показує/приховує його автоматично.</p>
+          <p>Типовий кейс: <span class="font-mono">.alert-destructive</span> над формою після невдалої валідації. Другий кейс: toast «Успішно збережено» після відправки форми чи дії користувача.</p>
+        </details>
 
         <div class="demo">
           <div class="demo-preview flex flex-col gap-3">
@@ -555,6 +618,13 @@
     <!-- 11. Layouts -->
     <div class="tab-content">
       <div class="flex flex-col gap-4">
+
+        <details class="component-info">
+          <summary>Опис і нюанси</summary>
+          <p>Готові класи-патерни (<span class="font-mono">.layout-row</span>/<span class="font-mono">-col</span>/<span class="font-mono">-full</span>/<span class="font-mono">-sidebar</span>/<span class="font-mono">-split</span>) — поверх <span class="font-mono">.flex</span>/<span class="font-mono">.grid</span> з layout.css. Використовуйте їх, коли потрібна одна з цих 5 типових структур сторінки, а для довільного розташування комбінуйте <span class="font-mono">.flex</span>/<span class="font-mono">.grid</span> напряму.</p>
+          <p><span class="font-mono">.layout-sidebar</span> використовує CSS-змінну <span class="font-mono">--layout-sidebar-width</span> (за замовчуванням 16rem) для фіксованої ширини бічної панелі — змінюйте саме її, а не додавайте власний <span class="font-mono">width</span>. На мобільних і планшетах <span class="font-mono">.layout-sidebar</span> і <span class="font-mono">.layout-row</span> адаптивно перебудовуються (стек/перенесення) — це вбудована поведінка, додаткових класів не потрібно.</p>
+          <p>Типовий кейс: сторінка налаштувань з навігацією зліва (<span class="font-mono">.layout-sidebar</span>). Другий кейс: порівняння «до/після» у два однакові стовпці (<span class="font-mono">.layout-split</span>).</p>
+        </details>
 
         <div class="demo">
           <div class="demo-preview">
@@ -658,6 +728,12 @@
 
     <!-- 12. Selects -->
     <div class="tab-content">
+      <details class="component-info mb-4">
+        <summary>Опис і нюанси</summary>
+        <p><span class="font-mono">.select</span> — стилізований нативний <span class="font-mono">&lt;select&gt;</span>, використовуйте його за замовчуванням для коротких списків (до ~10–15 варіантів), оскільки він безкоштовно отримує клавіатурну навігацію, доступність і мобільну поведінку від браузера. <span class="font-mono">.select-search</span> — комбобокс із фільтрацією для довгих списків, де пошук за назвою швидший за прокрутку.</p>
+        <p><span class="font-mono">.select-search</span> не є нативним елементом форми — його значення не потрапляє автоматично у <span class="font-mono">FormData</span>, тому для реальної форми потрібен прихований input або власна серіалізація. Список <span class="font-mono">.select-search-list</span> з'являється через <span class="font-mono">:focus-within</span>, тож клік по опції має встановлювати значення в input JS-обробником (як у демо нижче), інакше фокус загубиться.</p>
+        <p>Типовий кейс: вибір ролі користувача зі списку з 3–5 варіантів — звичайний <span class="font-mono">.select</span>. Другий кейс: вибір країни чи міста зі списку з сотнями варіантів — <span class="font-mono">.select-search</span> із фільтрацією.</p>
+      </details>
       <div class="grid-2 gap-6">
 
         <div class="demo">
@@ -719,6 +795,12 @@
 
     <!-- 13. Labels -->
     <div class="tab-content">
+      <details class="component-info mb-4">
+        <summary>Опис і нюанси</summary>
+        <p><span class="font-mono">.label-text</span> — це не пов'язаний з полем форми напис, а простий текст лише для читання (на відміну від <span class="font-mono">.label</span> з forms.css, який завжди супроводжує конкретний input). <span class="font-mono">.label-field</span> — пара «підпис + значення» для показу параметра та його поточного стану.</p>
+        <p>Модифікатор <span class="font-mono">--col</span> (підпис над значенням) — типовий вигляд за замовчуванням; <span class="font-mono">--row</span> (підпис і значення в один рядок) — компактніший варіант для щільних списків параметрів. Не використовуйте <span class="font-mono">.label-field</span> замість <span class="font-mono">.field</span>, якщо значення дійсно редагується користувачем — <span class="font-mono">.label-field</span> лише для читання.</p>
+        <p>Типовий кейс: показ поточної версії застосунку чи статусу підключення в панелі налаштувань. Другий кейс: компактний список властивостей об'єкта (наприклад, «Розмір: 12 МБ», «Формат: PNG») у варіанті <span class="font-mono">--row</span>.</p>
+      </details>
       <div class="grid-2 gap-6">
 
         <div class="demo">
@@ -766,6 +848,12 @@
 
     <!-- 14. Setup -->
     <div class="tab-content">
+      <details class="component-info mb-4">
+        <summary>Опис і нюанси</summary>
+        <p>Ця вкладка — не компонент, а інструкція: тут зібрано мінімальний набір файлів, які варто скопіювати в інший проєкт, і фрагмент розмітки для підключення. Використовуйте її як чек-лист перед інтеграцією кіту в новий проєкт.</p>
+        <p>Найпоширеніша помилка — скопіювати лише <span class="font-mono">components.css</span>, забувши папку <span class="font-mono">components/</span> (фасад без неї не працює, бо складається з <span class="font-mono">@import</span>), або забувши <span class="font-mono">fonts/Montserrat/</span>, через що theme.css не знайде шрифти за відносним шляхом.</p>
+        <p>Типовий кейс: підключення кіту в новий pywebview-застосунок — досить трьох <span class="font-mono">&lt;link&gt;</span> і двох папок. Другий кейс: оновлення вже інтегрованого кіту — досить замінити <span class="font-mono">css/</span> і <span class="font-mono">fonts/</span> повністю, не займаючи <span class="font-mono">index.html</span>/<span class="font-mono">gallery.css</span>.</p>
+      </details>
       <div class="flex flex-col gap-6">
 
         <div>
