@@ -15,6 +15,10 @@
   box-sizing: border-box;
 }
 
+html {
+  font-size: var(--font-size-base);
+}
+
 body {
   margin: 0;
   font-family: var(--font-sans);
@@ -34,14 +38,14 @@ body {
   gap: 0.5rem;
   white-space: nowrap;
   border-radius: var(--radius);
-  border: 1px solid transparent;
+  border: var(--border-width) solid transparent;
   font-family: var(--font-sans);
   font-size: 0.875rem;
   font-weight: 500;
   line-height: 1.25rem;
   padding: 0.5rem 1rem;
   cursor: pointer;
-  transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease, box-shadow 0.15s ease;
+  transition: background-color var(--transition-duration) ease, border-color var(--transition-duration) ease, color var(--transition-duration) ease, box-shadow var(--transition-duration) ease;
   background-color: hsl(var(--secondary));
   color: hsl(var(--secondary-foreground));
 }

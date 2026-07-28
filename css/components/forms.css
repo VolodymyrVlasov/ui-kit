@@ -31,10 +31,10 @@
   line-height: 1.25rem;
   padding: 0.5rem 0.75rem;
   border-radius: var(--radius);
-  border: 1px solid hsl(var(--input));
+  border: var(--border-width) solid hsl(var(--input));
   background-color: hsl(var(--background));
   color: hsl(var(--foreground));
-  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+  transition: border-color var(--transition-duration) ease, box-shadow var(--transition-duration) ease;
 }
 
 .input::placeholder,
@@ -73,11 +73,11 @@
   width: 1rem;
   height: 1rem;
   flex-shrink: 0;
-  border: 1px solid hsl(var(--input));
+  border: var(--border-width) solid hsl(var(--input));
   background-color: hsl(var(--background));
   cursor: pointer;
   position: relative;
-  transition: background-color 0.15s ease, border-color 0.15s ease;
+  transition: background-color var(--transition-duration) ease, border-color var(--transition-duration) ease;
 }
 
 .checkbox {
@@ -174,10 +174,10 @@
   line-height: 1.25rem;
   padding: 0.5rem 2rem;
   border-radius: var(--radius);
-  border: 1px solid hsl(var(--input));
+  border: var(--border-width) solid hsl(var(--input));
   background-color: hsl(var(--background));
   color: hsl(var(--foreground));
-  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+  transition: border-color var(--transition-duration) ease, box-shadow var(--transition-duration) ease;
 }
 
 .input-search-field::placeholder {
@@ -237,7 +237,7 @@
   display: inline-flex;
   align-items: stretch;
   border-radius: var(--radius);
-  border: 1px solid hsl(var(--input));
+  border: var(--border-width) solid hsl(var(--input));
   overflow: hidden;
 }
 
@@ -252,7 +252,7 @@
   font-size: 1rem;
   line-height: 1;
   cursor: pointer;
-  transition: background-color 0.15s ease;
+  transition: background-color var(--transition-duration) ease;
 }
 
 .input-number-btn:hover {
@@ -272,8 +272,8 @@
 .input-number-field {
   width: 3.5rem;
   border: none;
-  border-left: 1px solid hsl(var(--input));
-  border-right: 1px solid hsl(var(--input));
+  border-left: var(--border-width) solid hsl(var(--input));
+  border-right: var(--border-width) solid hsl(var(--input));
   text-align: center;
   font-family: var(--font-sans);
   font-size: 0.875rem;
@@ -314,7 +314,7 @@
   height: 2.25rem;
   flex: 0 0 auto;
   border-radius: var(--radius);
-  border: 1px solid hsl(var(--border));
+  border: var(--border-width) solid hsl(var(--border));
   overflow: hidden;
   cursor: pointer;
   padding: 0;
@@ -356,7 +356,7 @@
   height: 1.5rem;
   flex: 0 0 auto;
   border-radius: var(--radius-sm);
-  border: 1px solid hsl(var(--border));
+  border: var(--border-width) solid hsl(var(--border));
   cursor: pointer;
   padding: 0;
 }

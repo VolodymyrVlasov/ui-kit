@@ -86,12 +86,32 @@
   /* Typography */
   --font-sans: "Montserrat", "Segoe UI", sans-serif;
   --font-mono: "JetBrains Mono", Consolas, monospace;
+  /* Defaults to --font-sans so headings render identically to body text
+     until the Конструктор tab's heading font picker is used. */
+  --font-heading: var(--font-sans);
+  --font-size-base: 16px;
+
+  /* Fluid heading clamp() bounds — see the "Fluid heading sizes" rules below.
+     The vw scaling factor between these bounds stays a hardcoded literal;
+     only the min/max endpoints are configurable. */
+  --h1-min: 1.75rem;
+  --h1-max: 2.5rem;
+  --h2-min: 1.5rem;
+  --h2-max: 2rem;
+  --h3-min: 1.25rem;
+  --h3-max: 1.5rem;
 
   /* Shadows */
   --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
   --shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
   --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
   --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+
+  /* Layout / spacing */
+  --spacing-unit: 0.25rem;
+  --border-width: 1px;
+  --transition-duration: 150ms;
+  --container-max-width: 72rem;
 }
 
 /* ==========================================================================
@@ -103,16 +123,20 @@
    components.css since they are base type sizing, not a component class.
    ========================================================================== */
 
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-heading);
+}
+
 h1 {
-  font-size: clamp(1.75rem, 1.2rem + 2.5vw, 2.5rem);
+  font-size: clamp(var(--h1-min), 1.2rem + 2.5vw, var(--h1-max));
 }
 
 h2 {
-  font-size: clamp(1.5rem, 1.1rem + 1.8vw, 2rem);
+  font-size: clamp(var(--h2-min), 1.1rem + 1.8vw, var(--h2-max));
 }
 
 h3 {
-  font-size: clamp(1.25rem, 1rem + 1.1vw, 1.5rem);
+  font-size: clamp(var(--h3-min), 1rem + 1.1vw, var(--h3-max));
 }
 
 /* ==========================================================================

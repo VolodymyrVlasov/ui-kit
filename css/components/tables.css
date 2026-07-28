@@ -9,7 +9,7 @@
      columns. No mobile/tablet override needed. */
   width: 100%;
   overflow-x: auto;
-  border: 1px solid hsl(var(--border));
+  border: var(--border-width) solid hsl(var(--border));
   border-radius: var(--radius);
 }
 
@@ -26,7 +26,7 @@
 }
 
 .table thead tr {
-  border-bottom: 1px solid hsl(var(--border));
+  border-bottom: var(--border-width) solid hsl(var(--border));
 }
 
 .table th {
@@ -38,7 +38,7 @@
 
 .table td {
   padding: 0.625rem 1rem;
-  border-bottom: 1px solid hsl(var(--border));
+  border-bottom: var(--border-width) solid hsl(var(--border));
 }
 
 .table tbody tr:last-child td {
@@ -59,7 +59,7 @@
 
 .table-bordered th,
 .table-bordered td {
-  border: 1px solid hsl(var(--border));
+  border: var(--border-width) solid hsl(var(--border));
 }
 
 .table-compact th,
