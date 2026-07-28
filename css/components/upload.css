@@ -16,7 +16,7 @@
   background-color: hsl(var(--muted) / 0.3);
   padding: 2rem 1.5rem;
   cursor: pointer;
-  transition: border-color 0.15s ease, background-color 0.15s ease;
+  transition: border-color var(--transition-duration) ease, background-color var(--transition-duration) ease;
 }
 
 .dropzone:hover {
@@ -57,7 +57,7 @@
   align-items: center;
   gap: 0.5rem;
   border-radius: var(--radius-sm);
-  border: 1px solid hsl(var(--border));
+  border: var(--border-width) solid hsl(var(--border));
   background-color: hsl(var(--background));
   padding: 0.5rem 0.75rem;
   font-size: 0.8125rem;

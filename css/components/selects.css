@@ -11,10 +11,10 @@
   line-height: 1.25rem;
   padding: 0.5rem 0.75rem;
   border-radius: var(--radius);
-  border: 1px solid hsl(var(--input));
+  border: var(--border-width) solid hsl(var(--input));
   background-color: hsl(var(--background));
   color: hsl(var(--foreground));
-  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+  transition: border-color var(--transition-duration) ease, box-shadow var(--transition-duration) ease;
 }
 
 .select:hover {
@@ -50,10 +50,10 @@
   line-height: 1.25rem;
   padding: 0.5rem 0.75rem;
   border-radius: var(--radius);
-  border: 1px solid hsl(var(--input));
+  border: var(--border-width) solid hsl(var(--input));
   background-color: hsl(var(--background));
   color: hsl(var(--foreground));
-  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+  transition: border-color var(--transition-duration) ease, box-shadow var(--transition-duration) ease;
 }
 
 .select-search-input::placeholder {
@@ -85,7 +85,7 @@
   max-height: 12rem;
   overflow-y: auto;
   border-radius: var(--radius);
-  border: 1px solid hsl(var(--border));
+  border: var(--border-width) solid hsl(var(--border));
   background-color: hsl(var(--card));
   color: hsl(var(--card-foreground));
   box-shadow: var(--shadow-md);
