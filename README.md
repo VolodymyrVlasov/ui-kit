@@ -1,22 +1,36 @@
 # ui-kit
 
-A framework-agnostic **vanilla CSS** design system based on shadcn/ui design
-tokens. No build step, no npm, no dependencies — three plain CSS files plus
-local font files that you can drop into any web project (or embed in a
-desktop shell such as pywebview) and start using immediately.
+Дизайн-система на **чистому CSS**, що не залежить від фреймворку, побудована
+на токенах shadcn/ui. Без build-кроку, без npm, без залежностей — три
+звичайні CSS-файли плюс локальні файли шрифтів, які можна підключити до
+будь-якого веб-проєкту (або вбудувати в десктопну оболонку на кшталт
+pywebview) і одразу почати користуватися.
 
-Open [`index.html`](index.html) for a live gallery of every token and
-component.
+Відкрийте [`index.html`](index.html), щоб побачити живу галерею всіх
+токенів і компонентів.
 
-## Folder structure
+## Структура папок
 
 ```
 ui-kit/
-├── index.html              Component gallery / living style guide
+├── index.html                Галерея компонентів / living style guide (демо-сайт)
 ├── css/
-│   ├── theme.css            Design tokens: :root / [data-theme="dark"] custom properties + @font-face
-│   ├── components.css       Component classes (buttons, forms, cards, badges, tabs, tables, alerts, ...)
-│   └── layout.css           Flexbox/grid utilities, spacing, text helpers, .container
+│   ├── theme.css              Токени дизайну: :root / [data-theme="dark"] змінні + @font-face
+│   ├── components.css         Фасад — імпортує всі файли з components/
+│   ├── components/
+│   │   ├── buttons.css          Кнопки (+ глобальний base-скидання)
+│   │   ├── forms.css            Поля форм: label, input, textarea, checkbox, radio
+│   │   ├── selects.css          .select та .select-search
+│   │   ├── labels.css           .label-text та .label-field
+│   │   ├── cards.css            Картки та панелі
+│   │   ├── badges.css           Бейджі
+│   │   ├── tabs.css             Вкладки
+│   │   ├── tables.css           Таблиці + варіанти стилів
+│   │   ├── alerts.css           Алерти та toast
+│   │   ├── preview.css          SVG preview-область
+│   │   └── layouts.css          Готові лейаут-патерни
+│   ├── layout.css              Flexbox/grid-утиліти, відступи, текстові хелпери, .container
+│   └── gallery.css              Стилі лише для галереї-демо (НЕ копіювати в інші проєкти)
 ├── fonts/
 │   └── Montserrat/
 │       ├── Montserrat-Regular.woff2
@@ -27,12 +41,13 @@ ui-kit/
 └── .gitignore
 ```
 
-## Using it in another project
+## Використання в іншому проєкті
 
-Copy the `css/` and `fonts/` folders into your project (keep them in the same
-relative position to each other, since `theme.css` references the font files
-via a relative `../fonts/Montserrat/...` path), then link all three
-stylesheets in this order:
+Скопіюйте `css/theme.css`, `css/components.css`, `css/components/` (уся
+папка), `css/layout.css` та `fonts/` у свій проєкт (зберігаючи їхнє
+взаємне розташування — `theme.css` посилається на шрифти через відносний
+шлях `../fonts/Montserrat/...`), після чого підключіть три стилі в такому
+порядку:
 
 ```html
 <link rel="stylesheet" href="css/theme.css" />
@@ -40,85 +55,109 @@ stylesheets in this order:
 <link rel="stylesheet" href="css/layout.css" />
 ```
 
-`theme.css` must load first — it defines the custom properties that
-`components.css` and `layout.css` consume. There is no JS dependency for the
-styles themselves; the small inline script in `index.html` is only for the
-gallery page's tabs/copy-button/theme-toggle demo behavior and is optional to
-reuse.
+`theme.css` має завантажуватись першим — він визначає CSS-змінні, якими
+користуються `components.css` і `layout.css`. Самі стилі не мають
+залежності від JS; невеликий inline-скрипт в `index.html` потрібен лише
+для демо-поведінки вкладок/кнопок копіювання/перемикача теми в галереї і
+не є обов'язковим для повторного використання.
 
-## Theming
+`css/gallery.css` та `index.html` — це виключно демо-сайт галереї, їх
+**не потрібно** копіювати в інший проєкт.
 
-Theming is done with a single `data-theme` attribute on the `<html>` element:
+## Теми
 
-- No attribute (or any value other than `"dark"`) → light theme (default,
-  defined on `:root`)
-- `data-theme="dark"` → dark theme overrides
+Перемикання теми відбувається через один атрибут `data-theme` на елементі
+`<html>`:
+
+- Без атрибута (або з будь-яким значенням, відмінним від `"dark"`) →
+  світла тема (за замовчуванням, визначена на `:root`)
+- `data-theme="dark"` → перевизначення для темної теми
 
 ```html
 <html data-theme="dark">
 ```
 
-Toggle it from JS:
+Перемикання з JS:
 
 ```js
 document.documentElement.setAttribute("data-theme", "dark");
 document.documentElement.removeAttribute("data-theme");
 ```
 
-All component colors are expressed as `hsl(var(--token))`, so switching the
-attribute re-themes every component instantly with no re-render.
+Усі кольори компонентів виражені через `hsl(var(--token))`, тож зміна
+атрибута миттєво перефарбовує кожен компонент без повторного рендеру.
 
-## CSS variables (`theme.css`)
+## CSS-змінні (`theme.css`)
 
-| Category   | Variables |
-|------------|-----------|
-| Color      | `--background`, `--foreground`, `--card`, `--card-foreground`, `--primary`, `--primary-foreground`, `--secondary`, `--secondary-foreground`, `--muted`, `--muted-foreground`, `--accent`, `--accent-foreground`, `--destructive`, `--destructive-foreground`, `--success`, `--success-foreground`, `--warning`, `--warning-foreground`, `--border`, `--input`, `--ring` |
-| Radius     | `--radius-sm`, `--radius`, `--radius-lg`, `--radius-full` |
-| Typography | `--font-sans`, `--font-mono` |
-| Shadow     | `--shadow-sm`, `--shadow`, `--shadow-md`, `--shadow-lg` |
+| Категорія   | Змінні |
+|-------------|--------|
+| Колір       | `--background`, `--foreground`, `--card`, `--card-foreground`, `--primary`, `--primary-foreground`, `--secondary`, `--secondary-foreground`, `--muted`, `--muted-foreground`, `--accent`, `--accent-foreground`, `--destructive`, `--destructive-foreground`, `--success`, `--success-foreground`, `--warning`, `--warning-foreground`, `--border`, `--input`, `--ring` |
+| Радіус      | `--radius-sm`, `--radius`, `--radius-lg`, `--radius-full` |
+| Типографіка | `--font-sans`, `--font-mono` |
+| Тінь        | `--shadow-sm`, `--shadow`, `--shadow-md`, `--shadow-lg` |
 
-Color variables are stored as `H S% L%` channel triples (shadcn/ui
-convention) — always consume them wrapped in `hsl()`, e.g.
-`background-color: hsl(var(--primary));`, or with an alpha modifier
+Кольорові змінні зберігаються як трійки каналів `H S% L%` (конвенція
+shadcn/ui) — завжди використовуйте їх обгорнутими в `hsl()`, наприклад
+`background-color: hsl(var(--primary));`, або з альфа-модифікатором
 `hsl(var(--primary) / 0.5)`.
 
-## Component classes (`components.css`)
+**Важливо:** значення в `theme.css` — робочі й перевірені; не змінюйте їх
+без свідомого наміру, оскільки від них залежать усі компоненти.
 
-- **Buttons**: `btn`, `btn-primary`, `btn-secondary`, `btn-outline`,
-  `btn-ghost`, `btn-destructive`, `btn-sm`, `btn-lg`, `btn-icon` (combine a
-  variant class with a size class; `:disabled` is handled automatically)
-- **Forms**: `field`, `label`, `field-hint`, `input`, `select`, `textarea`,
-  `checkbox`, `radio`
-- **Cards & panels**: `card`, `card-header`, `card-title`,
-  `card-description`, `card-content`, `card-footer`, `panel`, `divider`
-- **Badges**: `badge`, `badge-secondary`, `badge-outline`,
+## Класи компонентів (`css/components/`)
+
+- **Кнопки** (`buttons.css`): `btn`, `btn-primary`, `btn-secondary`,
+  `btn-outline`, `btn-ghost`, `btn-destructive`, `btn-sm`, `btn-lg`,
+  `btn-icon` (комбінуйте клас-варіант із класом розміру; стан `:disabled`
+  обробляється автоматично)
+- **Форми** (`forms.css`): `field`, `label`, `field-hint`, `input`,
+  `textarea`, `checkbox`, `radio`
+- **Селекти** (`selects.css`): `select` (нативний `<select>`, стилізований
+  під `.input`), `select-search` / `select-search-input` /
+  `select-search-list` / `select-search-option` (пошуковий
+  комбобокс-патерн на чистих HTML/CSS/JS)
+- **Лейбли** (`labels.css`): `label-text` (текст лише для читання),
+  `label-field` (пара "підпис + значення") з модифікаторами
+  `label-field--row` / `label-field--col`
+- **Картки та панелі** (`cards.css`): `card`, `card-header`,
+  `card-title`, `card-description`, `card-content`, `card-footer`,
+  `panel`, `divider`
+- **Бейджі** (`badges.css`): `badge`, `badge-secondary`, `badge-outline`,
   `badge-destructive`, `badge-success`
-- **Tabs**: `tabs`, `tabs-list`, `tab-trigger` (+ `.is-active`),
-  `tab-content` (+ `.is-active`) — wire up click behavior with the
-  `initTabs()` pattern shown in `index.html` (any `.tabs` container is
-  auto-discovered; no IDs required)
-- **Tables**: `table-wrapper`, `table`
-- **Alerts & toast**: `alert`, `alert-destructive`, `alert-success`,
-  `alert-warning`, `toast` (+ `.is-visible`)
-- **Preview**: `preview-area`, `preview-svg`
+- **Вкладки** (`tabs.css`): `tabs`, `tabs-list`, `tab-trigger` (+
+  `.is-active`), `tab-content` (+ `.is-active`) — прив'язуйте поведінку
+  кліків за патерном `initTabs()` з `index.html` (будь-який контейнер
+  `.tabs` виявляється автоматично, ідентифікатори не потрібні)
+- **Таблиці** (`tables.css`): `table-wrapper`, `table`, а також варіанти
+  `table-striped`, `table-bordered`, `table-compact` та статичний
+  індикатор сортованого стовпця `th.sortable` (+ `.sort-asc` /
+  `.sort-desc`)
+- **Алерти та toast** (`alerts.css`): `alert`, `alert-destructive`,
+  `alert-success`, `alert-warning`, `toast` (+ `.is-visible`)
+- **Preview** (`preview.css`): `preview-area`, `preview-svg`
+- **Лейаути** (`layouts.css`): `layout-row`, `layout-col`, `layout-full`,
+  `layout-sidebar` (+ `layout-sidebar-aside` / `layout-sidebar-content`,
+  ширина бічної панелі задається змінною `--layout-sidebar-width`),
+  `layout-split`
 
-## Layout utilities (`layout.css`)
+## Утиліти лейауту (`layout.css`)
 
 - Flex: `flex`, `flex-col`, `flex-wrap`, `items-center`, `items-start`,
   `items-end`, `justify-between`, `justify-center`, `justify-start`,
   `justify-end`
 - Grid: `grid`, `grid-2`, `grid-3`, `grid-4`
-- Gap (flex or grid): `gap-1` … `gap-6`
-- Spacing: `p-0`…`p-6`, `px-0`…`px-6`, `py-0`…`py-6`, `m-0`…`m-6`,
-  `mt-0`…`mt-6`, `mb-0`…`mb-6`
-- Text: `text-sm`, `text-lg`, `font-semibold`, `font-mono`, `text-muted`
-- Layout: `container`
+- Відступ між елементами (flex або grid): `gap-1` … `gap-6`
+- Внутрішні/зовнішні відступи: `p-0`…`p-6`, `px-0`…`px-6`, `py-0`…`py-6`,
+  `m-0`…`m-6`, `mt-0`…`mt-6`, `mb-0`…`mb-6`
+- Текст: `text-sm`, `text-lg`, `font-semibold`, `font-mono`, `text-muted`
+- Лейаут: `container`
 
-## Fonts
+## Шрифти
 
-Montserrat (Regular/400, Medium/500, SemiBold/600, Bold/700) is bundled
-locally as static `.woff2` files under `fonts/Montserrat/` and loaded via
-`@font-face` in `theme.css`. There are no external font requests (no Google
-Fonts CDN, no `<link>` to a remote stylesheet) — everything resolves from the
-local filesystem, which is what makes this kit safe to embed in a pywebview
-or other offline/desktop shell.
+Montserrat (Regular/400, Medium/500, SemiBold/600, Bold/700) вбудований
+локально у вигляді статичних `.woff2`-файлів в `fonts/Montserrat/` і
+підключається через `@font-face` в `theme.css`. Зовнішніх запитів до
+шрифтів немає (жодного CDN Google Fonts, жодного `<link>` на віддалений
+стиль) — усе резолвиться з локальної файлової системи, що робить цей
+кіт безпечним для вбудовування в pywebview чи іншу офлайн/десктопну
+оболонку.
