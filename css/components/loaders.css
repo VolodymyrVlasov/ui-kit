@@ -1,0 +1,73 @@
+/*
+  loaders.css
+  Spinners, inline/step loaders, and a determinate progress bar.
+  Spinner rotation is pure CSS (@keyframes) — no JS required for it.
+*/
+
+@keyframes uikit-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.spinner {
+  display: inline-block;
+  width: 1.25rem;
+  height: 1.25rem;
+  border-radius: var(--radius-full);
+  border: 2px solid hsl(var(--muted));
+  border-top-color: hsl(var(--primary));
+  animation: uikit-spin 0.6s linear infinite;
+}
+
+.spinner-sm {
+  width: 0.875rem;
+  height: 0.875rem;
+  border-width: 2px;
+}
+
+.spinner-lg {
+  width: 2.25rem;
+  height: 2.25rem;
+  border-width: 3px;
+}
+
+.loader-inline {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.875rem;
+  color: hsl(var(--muted-foreground));
+}
+
+.loader-progress {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+  text-align: center;
+  padding: 1.5rem;
+}
+
+.loader-progress-text {
+  font-size: 0.875rem;
+  color: hsl(var(--muted-foreground));
+  margin: 0;
+}
+
+.progress {
+  width: 100%;
+  height: 0.5rem;
+  border-radius: var(--radius-full);
+  background-color: hsl(var(--muted));
+  overflow: hidden;
+}
+
+.progress-bar {
+  display: block;
+  height: 100%;
+  border-radius: var(--radius-full);
+  background-color: hsl(var(--primary));
+  width: var(--progress, 0%);
+  transition: width 0.2s ease;
+}

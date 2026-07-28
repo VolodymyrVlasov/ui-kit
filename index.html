@@ -39,6 +39,9 @@
       <button type="button" class="tab-trigger" role="tab">Селекти</button>
       <button type="button" class="tab-trigger" role="tab">Лейбли</button>
       <button type="button" class="tab-trigger" role="tab">Налаштування</button>
+      <button type="button" class="tab-trigger" role="tab">Файли</button>
+      <button type="button" class="tab-trigger" role="tab">Лоадери</button>
+      <button type="button" class="tab-trigger" role="tab">Інпути</button>
     </div>
 
     <!-- 1. Colors & Tokens -->
@@ -865,25 +868,30 @@
 │   ├── layout.css           (flex/grid-утиліти)
 │   ├── components.css       (фасад з @import)
 │   └── components/          (уся папка — окремі файли по компонентах)
+├── js/
+│   └── kit.js               (UIKit — вкладки, toast, dropzone, лоадери, інпути)
 ├── fonts/
 │   └── Montserrat/          (уся папка)
 
 НЕ копіювати (лише для цієї галереї-демо):
 ├── css/gallery.css
+├── js/gallery.js
 └── index.html</code></pre>
         </div>
 
         <div class="demo">
-          <p class="text-sm font-semibold mb-2">Фрагмент для &lt;head&gt;</p>
+          <p class="text-sm font-semibold mb-2">Фрагмент для &lt;head&gt;/кінця &lt;body&gt;</p>
           <div class="demo-preview">
             <pre class="setup-tree"><code>&lt;link rel="stylesheet" href="css/theme.css" /&gt;
 &lt;link rel="stylesheet" href="css/components.css" /&gt;
-&lt;link rel="stylesheet" href="css/layout.css" /&gt;</code></pre>
+&lt;link rel="stylesheet" href="css/layout.css" /&gt;
+&lt;script src="js/kit.js"&gt;&lt;/script&gt;</code></pre>
           </div>
           <template class="demo-source">
 <link rel="stylesheet" href="css/theme.css" />
 <link rel="stylesheet" href="css/components.css" />
 <link rel="stylesheet" href="css/layout.css" />
+<script src="js/kit.js"></script>
           </template>
           <div class="demo-actions flex gap-2">
             <button type="button" class="btn btn-outline btn-sm" data-copy="html">Скопіювати HTML</button>
@@ -895,7 +903,238 @@
           <div class="flex flex-col gap-2 text-sm">
             <p>Перемикання теми відбувається через атрибут <span class="font-mono">data-theme="dark"</span> на елементі <span class="font-mono">&lt;html&gt;</span>. Без атрибута (або з будь-яким іншим значенням) застосовується світла тема за замовчуванням.</p>
             <p>Усі кольорові токени визначені у <span class="font-mono">theme.css</span> — не редагуйте їх без наміру, оскільки від них залежать усі компоненти.</p>
-            <p>Складання не потрібне: немає npm, немає CDN, немає build-кроку. Достатньо підключити три файли CSS та локальні шрифти.</p>
+            <p><span class="font-mono">kit.js</span> самостійно ініціалізується на <span class="font-mono">DOMContentLoaded</span> — жодних ручних викликів налаштування не потрібно, достатньо підключити файл.</p>
+            <p>Складання не потрібне: немає npm, немає CDN, немає build-кроку. Достатньо підключити три файли CSS, один файл JS та локальні шрифти.</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- 15. Upload -->
+    <div class="tab-content">
+      <details class="component-info mb-4">
+        <summary>Опис і нюанси</summary>
+        <p><span class="font-mono">.dropzone</span> — зона для перетягування файлів (drag-and-drop) з альтернативним вибором кліком через приховане <span class="font-mono">input[type=file]</span>. Використовуйте її, коли користувач завантажує один або кілька файлів, а не для звичайного вибору значення зі списку.</p>
+        <p>Компонент керує лише UI-станом (список обраних файлів, видалення рядка) — реальної мережевої логіки завантаження тут немає. Після вибору файлів дропзона генерує подію <span class="font-mono">uikit:files-selected</span> із деталями <span class="font-mono">{ files }</span>, яку застосунок має прослухати самостійно, щоб почати справжнє завантаження на сервер. Клас <span class="font-mono">.dropzone--error</span> виставляється вручну застосунком (наприклад, після невдалої валідації типу файлу) — kit.js його не встановлює автоматично.</p>
+        <p>Типовий кейс: завантаження аватара чи вкладення до форми зворотного зв'язку. Другий кейс: масове завантаження кількох документів з видаленням зайвих перед відправкою.</p>
+      </details>
+      <div class="demo">
+        <div class="demo-preview">
+          <div class="dropzone" data-dropzone tabindex="0">
+            <input type="file" multiple style="display: none;" />
+            <p class="dropzone-hint">Перетягніть файли сюди або натисніть, щоб обрати</p>
+          </div>
+          <ul class="dropzone-list"></ul>
+        </div>
+        <template class="demo-source">
+<div class="dropzone" data-dropzone tabindex="0">
+  <input type="file" multiple style="display: none;" />
+  <p class="dropzone-hint">Перетягніть файли сюди або натисніть, щоб обрати</p>
+</div>
+<ul class="dropzone-list"></ul>
+        </template>
+        <div class="demo-actions flex gap-2">
+          <button type="button" class="btn btn-outline btn-sm" data-copy="html">Скопіювати HTML</button>
+          <button type="button" class="btn btn-outline btn-sm" data-copy-class="dropzone">Скопіювати клас</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 16. Loaders -->
+    <div class="tab-content">
+      <div class="flex flex-col gap-4">
+
+        <details class="component-info">
+          <summary>Опис і нюанси</summary>
+          <p><span class="font-mono">.spinner</span> — індикатор невизначеного очікування (коли неможливо порахувати прогрес у відсотках). <span class="font-mono">.loader-inline</span> — для короткого напису поруч зі спінером в один рядок (наприклад, у кнопці чи біля поля). <span class="font-mono">.loader-progress</span> — для блочного очікування з описом поточного кроку багатоетапної операції.</p>
+          <p>Текст кроку в <span class="font-mono">.loader-progress</span> оновлюється через <span class="font-mono">UIKit.setLoaderStep(el, текст)</span> — сам компонент не має таймера чи автоматичної симуляції кроків, це відповідальність застосунку (у цій галереї симуляція — суто демонстраційний JS у gallery.js). <span class="font-mono">.progress-bar</span> керується CSS-змінною <span class="font-mono">--progress</span> (наприклад, <span class="font-mono">style="--progress: 40%"</span>) — задавайте її з JS у міру реального прогресу, а не хардкодьте.</p>
+          <p>Типовий кейс: <span class="font-mono">.loader-inline</span> у кнопці «Зберегти» на час запиту. Другий кейс: <span class="font-mono">.loader-progress</span> під час багатоетапної обробки завантаженого файлу (перевірка → конвертація → збереження).</p>
+        </details>
+
+        <div class="demo">
+          <div class="demo-preview flex items-center gap-4">
+            <span class="spinner spinner-sm"></span>
+            <span class="spinner"></span>
+            <span class="spinner spinner-lg"></span>
+          </div>
+          <template class="demo-source">
+<span class="spinner spinner-sm"></span>
+<span class="spinner"></span>
+<span class="spinner spinner-lg"></span>
+          </template>
+          <div class="demo-actions flex gap-2">
+            <button type="button" class="btn btn-outline btn-sm" data-copy="html">Скопіювати HTML</button>
+            <button type="button" class="btn btn-outline btn-sm" data-copy-class="spinner">Скопіювати клас</button>
+          </div>
+        </div>
+
+        <div class="demo">
+          <div class="demo-preview">
+            <div class="loader-inline">
+              <span class="spinner spinner-sm"></span>
+              <span>Завантаження даних...</span>
+            </div>
+          </div>
+          <template class="demo-source">
+<div class="loader-inline">
+  <span class="spinner spinner-sm"></span>
+  <span>Завантаження даних...</span>
+</div>
+          </template>
+          <div class="demo-actions flex gap-2">
+            <button type="button" class="btn btn-outline btn-sm" data-copy="html">Скопіювати HTML</button>
+            <button type="button" class="btn btn-outline btn-sm" data-copy-class="loader-inline">Скопіювати клас</button>
+          </div>
+        </div>
+
+        <div class="demo">
+          <div class="demo-preview flex flex-col items-center gap-3">
+            <div class="loader-progress" id="loader-demo">
+              <span class="spinner spinner-lg"></span>
+              <p class="loader-progress-text">Крок 1 з 4: підготовка файлу...</p>
+            </div>
+            <button type="button" class="btn btn-primary btn-sm" id="loader-demo-trigger">Запустити симуляцію</button>
+          </div>
+          <template class="demo-source">
+<div class="loader-progress">
+  <span class="spinner spinner-lg"></span>
+  <p class="loader-progress-text">Крок 1 з 4: підготовка файлу...</p>
+</div>
+          </template>
+          <div class="demo-actions flex gap-2">
+            <button type="button" class="btn btn-outline btn-sm" data-copy="html">Скопіювати HTML</button>
+            <button type="button" class="btn btn-outline btn-sm" data-copy-class="loader-progress">Скопіювати клас</button>
+          </div>
+        </div>
+
+        <div class="demo">
+          <div class="demo-preview flex flex-col gap-2">
+            <div class="progress"><div class="progress-bar" style="--progress: 40%"></div></div>
+            <div class="progress"><div class="progress-bar" style="--progress: 75%"></div></div>
+          </div>
+          <template class="demo-source">
+<div class="progress">
+  <div class="progress-bar" style="--progress: 40%"></div>
+</div>
+          </template>
+          <div class="demo-actions flex gap-2">
+            <button type="button" class="btn btn-outline btn-sm" data-copy="html">Скопіювати HTML</button>
+            <button type="button" class="btn btn-outline btn-sm" data-copy-class="progress">Скопіювати клас</button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- 17. Extended inputs -->
+    <div class="tab-content">
+      <details class="component-info mb-4">
+        <summary>Опис і нюанси</summary>
+        <p>Розширення базових <span class="font-mono">.input</span>/<span class="font-mono">.select</span> новими патернами: <span class="font-mono">.input-search</span> — поле з іконкою пошуку та кнопкою очищення, <span class="font-mono">.input-number</span> — числове поле з кнопками −/+, <span class="font-mono">.input-color</span> — вибір кольору через нативний color picker із текстовим hex-значенням і швидкими пресетами, <span class="font-mono">.textarea-auto</span> — модифікатор <span class="font-mono">.textarea</span>, що росте разом із вмістом.</p>
+        <p>Усі чотири патерни самостійно ініціалізуються через <span class="font-mono">UIKit.autoInit()</span> за класом-маркером (<span class="font-mono">.input-search</span>/<span class="font-mono">.input-number</span>/<span class="font-mono">.input-color</span>/<span class="font-mono">.textarea-auto</span>) — жодних ручних викликів не потрібно, достатньо правильної розмітки. <span class="font-mono">.input-number-btn</span> поважає <span class="font-mono">min</span>/<span class="font-mono">max</span>/<span class="font-mono">step</span> нативного input. <span class="font-mono">.color-swatches</span> — це окремий блок кнопок поруч із <span class="font-mono">.input-color</span>, що встановлюють колір через <span class="font-mono">data-color</span>.</p>
+        <p>Типовий кейс: <span class="font-mono">.input-search</span> у шапці таблиці для фільтрації рядків. Другий кейс: <span class="font-mono">.input-color</span> для вибору акцентного кольору теми чи мітки в застосунку налаштувань.</p>
+      </details>
+      <div class="grid-2 gap-6">
+
+        <div class="demo">
+          <div class="demo-preview">
+            <div class="field">
+              <label class="label" for="demo-search">Пошук</label>
+              <div class="input-search">
+                <span class="input-search-icon" aria-hidden="true">⌕</span>
+                <input class="input-search-field" id="demo-search" type="search" placeholder="Пошук компонента..." autocomplete="off" />
+                <button type="button" class="input-search-clear" aria-label="Очистити пошук">×</button>
+              </div>
+            </div>
+          </div>
+          <template class="demo-source">
+<div class="input-search">
+  <span class="input-search-icon" aria-hidden="true">⌕</span>
+  <input class="input-search-field" type="search" placeholder="Пошук..." />
+  <button type="button" class="input-search-clear" aria-label="Очистити">×</button>
+</div>
+          </template>
+          <div class="demo-actions flex gap-2">
+            <button type="button" class="btn btn-outline btn-sm" data-copy="html">Скопіювати HTML</button>
+            <button type="button" class="btn btn-outline btn-sm" data-copy-class="input-search">Скопіювати клас</button>
+          </div>
+        </div>
+
+        <div class="demo">
+          <div class="demo-preview">
+            <div class="field">
+              <label class="label" for="demo-number">Кількість</label>
+              <div class="input-number">
+                <button type="button" class="input-number-btn" data-step="-1" aria-label="Зменшити">−</button>
+                <input class="input-number-field" id="demo-number" type="number" value="1" min="0" max="10" step="1" />
+                <button type="button" class="input-number-btn" data-step="1" aria-label="Збільшити">+</button>
+              </div>
+            </div>
+          </div>
+          <template class="demo-source">
+<div class="input-number">
+  <button type="button" class="input-number-btn" data-step="-1" aria-label="Зменшити">−</button>
+  <input class="input-number-field" type="number" value="1" min="0" max="10" step="1" />
+  <button type="button" class="input-number-btn" data-step="1" aria-label="Збільшити">+</button>
+</div>
+          </template>
+          <div class="demo-actions flex gap-2">
+            <button type="button" class="btn btn-outline btn-sm" data-copy="html">Скопіювати HTML</button>
+            <button type="button" class="btn btn-outline btn-sm" data-copy-class="input-number">Скопіювати клас</button>
+          </div>
+        </div>
+
+        <div class="demo">
+          <div class="demo-preview">
+            <div class="field">
+              <label class="label">Колір акценту</label>
+              <div class="input-color">
+                <label class="input-color-swatch">
+                  <input type="color" value="#7c3aed" />
+                </label>
+                <span class="input-color-value font-mono">#7C3AED</span>
+              </div>
+              <div class="color-swatches">
+                <button type="button" class="color-swatch" style="background-color: #7c3aed;" data-color="#7c3aed" aria-label="Фіолетовий"></button>
+                <button type="button" class="color-swatch" style="background-color: #2563eb;" data-color="#2563eb" aria-label="Синій"></button>
+                <button type="button" class="color-swatch" style="background-color: #16a34a;" data-color="#16a34a" aria-label="Зелений"></button>
+                <button type="button" class="color-swatch" style="background-color: #dc2626;" data-color="#dc2626" aria-label="Червоний"></button>
+                <button type="button" class="color-swatch" style="background-color: #ea580c;" data-color="#ea580c" aria-label="Оранжевий"></button>
+              </div>
+            </div>
+          </div>
+          <template class="demo-source">
+<div class="input-color">
+  <label class="input-color-swatch">
+    <input type="color" value="#7c3aed" />
+  </label>
+  <span class="input-color-value font-mono">#7C3AED</span>
+</div>
+<div class="color-swatches">
+  <button type="button" class="color-swatch" style="background-color: #7c3aed;" data-color="#7c3aed" aria-label="Фіолетовий"></button>
+  <button type="button" class="color-swatch" style="background-color: #16a34a;" data-color="#16a34a" aria-label="Зелений"></button>
+</div>
+          </template>
+          <div class="demo-actions flex gap-2">
+            <button type="button" class="btn btn-outline btn-sm" data-copy="html">Скопіювати HTML</button>
+            <button type="button" class="btn btn-outline btn-sm" data-copy-class="input-color">Скопіювати клас</button>
+          </div>
+        </div>
+
+        <div class="demo">
+          <div class="demo-preview">
+            <div class="field">
+              <label class="label" for="demo-textarea-auto">Нотатка</label>
+              <textarea class="textarea textarea-auto" id="demo-textarea-auto" placeholder="Почніть друкувати — поле саме зростатиме..."></textarea>
+            </div>
+          </div>
+          <template class="demo-source">
+<textarea class="textarea textarea-auto" placeholder="Почніть друкувати..."></textarea>
+          </template>
+          <div class="demo-actions flex gap-2">
+            <button type="button" class="btn btn-outline btn-sm" data-copy="html">Скопіювати HTML</button>
+            <button type="button" class="btn btn-outline btn-sm" data-copy-class="textarea-auto">Скопіювати клас</button>
           </div>
         </div>
 
@@ -907,143 +1146,8 @@
 
 <div class="toast" id="toast" role="status" aria-live="polite">Успішно збережено.</div>
 
-<script>
-(function () {
-  "use strict";
-
-  /* ---------- Theme toggle ---------- */
-  var root = document.documentElement;
-  var themeToggle = document.getElementById("theme-toggle");
-  var storedTheme = localStorage.getItem("ui-kit-theme");
-  if (storedTheme === "dark") {
-    root.setAttribute("data-theme", "dark");
-  }
-  themeToggle.addEventListener("click", function () {
-    var isDark = root.getAttribute("data-theme") === "dark";
-    if (isDark) {
-      root.removeAttribute("data-theme");
-      localStorage.setItem("ui-kit-theme", "light");
-    } else {
-      root.setAttribute("data-theme", "dark");
-      localStorage.setItem("ui-kit-theme", "dark");
-    }
-  });
-
-  /* ---------- Tabs ---------- */
-  function initTabs() {
-    document.querySelectorAll(".tabs").forEach(function (tabsEl) {
-      var triggers = Array.prototype.slice.call(tabsEl.querySelectorAll(":scope > .tabs-list > .tab-trigger"));
-      var contents = Array.prototype.slice.call(tabsEl.querySelectorAll(":scope > .tab-content"));
-
-      triggers.forEach(function (trigger, index) {
-        trigger.addEventListener("click", function () {
-          triggers.forEach(function (t) { t.classList.remove("is-active"); t.setAttribute("aria-selected", "false"); });
-          contents.forEach(function (c) { c.classList.remove("is-active"); });
-          trigger.classList.add("is-active");
-          trigger.setAttribute("aria-selected", "true");
-          if (contents[index]) contents[index].classList.add("is-active");
-        });
-      });
-    });
-  }
-  initTabs();
-
-  /* ---------- Copy buttons ---------- */
-  function flashCopied(btn, label) {
-    var original = btn.textContent;
-    btn.textContent = "Скопійовано!";
-    showToast(label + " скопійовано в буфер обміну.");
-    setTimeout(function () { btn.textContent = original; }, 1500);
-  }
-
-  function copyText(text, btn, label) {
-    if (navigator.clipboard && navigator.clipboard.writeText) {
-      navigator.clipboard.writeText(text).then(function () {
-        flashCopied(btn, label);
-      });
-    } else {
-      var textarea = document.createElement("textarea");
-      textarea.value = text;
-      textarea.style.position = "fixed";
-      textarea.style.opacity = "0";
-      document.body.appendChild(textarea);
-      textarea.select();
-      document.execCommand("copy");
-      document.body.removeChild(textarea);
-      flashCopied(btn, label);
-    }
-  }
-
-  document.querySelectorAll('[data-copy="html"]').forEach(function (btn) {
-    btn.addEventListener("click", function () {
-      var demo = btn.closest(".demo");
-      var source = demo.querySelector(".demo-source");
-      copyText(source.innerHTML.trim(), btn, "HTML");
-    });
-  });
-
-  document.querySelectorAll("[data-copy-class]").forEach(function (btn) {
-    btn.addEventListener("click", function () {
-      copyText(btn.getAttribute("data-copy-class"), btn, "Клас");
-    });
-  });
-
-  /* ---------- Color token chips ---------- */
-  var colorTokens = [
-    "background", "foreground", "card", "card-foreground", "primary", "primary-foreground",
-    "secondary", "secondary-foreground", "muted", "muted-foreground", "accent", "accent-foreground",
-    "destructive", "destructive-foreground", "success", "success-foreground", "warning", "warning-foreground",
-    "border", "input", "ring"
-  ];
-  var grid = document.getElementById("color-token-grid");
-  colorTokens.forEach(function (name) {
-    var wrap = document.createElement("div");
-    var swatch = document.createElement("div");
-    swatch.className = "swatch";
-    swatch.style.backgroundColor = "hsl(var(--" + name + "))";
-    var label = document.createElement("p");
-    label.className = "swatch-label text-sm mt-2";
-    label.textContent = "--" + name;
-    wrap.appendChild(swatch);
-    wrap.appendChild(label);
-    grid.appendChild(wrap);
-  });
-
-  /* ---------- Toast demo ---------- */
-  var toastEl = document.getElementById("toast");
-  var toastTimer = null;
-  function showToast(message) {
-    toastEl.textContent = message;
-    toastEl.classList.add("is-visible");
-    clearTimeout(toastTimer);
-    toastTimer = setTimeout(function () {
-      toastEl.classList.remove("is-visible");
-    }, 2500);
-  }
-  document.getElementById("toast-trigger").addEventListener("click", function () {
-    showToast("Успішно збережено.");
-  });
-
-  /* ---------- Searchable select ---------- */
-  document.querySelectorAll(".select-search").forEach(function (wrap) {
-    var input = wrap.querySelector(".select-search-input");
-    var options = Array.prototype.slice.call(wrap.querySelectorAll(".select-search-option"));
-    input.addEventListener("input", function () {
-      var query = input.value.trim().toLowerCase();
-      options.forEach(function (opt) {
-        var match = opt.textContent.toLowerCase().indexOf(query) !== -1;
-        opt.classList.toggle("is-hidden", !match);
-      });
-    });
-    options.forEach(function (opt) {
-      opt.addEventListener("click", function () {
-        input.value = opt.textContent.trim();
-      });
-    });
-  });
-
-})();
-</script>
+<script src="js/kit.js"></script>
+<script src="js/gallery.js"></script>
 
 </body>
 </html>
