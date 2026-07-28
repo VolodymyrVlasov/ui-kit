@@ -95,6 +95,27 @@
 }
 
 /* ==========================================================================
+   Fluid heading sizes
+   clamp() scales h1–h3 continuously between mobile and desktop viewport
+   widths instead of jumping at breakpoints. Not a custom property (clamp()
+   isn't usable inside @media conditions anyway), so these are plain
+   element-selector rules, kept in this typography section rather than
+   components.css since they are base type sizing, not a component class.
+   ========================================================================== */
+
+h1 {
+  font-size: clamp(1.75rem, 1.2rem + 2.5vw, 2.5rem);
+}
+
+h2 {
+  font-size: clamp(1.5rem, 1.1rem + 1.8vw, 2rem);
+}
+
+h3 {
+  font-size: clamp(1.25rem, 1rem + 1.1vw, 1.5rem);
+}
+
+/* ==========================================================================
    Dark theme
    ========================================================================== */
 

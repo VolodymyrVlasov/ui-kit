@@ -132,3 +132,11 @@
   background-color: hsl(var(--muted));
   pointer-events: none;
 }
+
+/* Touch-friendly minimum tap target on mobile only; desktop sizing above is
+   untouched. */
+@media (max-width: 767px) {
+  .select {
+    min-height: 44px;
+  }
+}

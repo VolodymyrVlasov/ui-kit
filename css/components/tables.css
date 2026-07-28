@@ -4,6 +4,9 @@
 */
 
 .table-wrapper {
+  /* overflow-x: auto is unconditional — same rule at every breakpoint, so
+     narrow viewports scroll the table horizontally instead of squeezing
+     columns. No mobile/tablet override needed. */
   width: 100%;
   overflow-x: auto;
   border: 1px solid hsl(var(--border));

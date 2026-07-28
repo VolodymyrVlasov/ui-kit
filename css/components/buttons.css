@@ -128,3 +128,12 @@ body {
   width: 2.25rem;
   height: 2.25rem;
 }
+
+/* Touch-friendly minimum tap target on mobile only; desktop sizing above is
+   untouched. min-height still applies over a smaller explicit height (e.g.
+   .btn-icon), so this covers every button variant without extra rules. */
+@media (max-width: 767px) {
+  .btn {
+    min-height: 44px;
+  }
+}

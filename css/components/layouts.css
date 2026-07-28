@@ -52,3 +52,34 @@
   flex: 1 1 0%;
   min-width: 0;
 }
+
+/* ==========================================================================
+   Responsive behavior
+   Breakpoints match css/layout.css: mobile-portrait <480px,
+   mobile-landscape 480–767px, tablet 768–1023px, desktop >=1024px.
+   ========================================================================== */
+
+@media (max-width: 767px) {
+  .layout-row {
+    flex-wrap: wrap;
+  }
+}
+
+@media (max-width: 479px) {
+  .layout-split {
+    flex-direction: column;
+  }
+}
+
+/* Sidebar stacks for mobile AND tablet — only desktop (>=1024px) keeps the
+   fixed-width sidebar beside the content. */
+@media (max-width: 1023px) {
+  .layout-sidebar {
+    flex-direction: column;
+  }
+
+  .layout-sidebar-aside {
+    width: 100%;
+    flex: 1 1 auto;
+  }
+}
