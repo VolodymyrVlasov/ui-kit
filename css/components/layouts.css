@@ -1,0 +1,54 @@
+/*
+  layouts.css
+  Ready-made layout patterns, built on top of the .flex/.grid utilities in
+  layout.css rather than duplicating them.
+*/
+
+:root {
+  --layout-sidebar-width: 16rem;
+}
+
+.layout-row {
+  display: flex;
+  width: 100%;
+  align-items: stretch;
+}
+
+.layout-col {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.layout-full {
+  width: 100%;
+  height: 100%;
+}
+
+.layout-sidebar {
+  display: flex;
+  width: 100%;
+  align-items: stretch;
+  gap: 1.5rem;
+}
+
+.layout-sidebar-aside {
+  flex: 0 0 var(--layout-sidebar-width);
+  width: var(--layout-sidebar-width);
+}
+
+.layout-sidebar-content {
+  flex: 1 1 0%;
+  min-width: 0;
+}
+
+.layout-split {
+  display: flex;
+  width: 100%;
+  gap: 1.5rem;
+}
+
+.layout-split > * {
+  flex: 1 1 0%;
+  min-width: 0;
+}

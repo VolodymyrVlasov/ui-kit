@@ -1,0 +1,73 @@
+/* Gallery-only styles — do NOT copy this file into other projects */
+
+.gallery-header {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background-color: hsl(var(--background));
+  border-bottom: 1px solid hsl(var(--border));
+}
+.gallery-title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin: 0;
+}
+.gallery-subtitle {
+  margin: 0;
+}
+.swatch-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(9rem, 1fr));
+}
+.swatch {
+  height: 3.5rem;
+  border-radius: var(--radius);
+  border: 1px solid hsl(var(--border));
+}
+.swatch-label {
+  font-family: var(--font-mono);
+}
+.demo {
+  border: 1px solid hsl(var(--border));
+  border-radius: var(--radius);
+  padding: 1.25rem;
+}
+.demo-preview {
+  border-bottom: 1px dashed hsl(var(--border));
+  padding-bottom: 1.25rem;
+}
+.demo-actions {
+  padding-top: 0.75rem;
+}
+.section-title {
+  font-size: 1.5rem;
+  margin: 0;
+}
+.shadow-box {
+  height: 4rem;
+  border-radius: var(--radius);
+  background-color: hsl(var(--card));
+  border: 1px solid hsl(var(--border));
+}
+.setup-tree {
+  background-color: hsl(var(--muted) / 0.4);
+  border: 1px solid hsl(var(--border));
+  border-radius: var(--radius);
+  padding: 1rem;
+  overflow-x: auto;
+  font-family: var(--font-mono);
+  font-size: 0.8125rem;
+  line-height: 1.5;
+}
+.layout-demo-box {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-sm);
+  border: 1px dashed hsl(var(--border));
+  background-color: hsl(var(--accent));
+  color: hsl(var(--accent-foreground));
+  font-size: 0.8125rem;
+  padding: 1rem;
+  min-height: 4rem;
+}

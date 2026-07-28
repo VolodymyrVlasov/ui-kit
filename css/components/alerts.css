@@ -1,0 +1,64 @@
+/*
+  alerts.css
+  Alert and toast component classes.
+*/
+
+.alert {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  border-radius: var(--radius);
+  border: 1px solid hsl(var(--border));
+  background-color: hsl(var(--background));
+  color: hsl(var(--foreground));
+  padding: 1rem;
+  font-size: 0.875rem;
+}
+
+.alert-destructive {
+  border-color: hsl(var(--destructive) / 0.5);
+  background-color: hsl(var(--destructive) / 0.1);
+  color: hsl(var(--destructive));
+}
+
+.alert-success {
+  border-color: hsl(var(--success) / 0.5);
+  background-color: hsl(var(--success) / 0.1);
+  color: hsl(var(--success));
+}
+
+.alert-warning {
+  border-color: hsl(var(--warning) / 0.5);
+  background-color: hsl(var(--warning) / 0.15);
+  color: hsl(var(--warning));
+}
+
+.toast {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  min-width: 18rem;
+  max-width: 24rem;
+  border-radius: var(--radius);
+  border: 1px solid hsl(var(--border));
+  background-color: hsl(var(--card));
+  color: hsl(var(--card-foreground));
+  box-shadow: var(--shadow-lg);
+  padding: 0.875rem 1rem;
+  font-size: 0.875rem;
+  position: fixed;
+  bottom: 1.5rem;
+  right: 1.5rem;
+  opacity: 0;
+  transform: translateY(0.5rem);
+  pointer-events: none;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+  z-index: 1000;
+}
+
+.toast.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}

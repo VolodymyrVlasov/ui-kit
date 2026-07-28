@@ -3,62 +3,11 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>ui-kit — Component Gallery</title>
+<title>ui-kit — Галерея компонентів</title>
 <link rel="stylesheet" href="css/theme.css" />
 <link rel="stylesheet" href="css/components.css" />
 <link rel="stylesheet" href="css/layout.css" />
-<style>
-  /* Page-only styles for the gallery shell (not part of the shipped design system) */
-  .gallery-header {
-    position: sticky;
-    top: 0;
-    z-index: 10;
-    background-color: hsl(var(--background));
-    border-bottom: 1px solid hsl(var(--border));
-  }
-  .gallery-title {
-    font-size: 1.25rem;
-    font-weight: 700;
-    margin: 0;
-  }
-  .gallery-subtitle {
-    margin: 0;
-  }
-  .swatch-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(9rem, 1fr));
-  }
-  .swatch {
-    height: 3.5rem;
-    border-radius: var(--radius);
-    border: 1px solid hsl(var(--border));
-  }
-  .swatch-label {
-    font-family: var(--font-mono);
-  }
-  .demo {
-    border: 1px solid hsl(var(--border));
-    border-radius: var(--radius);
-    padding: 1.25rem;
-  }
-  .demo-preview {
-    border-bottom: 1px dashed hsl(var(--border));
-    padding-bottom: 1.25rem;
-  }
-  .demo-actions {
-    padding-top: 0.75rem;
-  }
-  .section-title {
-    font-size: 1.5rem;
-    margin: 0;
-  }
-  .shadow-box {
-    height: 4rem;
-    border-radius: var(--radius);
-    background-color: hsl(var(--card));
-    border: 1px solid hsl(var(--border));
-  }
-</style>
+<link rel="stylesheet" href="css/gallery.css" />
 </head>
 <body>
 
@@ -66,9 +15,9 @@
   <div class="container flex items-center justify-between py-4">
     <div>
       <p class="gallery-title">ui-kit</p>
-      <p class="gallery-subtitle text-sm text-muted">Vanilla CSS design system — component gallery</p>
+      <p class="gallery-subtitle text-sm text-muted">Дизайн-система на чистому CSS — галерея компонентів</p>
     </div>
-    <button type="button" class="btn btn-outline" id="theme-toggle">🌙 Toggle theme</button>
+    <button type="button" class="btn btn-outline" id="theme-toggle">🌙 Змінити тему</button>
   </div>
 </header>
 
@@ -76,28 +25,32 @@
 
   <div class="tabs" id="main-tabs">
     <div class="tabs-list" role="tablist">
-      <button type="button" class="tab-trigger is-active" role="tab">Colors &amp; Tokens</button>
-      <button type="button" class="tab-trigger" role="tab">Typography</button>
-      <button type="button" class="tab-trigger" role="tab">Buttons</button>
-      <button type="button" class="tab-trigger" role="tab">Forms</button>
-      <button type="button" class="tab-trigger" role="tab">Cards &amp; Panels</button>
-      <button type="button" class="tab-trigger" role="tab">Badges</button>
-      <button type="button" class="tab-trigger" role="tab">Tabs</button>
-      <button type="button" class="tab-trigger" role="tab">Tables</button>
-      <button type="button" class="tab-trigger" role="tab">Preview</button>
-      <button type="button" class="tab-trigger" role="tab">Alerts</button>
+      <button type="button" class="tab-trigger is-active" role="tab">Кольори та токени</button>
+      <button type="button" class="tab-trigger" role="tab">Типографіка</button>
+      <button type="button" class="tab-trigger" role="tab">Кнопки</button>
+      <button type="button" class="tab-trigger" role="tab">Форми</button>
+      <button type="button" class="tab-trigger" role="tab">Картки та панелі</button>
+      <button type="button" class="tab-trigger" role="tab">Бейджі</button>
+      <button type="button" class="tab-trigger" role="tab">Вкладки</button>
+      <button type="button" class="tab-trigger" role="tab">Таблиці</button>
+      <button type="button" class="tab-trigger" role="tab">Прев'ю</button>
+      <button type="button" class="tab-trigger" role="tab">Сповіщення</button>
+      <button type="button" class="tab-trigger" role="tab">Лейаути</button>
+      <button type="button" class="tab-trigger" role="tab">Селекти</button>
+      <button type="button" class="tab-trigger" role="tab">Лейбли</button>
+      <button type="button" class="tab-trigger" role="tab">Налаштування</button>
     </div>
 
     <!-- 1. Colors & Tokens -->
     <div class="tab-content is-active">
       <div class="flex flex-col gap-6">
         <div>
-          <h2 class="section-title">Color tokens</h2>
-          <p class="text-sm text-muted mb-3">Every color custom property from <span class="font-mono">theme.css</span>.</p>
+          <h2 class="section-title">Кольорові токени</h2>
+          <p class="text-sm text-muted mb-3">Кожна кольорова CSS-змінна з <span class="font-mono">theme.css</span>.</p>
           <div class="swatch-grid gap-4" id="color-token-grid"></div>
         </div>
         <div>
-          <h2 class="section-title">Radius</h2>
+          <h2 class="section-title">Радіус</h2>
           <div class="flex gap-4 mt-3">
             <div class="demo p-3"><div class="swatch" style="border-radius:var(--radius-sm)"></div><p class="text-sm font-mono mt-2">--radius-sm</p></div>
             <div class="demo p-3"><div class="swatch" style="border-radius:var(--radius)"></div><p class="text-sm font-mono mt-2">--radius</p></div>
@@ -106,7 +59,7 @@
           </div>
         </div>
         <div>
-          <h2 class="section-title">Shadows</h2>
+          <h2 class="section-title">Тіні</h2>
           <div class="grid-4 gap-4 mt-3">
             <div><div class="shadow-box" style="box-shadow:var(--shadow-sm)"></div><p class="text-sm font-mono mt-2">--shadow-sm</p></div>
             <div><div class="shadow-box" style="box-shadow:var(--shadow)"></div><p class="text-sm font-mono mt-2">--shadow</p></div>
@@ -121,25 +74,25 @@
     <div class="tab-content">
       <div class="demo">
         <div class="demo-preview flex flex-col gap-2">
-          <h1>Heading one</h1>
-          <h2>Heading two</h2>
-          <h3>Heading three</h3>
-          <h4>Heading four</h4>
-          <h5>Heading five</h5>
-          <h6>Heading six</h6>
-          <p>Paragraph text using <span class="font-mono">--font-sans</span> (Montserrat). The quick brown fox jumps over the lazy dog.</p>
-          <p class="font-mono">Monospace text using <span class="font-mono">--font-mono</span>.</p>
-          <p><span class="text-sm">Small text (.text-sm)</span> &nbsp; <span class="text-lg">Large text (.text-lg)</span> &nbsp; <span class="font-semibold">Semibold (.font-semibold)</span> &nbsp; <span class="text-muted">Muted (.text-muted)</span></p>
+          <h1>Заголовок 1</h1>
+          <h2>Заголовок 2</h2>
+          <h3>Заголовок 3</h3>
+          <h4>Заголовок 4</h4>
+          <h5>Заголовок 5</h5>
+          <h6>Заголовок 6</h6>
+          <p>Текст абзацу шрифтом <span class="font-mono">--font-sans</span> (Montserrat). Швидка бура лисиця стрибає через ледачого пса.</p>
+          <p class="font-mono">Моноширинний текст шрифтом <span class="font-mono">--font-mono</span>.</p>
+          <p><span class="text-sm">Дрібний текст (.text-sm)</span> &nbsp; <span class="text-lg">Великий текст (.text-lg)</span> &nbsp; <span class="font-semibold">Напівжирний (.font-semibold)</span> &nbsp; <span class="text-muted">Приглушений (.text-muted)</span></p>
         </div>
         <template class="demo-source">
-<h1>Heading one</h1>
-<p>Paragraph text.</p>
-<p class="font-mono">Monospace text.</p>
-<p class="text-sm">Small text</p>
+<h1>Заголовок 1</h1>
+<p>Текст абзацу.</p>
+<p class="font-mono">Моноширинний текст.</p>
+<p class="text-sm">Дрібний текст</p>
         </template>
         <div class="demo-actions flex gap-2">
-          <button type="button" class="btn btn-outline btn-sm" data-copy="html">Copy HTML</button>
-          <button type="button" class="btn btn-outline btn-sm" data-copy-class="text-sm">Copy class</button>
+          <button type="button" class="btn btn-outline btn-sm" data-copy="html">Скопіювати HTML</button>
+          <button type="button" class="btn btn-outline btn-sm" data-copy-class="text-sm">Скопіювати клас</button>
         </div>
       </div>
     </div>
@@ -150,42 +103,42 @@
 
         <div class="demo">
           <div class="demo-preview flex flex-wrap gap-3">
-            <button type="button" class="btn btn-primary">Primary</button>
-            <button type="button" class="btn btn-secondary">Secondary</button>
-            <button type="button" class="btn btn-outline">Outline</button>
-            <button type="button" class="btn btn-ghost">Ghost</button>
-            <button type="button" class="btn btn-destructive">Destructive</button>
-            <button type="button" class="btn btn-primary" disabled>Disabled</button>
+            <button type="button" class="btn btn-primary">Первинна</button>
+            <button type="button" class="btn btn-secondary">Вторинна</button>
+            <button type="button" class="btn btn-outline">Контурна</button>
+            <button type="button" class="btn btn-ghost">Прозора</button>
+            <button type="button" class="btn btn-destructive">Небезпечна</button>
+            <button type="button" class="btn btn-primary" disabled>Вимкнена</button>
           </div>
           <template class="demo-source">
-<button type="button" class="btn btn-primary">Primary</button>
-<button type="button" class="btn btn-secondary">Secondary</button>
-<button type="button" class="btn btn-outline">Outline</button>
-<button type="button" class="btn btn-ghost">Ghost</button>
-<button type="button" class="btn btn-destructive">Destructive</button>
+<button type="button" class="btn btn-primary">Первинна</button>
+<button type="button" class="btn btn-secondary">Вторинна</button>
+<button type="button" class="btn btn-outline">Контурна</button>
+<button type="button" class="btn btn-ghost">Прозора</button>
+<button type="button" class="btn btn-destructive">Небезпечна</button>
           </template>
           <div class="demo-actions flex gap-2">
-            <button type="button" class="btn btn-outline btn-sm" data-copy="html">Copy HTML</button>
-            <button type="button" class="btn btn-outline btn-sm" data-copy-class="btn-primary">Copy class</button>
+            <button type="button" class="btn btn-outline btn-sm" data-copy="html">Скопіювати HTML</button>
+            <button type="button" class="btn btn-outline btn-sm" data-copy-class="btn-primary">Скопіювати клас</button>
           </div>
         </div>
 
         <div class="demo">
           <div class="demo-preview flex flex-wrap items-center gap-3">
-            <button type="button" class="btn btn-primary btn-sm">Small</button>
-            <button type="button" class="btn btn-primary">Default</button>
-            <button type="button" class="btn btn-primary btn-lg">Large</button>
+            <button type="button" class="btn btn-primary btn-sm">Маленька</button>
+            <button type="button" class="btn btn-primary">Звичайна</button>
+            <button type="button" class="btn btn-primary btn-lg">Велика</button>
             <button type="button" class="btn btn-primary btn-icon" aria-label="Icon button">★</button>
           </div>
           <template class="demo-source">
-<button type="button" class="btn btn-primary btn-sm">Small</button>
-<button type="button" class="btn btn-primary">Default</button>
-<button type="button" class="btn btn-primary btn-lg">Large</button>
+<button type="button" class="btn btn-primary btn-sm">Маленька</button>
+<button type="button" class="btn btn-primary">Звичайна</button>
+<button type="button" class="btn btn-primary btn-lg">Велика</button>
 <button type="button" class="btn btn-primary btn-icon" aria-label="Icon button">★</button>
           </template>
           <div class="demo-actions flex gap-2">
-            <button type="button" class="btn btn-outline btn-sm" data-copy="html">Copy HTML</button>
-            <button type="button" class="btn btn-outline btn-sm" data-copy-class="btn-sm">Copy class</button>
+            <button type="button" class="btn btn-outline btn-sm" data-copy="html">Скопіювати HTML</button>
+            <button type="button" class="btn btn-outline btn-sm" data-copy-class="btn-sm">Скопіювати клас</button>
           </div>
         </div>
 
@@ -199,58 +152,58 @@
         <div class="demo">
           <div class="demo-preview flex flex-col gap-4">
             <div class="field">
-              <label class="label" for="demo-input">Name</label>
+              <label class="label" for="demo-input">Ім'я</label>
               <input class="input" type="text" id="demo-input" placeholder="Ada Lovelace" />
-              <span class="field-hint">This is a hint below the input.</span>
+              <span class="field-hint">Це підказка під полем введення.</span>
             </div>
             <div class="field">
-              <label class="label" for="demo-select">Role</label>
+              <label class="label" for="demo-select">Роль</label>
               <select class="select" id="demo-select">
-                <option>Engineer</option>
-                <option>Designer</option>
-                <option>Manager</option>
+                <option>Інженер</option>
+                <option>Дизайнер</option>
+                <option>Менеджер</option>
               </select>
             </div>
             <div class="field">
-              <label class="label" for="demo-textarea">Bio</label>
+              <label class="label" for="demo-textarea">Про себе</label>
               <textarea class="textarea" id="demo-textarea" placeholder="Tell us about yourself"></textarea>
             </div>
             <div class="field">
-              <label class="label" for="demo-input-disabled">Disabled</label>
+              <label class="label" for="demo-input-disabled">Вимкнено</label>
               <input class="input" type="text" id="demo-input-disabled" disabled placeholder="Can't touch this" />
             </div>
           </div>
           <template class="demo-source">
 <div class="field">
-  <label class="label" for="name">Name</label>
+  <label class="label" for="name">Ім'я</label>
   <input class="input" type="text" id="name" placeholder="Ada Lovelace" />
-  <span class="field-hint">This is a hint below the input.</span>
+  <span class="field-hint">Це підказка під полем введення.</span>
 </div>
           </template>
           <div class="demo-actions flex gap-2">
-            <button type="button" class="btn btn-outline btn-sm" data-copy="html">Copy HTML</button>
-            <button type="button" class="btn btn-outline btn-sm" data-copy-class="input">Copy class</button>
+            <button type="button" class="btn btn-outline btn-sm" data-copy="html">Скопіювати HTML</button>
+            <button type="button" class="btn btn-outline btn-sm" data-copy-class="input">Скопіювати клас</button>
           </div>
         </div>
 
         <div class="demo">
           <div class="demo-preview flex flex-col gap-3">
-            <label class="flex items-center gap-2"><input class="checkbox" type="checkbox" checked /> Checkbox (checked)</label>
-            <label class="flex items-center gap-2"><input class="checkbox" type="checkbox" /> Checkbox</label>
-            <label class="flex items-center gap-2"><input class="radio" type="radio" name="demo-radio" checked /> Radio one</label>
-            <label class="flex items-center gap-2"><input class="radio" type="radio" name="demo-radio" /> Radio two</label>
+            <label class="flex items-center gap-2"><input class="checkbox" type="checkbox" checked /> Прапорець (позначено)</label>
+            <label class="flex items-center gap-2"><input class="checkbox" type="checkbox" /> Прапорець</label>
+            <label class="flex items-center gap-2"><input class="radio" type="radio" name="demo-radio" checked /> Перемикач перший</label>
+            <label class="flex items-center gap-2"><input class="radio" type="radio" name="demo-radio" /> Перемикач другий</label>
           </div>
           <template class="demo-source">
 <label class="flex items-center gap-2">
-  <input class="checkbox" type="checkbox" /> Checkbox
+  <input class="checkbox" type="checkbox" /> Прапорець
 </label>
 <label class="flex items-center gap-2">
-  <input class="radio" type="radio" name="group" /> Radio
+  <input class="radio" type="radio" name="group" /> Перемикач
 </label>
           </template>
           <div class="demo-actions flex gap-2">
-            <button type="button" class="btn btn-outline btn-sm" data-copy="html">Copy HTML</button>
-            <button type="button" class="btn btn-outline btn-sm" data-copy-class="checkbox">Copy class</button>
+            <button type="button" class="btn btn-outline btn-sm" data-copy="html">Скопіювати HTML</button>
+            <button type="button" class="btn btn-outline btn-sm" data-copy-class="checkbox">Скопіювати клас</button>
           </div>
         </div>
 
@@ -265,57 +218,57 @@
           <div class="demo-preview">
             <div class="card">
               <div class="card-header">
-                <h3 class="card-title">Card title</h3>
-                <p class="card-description">A short supporting description for this card.</p>
+                <h3 class="card-title">Заголовок картки</h3>
+                <p class="card-description">Короткий опис для цієї картки.</p>
               </div>
               <div class="card-content">
-                <p class="text-sm">Card body content goes here, above the footer actions.</p>
+                <p class="text-sm">Тут розміщується основний вміст картки, над кнопками у футері.</p>
               </div>
               <div class="card-footer">
-                <button type="button" class="btn btn-primary btn-sm">Confirm</button>
-                <button type="button" class="btn btn-ghost btn-sm">Cancel</button>
+                <button type="button" class="btn btn-primary btn-sm">Підтвердити</button>
+                <button type="button" class="btn btn-ghost btn-sm">Скасувати</button>
               </div>
             </div>
           </div>
           <template class="demo-source">
 <div class="card">
   <div class="card-header">
-    <h3 class="card-title">Card title</h3>
-    <p class="card-description">A short supporting description.</p>
+    <h3 class="card-title">Заголовок картки</h3>
+    <p class="card-description">Короткий опис.</p>
   </div>
   <div class="card-content">
-    <p>Card body content.</p>
+    <p>Вміст картки.</p>
   </div>
   <div class="card-footer">
-    <button class="btn btn-primary btn-sm">Confirm</button>
+    <button class="btn btn-primary btn-sm">Підтвердити</button>
   </div>
 </div>
           </template>
           <div class="demo-actions flex gap-2">
-            <button type="button" class="btn btn-outline btn-sm" data-copy="html">Copy HTML</button>
-            <button type="button" class="btn btn-outline btn-sm" data-copy-class="card">Copy class</button>
+            <button type="button" class="btn btn-outline btn-sm" data-copy="html">Скопіювати HTML</button>
+            <button type="button" class="btn btn-outline btn-sm" data-copy-class="card">Скопіювати клас</button>
           </div>
         </div>
 
         <div class="demo">
           <div class="demo-preview">
             <div class="panel">
-              <p class="text-sm font-semibold mb-2">Panel</p>
-              <p class="text-sm text-muted">A lightweight container for grouping related content, lower emphasis than a card.</p>
+              <p class="text-sm font-semibold mb-2">Панель</p>
+              <p class="text-sm text-muted">Легкий контейнер для групування пов'язаного вмісту, менш акцентований, ніж картка.</p>
               <hr class="divider" />
-              <p class="text-sm">Content below a divider.</p>
+              <p class="text-sm">Вміст під розділювачем.</p>
             </div>
           </div>
           <template class="demo-source">
 <div class="panel">
-  <p>Panel content.</p>
+  <p>Вміст панелі.</p>
   <hr class="divider" />
-  <p>Content below a divider.</p>
+  <p>Вміст під розділювачем.</p>
 </div>
           </template>
           <div class="demo-actions flex gap-2">
-            <button type="button" class="btn btn-outline btn-sm" data-copy="html">Copy HTML</button>
-            <button type="button" class="btn btn-outline btn-sm" data-copy-class="panel">Copy class</button>
+            <button type="button" class="btn btn-outline btn-sm" data-copy="html">Скопіювати HTML</button>
+            <button type="button" class="btn btn-outline btn-sm" data-copy-class="panel">Скопіювати клас</button>
           </div>
         </div>
 
@@ -326,22 +279,22 @@
     <div class="tab-content">
       <div class="demo">
         <div class="demo-preview flex flex-wrap gap-3">
-          <span class="badge">Default</span>
-          <span class="badge badge-secondary">Secondary</span>
-          <span class="badge badge-outline">Outline</span>
-          <span class="badge badge-destructive">Destructive</span>
-          <span class="badge badge-success">Success</span>
+          <span class="badge">Основний</span>
+          <span class="badge badge-secondary">Вторинний</span>
+          <span class="badge badge-outline">Контурний</span>
+          <span class="badge badge-destructive">Небезпечний</span>
+          <span class="badge badge-success">Успішний</span>
         </div>
         <template class="demo-source">
-<span class="badge">Default</span>
-<span class="badge badge-secondary">Secondary</span>
-<span class="badge badge-outline">Outline</span>
-<span class="badge badge-destructive">Destructive</span>
-<span class="badge badge-success">Success</span>
+<span class="badge">Основний</span>
+<span class="badge badge-secondary">Вторинний</span>
+<span class="badge badge-outline">Контурний</span>
+<span class="badge badge-destructive">Небезпечний</span>
+<span class="badge badge-success">Успішний</span>
         </template>
         <div class="demo-actions flex gap-2">
-          <button type="button" class="btn btn-outline btn-sm" data-copy="html">Copy HTML</button>
-          <button type="button" class="btn btn-outline btn-sm" data-copy-class="badge">Copy class</button>
+          <button type="button" class="btn btn-outline btn-sm" data-copy="html">Скопіювати HTML</button>
+          <button type="button" class="btn btn-outline btn-sm" data-copy-class="badge">Скопіювати клас</button>
         </div>
       </div>
     </div>
@@ -352,61 +305,185 @@
         <div class="demo-preview">
           <div class="tabs">
             <div class="tabs-list" role="tablist">
-              <button type="button" class="tab-trigger is-active" role="tab">Overview</button>
-              <button type="button" class="tab-trigger" role="tab">Activity</button>
-              <button type="button" class="tab-trigger" role="tab">Settings</button>
+              <button type="button" class="tab-trigger is-active" role="tab">Огляд</button>
+              <button type="button" class="tab-trigger" role="tab">Активність</button>
+              <button type="button" class="tab-trigger" role="tab">Налаштування</button>
             </div>
-            <div class="tab-content is-active"><p class="text-sm">Overview panel content.</p></div>
-            <div class="tab-content"><p class="text-sm">Activity panel content.</p></div>
-            <div class="tab-content"><p class="text-sm">Settings panel content.</p></div>
+            <div class="tab-content is-active"><p class="text-sm">Вміст вкладки «Огляд».</p></div>
+            <div class="tab-content"><p class="text-sm">Вміст вкладки «Активність».</p></div>
+            <div class="tab-content"><p class="text-sm">Вміст вкладки «Налаштування».</p></div>
           </div>
         </div>
         <template class="demo-source">
 <div class="tabs">
   <div class="tabs-list">
-    <button class="tab-trigger is-active">Overview</button>
-    <button class="tab-trigger">Activity</button>
+    <button class="tab-trigger is-active">Огляд</button>
+    <button class="tab-trigger">Активність</button>
   </div>
-  <div class="tab-content is-active">Overview panel content.</div>
-  <div class="tab-content">Activity panel content.</div>
+  <div class="tab-content is-active">Вміст вкладки «Огляд».</div>
+  <div class="tab-content">Вміст вкладки «Активність».</div>
 </div>
         </template>
         <div class="demo-actions flex gap-2">
-          <button type="button" class="btn btn-outline btn-sm" data-copy="html">Copy HTML</button>
-          <button type="button" class="btn btn-outline btn-sm" data-copy-class="tabs">Copy class</button>
+          <button type="button" class="btn btn-outline btn-sm" data-copy="html">Скопіювати HTML</button>
+          <button type="button" class="btn btn-outline btn-sm" data-copy-class="tabs">Скопіювати клас</button>
         </div>
       </div>
     </div>
 
     <!-- 8. Tables -->
     <div class="tab-content">
-      <div class="demo">
-        <div class="demo-preview">
-          <div class="table-wrapper">
-            <table class="table">
-              <thead>
-                <tr><th>Name</th><th>Role</th><th>Status</th></tr>
-              </thead>
-              <tbody>
-                <tr><td>Ada Lovelace</td><td>Engineer</td><td><span class="badge badge-success">Active</span></td></tr>
-                <tr><td>Alan Turing</td><td>Researcher</td><td><span class="badge badge-secondary">Away</span></td></tr>
-                <tr><td>Grace Hopper</td><td>Admiral</td><td><span class="badge badge-outline">Retired</span></td></tr>
-              </tbody>
-            </table>
+      <div class="flex flex-col gap-4">
+
+        <div class="demo">
+          <div class="demo-preview">
+            <div class="table-wrapper">
+              <table class="table">
+                <thead>
+                  <tr><th>Ім'я</th><th>Роль</th><th>Статус</th></tr>
+                </thead>
+                <tbody>
+                  <tr><td>Ada Lovelace</td><td>Інженер</td><td><span class="badge badge-success">Активний</span></td></tr>
+                  <tr><td>Alan Turing</td><td>Дослідник</td><td><span class="badge badge-secondary">Відсутній</span></td></tr>
+                  <tr><td>Grace Hopper</td><td>Адмірал</td><td><span class="badge badge-outline">У відставці</span></td></tr>
+                </tbody>
+              </table>
+            </div>
           </div>
-        </div>
-        <template class="demo-source">
+          <template class="demo-source">
 <div class="table-wrapper">
   <table class="table">
-    <thead><tr><th>Name</th><th>Role</th></tr></thead>
-    <tbody><tr><td>Ada Lovelace</td><td>Engineer</td></tr></tbody>
+    <thead><tr><th>Ім'я</th><th>Роль</th></tr></thead>
+    <tbody><tr><td>Ada Lovelace</td><td>Інженер</td></tr></tbody>
   </table>
 </div>
-        </template>
-        <div class="demo-actions flex gap-2">
-          <button type="button" class="btn btn-outline btn-sm" data-copy="html">Copy HTML</button>
-          <button type="button" class="btn btn-outline btn-sm" data-copy-class="table">Copy class</button>
+          </template>
+          <div class="demo-actions flex gap-2">
+            <button type="button" class="btn btn-outline btn-sm" data-copy="html">Скопіювати HTML</button>
+            <button type="button" class="btn btn-outline btn-sm" data-copy-class="table">Скопіювати клас</button>
+          </div>
         </div>
+
+        <div class="grid-3 gap-4">
+
+          <div class="demo">
+            <div class="demo-preview">
+              <div class="table-wrapper">
+                <table class="table table-striped">
+                  <thead><tr><th>Ім'я</th><th>Роль</th></tr></thead>
+                  <tbody>
+                    <tr><td>Ada Lovelace</td><td>Інженер</td></tr>
+                    <tr><td>Alan Turing</td><td>Дослідник</td></tr>
+                    <tr><td>Grace Hopper</td><td>Адмірал</td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+            <template class="demo-source">
+<table class="table table-striped">
+  <thead><tr><th>Ім'я</th><th>Роль</th></tr></thead>
+  <tbody>
+    <tr><td>Ada Lovelace</td><td>Інженер</td></tr>
+    <tr><td>Alan Turing</td><td>Дослідник</td></tr>
+  </tbody>
+</table>
+            </template>
+            <div class="demo-actions flex gap-2">
+              <button type="button" class="btn btn-outline btn-sm" data-copy="html">Скопіювати HTML</button>
+              <button type="button" class="btn btn-outline btn-sm" data-copy-class="table-striped">Скопіювати клас</button>
+            </div>
+          </div>
+
+          <div class="demo">
+            <div class="demo-preview">
+              <div class="table-wrapper">
+                <table class="table table-bordered">
+                  <thead><tr><th>Ім'я</th><th>Роль</th></tr></thead>
+                  <tbody>
+                    <tr><td>Ada Lovelace</td><td>Інженер</td></tr>
+                    <tr><td>Alan Turing</td><td>Дослідник</td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+            <template class="demo-source">
+<table class="table table-bordered">
+  <thead><tr><th>Ім'я</th><th>Роль</th></tr></thead>
+  <tbody>
+    <tr><td>Ada Lovelace</td><td>Інженер</td></tr>
+  </tbody>
+</table>
+            </template>
+            <div class="demo-actions flex gap-2">
+              <button type="button" class="btn btn-outline btn-sm" data-copy="html">Скопіювати HTML</button>
+              <button type="button" class="btn btn-outline btn-sm" data-copy-class="table-bordered">Скопіювати клас</button>
+            </div>
+          </div>
+
+          <div class="demo">
+            <div class="demo-preview">
+              <div class="table-wrapper">
+                <table class="table table-compact">
+                  <thead><tr><th>Ім'я</th><th>Роль</th></tr></thead>
+                  <tbody>
+                    <tr><td>Ada Lovelace</td><td>Інженер</td></tr>
+                    <tr><td>Alan Turing</td><td>Дослідник</td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+            <template class="demo-source">
+<table class="table table-compact">
+  <thead><tr><th>Ім'я</th><th>Роль</th></tr></thead>
+  <tbody>
+    <tr><td>Ada Lovelace</td><td>Інженер</td></tr>
+  </tbody>
+</table>
+            </template>
+            <div class="demo-actions flex gap-2">
+              <button type="button" class="btn btn-outline btn-sm" data-copy="html">Скопіювати HTML</button>
+              <button type="button" class="btn btn-outline btn-sm" data-copy-class="table-compact">Скопіювати клас</button>
+            </div>
+          </div>
+
+        </div>
+
+        <div class="demo">
+          <div class="demo-preview">
+            <div class="table-wrapper">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th class="sortable sort-asc">Ім'я<span class="sort-indicator"></span></th>
+                    <th class="sortable sort-desc">Роль<span class="sort-indicator"></span></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr><td>Ada Lovelace</td><td>Інженер</td></tr>
+                  <tr><td>Alan Turing</td><td>Дослідник</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <template class="demo-source">
+<table class="table">
+  <thead>
+    <tr>
+      <th class="sortable sort-asc">Ім'я<span class="sort-indicator"></span></th>
+      <th class="sortable sort-desc">Роль<span class="sort-indicator"></span></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr><td>Ada Lovelace</td><td>Інженер</td></tr>
+  </tbody>
+</table>
+          </template>
+          <div class="demo-actions flex gap-2">
+            <button type="button" class="btn btn-outline btn-sm" data-copy="html">Скопіювати HTML</button>
+            <button type="button" class="btn btn-outline btn-sm" data-copy-class="sortable">Скопіювати клас</button>
+          </div>
+        </div>
+
       </div>
     </div>
 
@@ -430,8 +507,8 @@
 </div>
         </template>
         <div class="demo-actions flex gap-2">
-          <button type="button" class="btn btn-outline btn-sm" data-copy="html">Copy HTML</button>
-          <button type="button" class="btn btn-outline btn-sm" data-copy-class="preview-area">Copy class</button>
+          <button type="button" class="btn btn-outline btn-sm" data-copy="html">Скопіювати HTML</button>
+          <button type="button" class="btn btn-outline btn-sm" data-copy-class="preview-area">Скопіювати клас</button>
         </div>
       </div>
     </div>
@@ -442,33 +519,295 @@
 
         <div class="demo">
           <div class="demo-preview flex flex-col gap-3">
-            <div class="alert"><strong>Heads up.</strong><span>This is a default alert.</span></div>
-            <div class="alert alert-destructive"><strong>Error.</strong><span>Something went wrong.</span></div>
-            <div class="alert alert-success"><strong>Success.</strong><span>Your changes were saved.</span></div>
-            <div class="alert alert-warning"><strong>Warning.</strong><span>Double check this before continuing.</span></div>
+            <div class="alert"><strong>Зверніть увагу.</strong><span>Це звичайне сповіщення.</span></div>
+            <div class="alert alert-destructive"><strong>Помилка.</strong><span>Щось пішло не так.</span></div>
+            <div class="alert alert-success"><strong>Успіх.</strong><span>Ваші зміни збережено.</span></div>
+            <div class="alert alert-warning"><strong>Попередження.</strong><span>Перевірте це, перш ніж продовжити.</span></div>
           </div>
           <template class="demo-source">
 <div class="alert">
-  <strong>Heads up.</strong>
-  <span>This is a default alert.</span>
+  <strong>Зверніть увагу.</strong>
+  <span>Це звичайне сповіщення.</span>
 </div>
           </template>
           <div class="demo-actions flex gap-2">
-            <button type="button" class="btn btn-outline btn-sm" data-copy="html">Copy HTML</button>
-            <button type="button" class="btn btn-outline btn-sm" data-copy-class="alert">Copy class</button>
+            <button type="button" class="btn btn-outline btn-sm" data-copy="html">Скопіювати HTML</button>
+            <button type="button" class="btn btn-outline btn-sm" data-copy-class="alert">Скопіювати клас</button>
           </div>
         </div>
 
         <div class="demo">
           <div class="demo-preview">
-            <button type="button" class="btn btn-primary" id="toast-trigger">Show toast</button>
+            <button type="button" class="btn btn-primary" id="toast-trigger">Показати сповіщення</button>
           </div>
           <template class="demo-source">
-<div class="toast is-visible">Saved successfully.</div>
+<div class="toast is-visible">Успішно збережено.</div>
           </template>
           <div class="demo-actions flex gap-2">
-            <button type="button" class="btn btn-outline btn-sm" data-copy="html">Copy HTML</button>
-            <button type="button" class="btn btn-outline btn-sm" data-copy-class="toast">Copy class</button>
+            <button type="button" class="btn btn-outline btn-sm" data-copy="html">Скопіювати HTML</button>
+            <button type="button" class="btn btn-outline btn-sm" data-copy-class="toast">Скопіювати клас</button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- 11. Layouts -->
+    <div class="tab-content">
+      <div class="flex flex-col gap-4">
+
+        <div class="demo">
+          <div class="demo-preview">
+            <div class="layout-row gap-3">
+              <div class="layout-demo-box">Блок 1</div>
+              <div class="layout-demo-box">Блок 2</div>
+              <div class="layout-demo-box">Блок 3</div>
+            </div>
+          </div>
+          <template class="demo-source">
+<div class="layout-row gap-3">
+  <div>Блок 1</div>
+  <div>Блок 2</div>
+  <div>Блок 3</div>
+</div>
+          </template>
+          <div class="demo-actions flex gap-2">
+            <button type="button" class="btn btn-outline btn-sm" data-copy="html">Скопіювати HTML</button>
+            <button type="button" class="btn btn-outline btn-sm" data-copy-class="layout-row">Скопіювати клас</button>
+          </div>
+        </div>
+
+        <div class="demo">
+          <div class="demo-preview">
+            <div class="layout-col gap-3">
+              <div class="layout-demo-box">Блок 1</div>
+              <div class="layout-demo-box">Блок 2</div>
+            </div>
+          </div>
+          <template class="demo-source">
+<div class="layout-col gap-3">
+  <div>Блок 1</div>
+  <div>Блок 2</div>
+</div>
+          </template>
+          <div class="demo-actions flex gap-2">
+            <button type="button" class="btn btn-outline btn-sm" data-copy="html">Скопіювати HTML</button>
+            <button type="button" class="btn btn-outline btn-sm" data-copy-class="layout-col">Скопіювати клас</button>
+          </div>
+        </div>
+
+        <div class="demo">
+          <div class="demo-preview">
+            <div class="panel" style="height: 6rem;">
+              <div class="layout-full">
+                <div class="layout-demo-box layout-full">Заповнює батьківський елемент</div>
+              </div>
+            </div>
+          </div>
+          <template class="demo-source">
+<div class="panel">
+  <div class="layout-full">Заповнює батьківський елемент</div>
+</div>
+          </template>
+          <div class="demo-actions flex gap-2">
+            <button type="button" class="btn btn-outline btn-sm" data-copy="html">Скопіювати HTML</button>
+            <button type="button" class="btn btn-outline btn-sm" data-copy-class="layout-full">Скопіювати клас</button>
+          </div>
+        </div>
+
+        <div class="demo">
+          <div class="demo-preview">
+            <div class="layout-sidebar">
+              <div class="layout-sidebar-aside layout-demo-box">Бічна панель</div>
+              <div class="layout-sidebar-content layout-demo-box">Основний вміст</div>
+            </div>
+          </div>
+          <template class="demo-source">
+<div class="layout-sidebar">
+  <div class="layout-sidebar-aside">Бічна панель</div>
+  <div class="layout-sidebar-content">Основний вміст</div>
+</div>
+          </template>
+          <div class="demo-actions flex gap-2">
+            <button type="button" class="btn btn-outline btn-sm" data-copy="html">Скопіювати HTML</button>
+            <button type="button" class="btn btn-outline btn-sm" data-copy-class="layout-sidebar">Скопіювати клас</button>
+          </div>
+        </div>
+
+        <div class="demo">
+          <div class="demo-preview">
+            <div class="layout-split">
+              <div class="layout-demo-box">Колонка 1</div>
+              <div class="layout-demo-box">Колонка 2</div>
+            </div>
+          </div>
+          <template class="demo-source">
+<div class="layout-split">
+  <div>Колонка 1</div>
+  <div>Колонка 2</div>
+</div>
+          </template>
+          <div class="demo-actions flex gap-2">
+            <button type="button" class="btn btn-outline btn-sm" data-copy="html">Скопіювати HTML</button>
+            <button type="button" class="btn btn-outline btn-sm" data-copy-class="layout-split">Скопіювати клас</button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- 12. Selects -->
+    <div class="tab-content">
+      <div class="grid-2 gap-6">
+
+        <div class="demo">
+          <div class="demo-preview">
+            <div class="field">
+              <label class="label" for="demo-select-2">Роль</label>
+              <select class="select" id="demo-select-2">
+                <option>Інженер</option>
+                <option>Дизайнер</option>
+                <option>Менеджер</option>
+              </select>
+            </div>
+          </div>
+          <template class="demo-source">
+<select class="select">
+  <option>Інженер</option>
+  <option>Дизайнер</option>
+  <option>Менеджер</option>
+</select>
+          </template>
+          <div class="demo-actions flex gap-2">
+            <button type="button" class="btn btn-outline btn-sm" data-copy="html">Скопіювати HTML</button>
+            <button type="button" class="btn btn-outline btn-sm" data-copy-class="select">Скопіювати клас</button>
+          </div>
+        </div>
+
+        <div class="demo">
+          <div class="demo-preview">
+            <div class="field">
+              <label class="label" for="demo-select-search">Пошук ролі</label>
+              <div class="select-search" id="demo-select-search">
+                <input class="select-search-input" type="text" placeholder="Почніть вводити..." autocomplete="off" />
+                <div class="select-search-list">
+                  <button type="button" class="select-search-option">Інженер</button>
+                  <button type="button" class="select-search-option">Дизайнер</button>
+                  <button type="button" class="select-search-option">Менеджер</button>
+                  <button type="button" class="select-search-option">Продукт-менеджер</button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <template class="demo-source">
+<div class="select-search">
+  <input class="select-search-input" type="text" placeholder="Почніть вводити..." />
+  <div class="select-search-list">
+    <button type="button" class="select-search-option">Інженер</button>
+    <button type="button" class="select-search-option">Дизайнер</button>
+  </div>
+</div>
+          </template>
+          <div class="demo-actions flex gap-2">
+            <button type="button" class="btn btn-outline btn-sm" data-copy="html">Скопіювати HTML</button>
+            <button type="button" class="btn btn-outline btn-sm" data-copy-class="select-search">Скопіювати клас</button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- 13. Labels -->
+    <div class="tab-content">
+      <div class="grid-2 gap-6">
+
+        <div class="demo">
+          <div class="demo-preview">
+            <p class="label-text">Це звичайний, доступний лише для читання текст.</p>
+          </div>
+          <template class="demo-source">
+<p class="label-text">Це звичайний, доступний лише для читання текст.</p>
+          </template>
+          <div class="demo-actions flex gap-2">
+            <button type="button" class="btn btn-outline btn-sm" data-copy="html">Скопіювати HTML</button>
+            <button type="button" class="btn btn-outline btn-sm" data-copy-class="label-text">Скопіювати клас</button>
+          </div>
+        </div>
+
+        <div class="demo">
+          <div class="demo-preview flex flex-col gap-4">
+            <div class="label-field label-field--col">
+              <span class="label-field-caption">Версія</span>
+              <span class="label-field-value">1.4.2</span>
+            </div>
+            <div class="label-field label-field--row">
+              <span class="label-field-caption">Статус:</span>
+              <span class="label-field-value">Активний</span>
+            </div>
+          </div>
+          <template class="demo-source">
+<div class="label-field label-field--col">
+  <span class="label-field-caption">Версія</span>
+  <span class="label-field-value">1.4.2</span>
+</div>
+<div class="label-field label-field--row">
+  <span class="label-field-caption">Статус:</span>
+  <span class="label-field-value">Активний</span>
+</div>
+          </template>
+          <div class="demo-actions flex gap-2">
+            <button type="button" class="btn btn-outline btn-sm" data-copy="html">Скопіювати HTML</button>
+            <button type="button" class="btn btn-outline btn-sm" data-copy-class="label-field">Скопіювати клас</button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- 14. Setup -->
+    <div class="tab-content">
+      <div class="flex flex-col gap-6">
+
+        <div>
+          <h2 class="section-title">Що копіювати в інший проєкт</h2>
+          <p class="text-sm text-muted mb-3">Ці файли складають перевикористовувану частину дизайн-системи:</p>
+          <pre class="setup-tree"><code>ui-kit/
+├── css/
+│   ├── theme.css            (токени — тільки :root / [data-theme] і @font-face)
+│   ├── layout.css           (flex/grid-утиліти)
+│   ├── components.css       (фасад з @import)
+│   └── components/          (уся папка — окремі файли по компонентах)
+├── fonts/
+│   └── Montserrat/          (уся папка)
+
+НЕ копіювати (лише для цієї галереї-демо):
+├── css/gallery.css
+└── index.html</code></pre>
+        </div>
+
+        <div class="demo">
+          <p class="text-sm font-semibold mb-2">Фрагмент для &lt;head&gt;</p>
+          <div class="demo-preview">
+            <pre class="setup-tree"><code>&lt;link rel="stylesheet" href="css/theme.css" /&gt;
+&lt;link rel="stylesheet" href="css/components.css" /&gt;
+&lt;link rel="stylesheet" href="css/layout.css" /&gt;</code></pre>
+          </div>
+          <template class="demo-source">
+<link rel="stylesheet" href="css/theme.css" />
+<link rel="stylesheet" href="css/components.css" />
+<link rel="stylesheet" href="css/layout.css" />
+          </template>
+          <div class="demo-actions flex gap-2">
+            <button type="button" class="btn btn-outline btn-sm" data-copy="html">Скопіювати HTML</button>
+          </div>
+        </div>
+
+        <div>
+          <h2 class="section-title">Як це працює</h2>
+          <div class="flex flex-col gap-2 text-sm">
+            <p>Перемикання теми відбувається через атрибут <span class="font-mono">data-theme="dark"</span> на елементі <span class="font-mono">&lt;html&gt;</span>. Без атрибута (або з будь-яким іншим значенням) застосовується світла тема за замовчуванням.</p>
+            <p>Усі кольорові токени визначені у <span class="font-mono">theme.css</span> — не редагуйте їх без наміру, оскільки від них залежать усі компоненти.</p>
+            <p>Складання не потрібне: немає npm, немає CDN, немає build-кроку. Достатньо підключити три файли CSS та локальні шрифти.</p>
           </div>
         </div>
 
@@ -478,7 +817,7 @@
   </div>
 </main>
 
-<div class="toast" id="toast" role="status" aria-live="polite">Saved successfully.</div>
+<div class="toast" id="toast" role="status" aria-live="polite">Успішно збережено.</div>
 
 <script>
 (function () {
@@ -524,8 +863,8 @@
   /* ---------- Copy buttons ---------- */
   function flashCopied(btn, label) {
     var original = btn.textContent;
-    btn.textContent = "Copied!";
-    showToast(label + " copied to clipboard.");
+    btn.textContent = "Скопійовано!";
+    showToast(label + " скопійовано в буфер обміну.");
     setTimeout(function () { btn.textContent = original; }, 1500);
   }
 
@@ -557,7 +896,7 @@
 
   document.querySelectorAll("[data-copy-class]").forEach(function (btn) {
     btn.addEventListener("click", function () {
-      copyText(btn.getAttribute("data-copy-class"), btn, "Class");
+      copyText(btn.getAttribute("data-copy-class"), btn, "Клас");
     });
   });
 
@@ -594,7 +933,25 @@
     }, 2500);
   }
   document.getElementById("toast-trigger").addEventListener("click", function () {
-    showToast("Saved successfully.");
+    showToast("Успішно збережено.");
+  });
+
+  /* ---------- Searchable select ---------- */
+  document.querySelectorAll(".select-search").forEach(function (wrap) {
+    var input = wrap.querySelector(".select-search-input");
+    var options = Array.prototype.slice.call(wrap.querySelectorAll(".select-search-option"));
+    input.addEventListener("input", function () {
+      var query = input.value.trim().toLowerCase();
+      options.forEach(function (opt) {
+        var match = opt.textContent.toLowerCase().indexOf(query) !== -1;
+        opt.classList.toggle("is-hidden", !match);
+      });
+    });
+    options.forEach(function (opt) {
+      opt.addEventListener("click", function () {
+        input.value = opt.textContent.trim();
+      });
+    });
   });
 
 })();

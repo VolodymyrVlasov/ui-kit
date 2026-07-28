@@ -1,0 +1,134 @@
+/*
+  selects.css
+  Native select + searchable select/combobox component classes.
+*/
+
+.select {
+  display: block;
+  width: 100%;
+  font-family: var(--font-sans);
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  padding: 0.5rem 0.75rem;
+  border-radius: var(--radius);
+  border: 1px solid hsl(var(--input));
+  background-color: hsl(var(--background));
+  color: hsl(var(--foreground));
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.select:hover {
+  border-color: hsl(var(--ring) / 0.5);
+}
+
+.select:focus {
+  outline: none;
+  border-color: hsl(var(--ring));
+  box-shadow: 0 0 0 2px hsl(var(--ring) / 0.2);
+}
+
+.select:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+  background-color: hsl(var(--muted));
+}
+
+/* ==========================================================================
+   Searchable select / combobox
+   ========================================================================== */
+
+.select-search {
+  position: relative;
+  width: 100%;
+}
+
+.select-search-input {
+  display: block;
+  width: 100%;
+  font-family: var(--font-sans);
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  padding: 0.5rem 0.75rem;
+  border-radius: var(--radius);
+  border: 1px solid hsl(var(--input));
+  background-color: hsl(var(--background));
+  color: hsl(var(--foreground));
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.select-search-input::placeholder {
+  color: hsl(var(--muted-foreground));
+}
+
+.select-search-input:hover {
+  border-color: hsl(var(--ring) / 0.5);
+}
+
+.select-search-input:focus {
+  outline: none;
+  border-color: hsl(var(--ring));
+  box-shadow: 0 0 0 2px hsl(var(--ring) / 0.2);
+}
+
+.select-search-input:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+  background-color: hsl(var(--muted));
+}
+
+.select-search-list {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: calc(100% + 0.25rem);
+  z-index: 20;
+  max-height: 12rem;
+  overflow-y: auto;
+  border-radius: var(--radius);
+  border: 1px solid hsl(var(--border));
+  background-color: hsl(var(--card));
+  color: hsl(var(--card-foreground));
+  box-shadow: var(--shadow-md);
+  padding: 0.25rem;
+  display: none;
+}
+
+.select-search:focus-within .select-search-list {
+  display: block;
+}
+
+.select-search.is-disabled .select-search-list {
+  display: none;
+}
+
+.select-search-option {
+  display: block;
+  width: 100%;
+  text-align: left;
+  border: none;
+  background: transparent;
+  font-family: var(--font-sans);
+  font-size: 0.875rem;
+  padding: 0.5rem 0.625rem;
+  border-radius: var(--radius-sm);
+  color: hsl(var(--foreground));
+  cursor: pointer;
+}
+
+.select-search-option:hover,
+.select-search-option:focus-visible {
+  outline: none;
+  background-color: hsl(var(--accent));
+  color: hsl(var(--accent-foreground));
+}
+
+.select-search-option.is-hidden {
+  display: none;
+}
+
+.select-search.is-disabled .select-search-input {
+  cursor: not-allowed;
+  opacity: 0.5;
+  background-color: hsl(var(--muted));
+  pointer-events: none;
+}

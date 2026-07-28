@@ -1,0 +1,21 @@
+/*
+  preview.css
+  SVG preview area component classes.
+*/
+
+.preview-area {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius);
+  border: 1px dashed hsl(var(--border));
+  background-color: hsl(var(--muted) / 0.3);
+  padding: 2rem;
+  min-height: 10rem;
+}
+
+.preview-svg {
+  max-width: 100%;
+  height: auto;
+  color: hsl(var(--foreground));
+}
