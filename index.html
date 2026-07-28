@@ -1,0 +1,604 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>ui-kit — Component Gallery</title>
+<link rel="stylesheet" href="css/theme.css" />
+<link rel="stylesheet" href="css/components.css" />
+<link rel="stylesheet" href="css/layout.css" />
+<style>
+  /* Page-only styles for the gallery shell (not part of the shipped design system) */
+  .gallery-header {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    background-color: hsl(var(--background));
+    border-bottom: 1px solid hsl(var(--border));
+  }
+  .gallery-title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    margin: 0;
+  }
+  .gallery-subtitle {
+    margin: 0;
+  }
+  .swatch-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(9rem, 1fr));
+  }
+  .swatch {
+    height: 3.5rem;
+    border-radius: var(--radius);
+    border: 1px solid hsl(var(--border));
+  }
+  .swatch-label {
+    font-family: var(--font-mono);
+  }
+  .demo {
+    border: 1px solid hsl(var(--border));
+    border-radius: var(--radius);
+    padding: 1.25rem;
+  }
+  .demo-preview {
+    border-bottom: 1px dashed hsl(var(--border));
+    padding-bottom: 1.25rem;
+  }
+  .demo-actions {
+    padding-top: 0.75rem;
+  }
+  .section-title {
+    font-size: 1.5rem;
+    margin: 0;
+  }
+  .shadow-box {
+    height: 4rem;
+    border-radius: var(--radius);
+    background-color: hsl(var(--card));
+    border: 1px solid hsl(var(--border));
+  }
+</style>
+</head>
+<body>
+
+<header class="gallery-header">
+  <div class="container flex items-center justify-between py-4">
+    <div>
+      <p class="gallery-title">ui-kit</p>
+      <p class="gallery-subtitle text-sm text-muted">Vanilla CSS design system — component gallery</p>
+    </div>
+    <button type="button" class="btn btn-outline" id="theme-toggle">🌙 Toggle theme</button>
+  </div>
+</header>
+
+<main class="container py-6">
+
+  <div class="tabs" id="main-tabs">
+    <div class="tabs-list" role="tablist">
+      <button type="button" class="tab-trigger is-active" role="tab">Colors &amp; Tokens</button>
+      <button type="button" class="tab-trigger" role="tab">Typography</button>
+      <button type="button" class="tab-trigger" role="tab">Buttons</button>
+      <button type="button" class="tab-trigger" role="tab">Forms</button>
+      <button type="button" class="tab-trigger" role="tab">Cards &amp; Panels</button>
+      <button type="button" class="tab-trigger" role="tab">Badges</button>
+      <button type="button" class="tab-trigger" role="tab">Tabs</button>
+      <button type="button" class="tab-trigger" role="tab">Tables</button>
+      <button type="button" class="tab-trigger" role="tab">Preview</button>
+      <button type="button" class="tab-trigger" role="tab">Alerts</button>
+    </div>
+
+    <!-- 1. Colors & Tokens -->
+    <div class="tab-content is-active">
+      <div class="flex flex-col gap-6">
+        <div>
+          <h2 class="section-title">Color tokens</h2>
+          <p class="text-sm text-muted mb-3">Every color custom property from <span class="font-mono">theme.css</span>.</p>
+          <div class="swatch-grid gap-4" id="color-token-grid"></div>
+        </div>
+        <div>
+          <h2 class="section-title">Radius</h2>
+          <div class="flex gap-4 mt-3">
+            <div class="demo p-3"><div class="swatch" style="border-radius:var(--radius-sm)"></div><p class="text-sm font-mono mt-2">--radius-sm</p></div>
+            <div class="demo p-3"><div class="swatch" style="border-radius:var(--radius)"></div><p class="text-sm font-mono mt-2">--radius</p></div>
+            <div class="demo p-3"><div class="swatch" style="border-radius:var(--radius-lg)"></div><p class="text-sm font-mono mt-2">--radius-lg</p></div>
+            <div class="demo p-3"><div class="swatch" style="border-radius:var(--radius-full)"></div><p class="text-sm font-mono mt-2">--radius-full</p></div>
+          </div>
+        </div>
+        <div>
+          <h2 class="section-title">Shadows</h2>
+          <div class="grid-4 gap-4 mt-3">
+            <div><div class="shadow-box" style="box-shadow:var(--shadow-sm)"></div><p class="text-sm font-mono mt-2">--shadow-sm</p></div>
+            <div><div class="shadow-box" style="box-shadow:var(--shadow)"></div><p class="text-sm font-mono mt-2">--shadow</p></div>
+            <div><div class="shadow-box" style="box-shadow:var(--shadow-md)"></div><p class="text-sm font-mono mt-2">--shadow-md</p></div>
+            <div><div class="shadow-box" style="box-shadow:var(--shadow-lg)"></div><p class="text-sm font-mono mt-2">--shadow-lg</p></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 2. Typography -->
+    <div class="tab-content">
+      <div class="demo">
+        <div class="demo-preview flex flex-col gap-2">
+          <h1>Heading one</h1>
+          <h2>Heading two</h2>
+          <h3>Heading three</h3>
+          <h4>Heading four</h4>
+          <h5>Heading five</h5>
+          <h6>Heading six</h6>
+          <p>Paragraph text using <span class="font-mono">--font-sans</span> (Montserrat). The quick brown fox jumps over the lazy dog.</p>
+          <p class="font-mono">Monospace text using <span class="font-mono">--font-mono</span>.</p>
+          <p><span class="text-sm">Small text (.text-sm)</span> &nbsp; <span class="text-lg">Large text (.text-lg)</span> &nbsp; <span class="font-semibold">Semibold (.font-semibold)</span> &nbsp; <span class="text-muted">Muted (.text-muted)</span></p>
+        </div>
+        <template class="demo-source">
+<h1>Heading one</h1>
+<p>Paragraph text.</p>
+<p class="font-mono">Monospace text.</p>
+<p class="text-sm">Small text</p>
+        </template>
+        <div class="demo-actions flex gap-2">
+          <button type="button" class="btn btn-outline btn-sm" data-copy="html">Copy HTML</button>
+          <button type="button" class="btn btn-outline btn-sm" data-copy-class="text-sm">Copy class</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 3. Buttons -->
+    <div class="tab-content">
+      <div class="flex flex-col gap-4">
+
+        <div class="demo">
+          <div class="demo-preview flex flex-wrap gap-3">
+            <button type="button" class="btn btn-primary">Primary</button>
+            <button type="button" class="btn btn-secondary">Secondary</button>
+            <button type="button" class="btn btn-outline">Outline</button>
+            <button type="button" class="btn btn-ghost">Ghost</button>
+            <button type="button" class="btn btn-destructive">Destructive</button>
+            <button type="button" class="btn btn-primary" disabled>Disabled</button>
+          </div>
+          <template class="demo-source">
+<button type="button" class="btn btn-primary">Primary</button>
+<button type="button" class="btn btn-secondary">Secondary</button>
+<button type="button" class="btn btn-outline">Outline</button>
+<button type="button" class="btn btn-ghost">Ghost</button>
+<button type="button" class="btn btn-destructive">Destructive</button>
+          </template>
+          <div class="demo-actions flex gap-2">
+            <button type="button" class="btn btn-outline btn-sm" data-copy="html">Copy HTML</button>
+            <button type="button" class="btn btn-outline btn-sm" data-copy-class="btn-primary">Copy class</button>
+          </div>
+        </div>
+
+        <div class="demo">
+          <div class="demo-preview flex flex-wrap items-center gap-3">
+            <button type="button" class="btn btn-primary btn-sm">Small</button>
+            <button type="button" class="btn btn-primary">Default</button>
+            <button type="button" class="btn btn-primary btn-lg">Large</button>
+            <button type="button" class="btn btn-primary btn-icon" aria-label="Icon button">★</button>
+          </div>
+          <template class="demo-source">
+<button type="button" class="btn btn-primary btn-sm">Small</button>
+<button type="button" class="btn btn-primary">Default</button>
+<button type="button" class="btn btn-primary btn-lg">Large</button>
+<button type="button" class="btn btn-primary btn-icon" aria-label="Icon button">★</button>
+          </template>
+          <div class="demo-actions flex gap-2">
+            <button type="button" class="btn btn-outline btn-sm" data-copy="html">Copy HTML</button>
+            <button type="button" class="btn btn-outline btn-sm" data-copy-class="btn-sm">Copy class</button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- 4. Forms -->
+    <div class="tab-content">
+      <div class="grid-2 gap-6">
+
+        <div class="demo">
+          <div class="demo-preview flex flex-col gap-4">
+            <div class="field">
+              <label class="label" for="demo-input">Name</label>
+              <input class="input" type="text" id="demo-input" placeholder="Ada Lovelace" />
+              <span class="field-hint">This is a hint below the input.</span>
+            </div>
+            <div class="field">
+              <label class="label" for="demo-select">Role</label>
+              <select class="select" id="demo-select">
+                <option>Engineer</option>
+                <option>Designer</option>
+                <option>Manager</option>
+              </select>
+            </div>
+            <div class="field">
+              <label class="label" for="demo-textarea">Bio</label>
+              <textarea class="textarea" id="demo-textarea" placeholder="Tell us about yourself"></textarea>
+            </div>
+            <div class="field">
+              <label class="label" for="demo-input-disabled">Disabled</label>
+              <input class="input" type="text" id="demo-input-disabled" disabled placeholder="Can't touch this" />
+            </div>
+          </div>
+          <template class="demo-source">
+<div class="field">
+  <label class="label" for="name">Name</label>
+  <input class="input" type="text" id="name" placeholder="Ada Lovelace" />
+  <span class="field-hint">This is a hint below the input.</span>
+</div>
+          </template>
+          <div class="demo-actions flex gap-2">
+            <button type="button" class="btn btn-outline btn-sm" data-copy="html">Copy HTML</button>
+            <button type="button" class="btn btn-outline btn-sm" data-copy-class="input">Copy class</button>
+          </div>
+        </div>
+
+        <div class="demo">
+          <div class="demo-preview flex flex-col gap-3">
+            <label class="flex items-center gap-2"><input class="checkbox" type="checkbox" checked /> Checkbox (checked)</label>
+            <label class="flex items-center gap-2"><input class="checkbox" type="checkbox" /> Checkbox</label>
+            <label class="flex items-center gap-2"><input class="radio" type="radio" name="demo-radio" checked /> Radio one</label>
+            <label class="flex items-center gap-2"><input class="radio" type="radio" name="demo-radio" /> Radio two</label>
+          </div>
+          <template class="demo-source">
+<label class="flex items-center gap-2">
+  <input class="checkbox" type="checkbox" /> Checkbox
+</label>
+<label class="flex items-center gap-2">
+  <input class="radio" type="radio" name="group" /> Radio
+</label>
+          </template>
+          <div class="demo-actions flex gap-2">
+            <button type="button" class="btn btn-outline btn-sm" data-copy="html">Copy HTML</button>
+            <button type="button" class="btn btn-outline btn-sm" data-copy-class="checkbox">Copy class</button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- 5. Cards & Panels -->
+    <div class="tab-content">
+      <div class="grid-2 gap-6">
+
+        <div class="demo">
+          <div class="demo-preview">
+            <div class="card">
+              <div class="card-header">
+                <h3 class="card-title">Card title</h3>
+                <p class="card-description">A short supporting description for this card.</p>
+              </div>
+              <div class="card-content">
+                <p class="text-sm">Card body content goes here, above the footer actions.</p>
+              </div>
+              <div class="card-footer">
+                <button type="button" class="btn btn-primary btn-sm">Confirm</button>
+                <button type="button" class="btn btn-ghost btn-sm">Cancel</button>
+              </div>
+            </div>
+          </div>
+          <template class="demo-source">
+<div class="card">
+  <div class="card-header">
+    <h3 class="card-title">Card title</h3>
+    <p class="card-description">A short supporting description.</p>
+  </div>
+  <div class="card-content">
+    <p>Card body content.</p>
+  </div>
+  <div class="card-footer">
+    <button class="btn btn-primary btn-sm">Confirm</button>
+  </div>
+</div>
+          </template>
+          <div class="demo-actions flex gap-2">
+            <button type="button" class="btn btn-outline btn-sm" data-copy="html">Copy HTML</button>
+            <button type="button" class="btn btn-outline btn-sm" data-copy-class="card">Copy class</button>
+          </div>
+        </div>
+
+        <div class="demo">
+          <div class="demo-preview">
+            <div class="panel">
+              <p class="text-sm font-semibold mb-2">Panel</p>
+              <p class="text-sm text-muted">A lightweight container for grouping related content, lower emphasis than a card.</p>
+              <hr class="divider" />
+              <p class="text-sm">Content below a divider.</p>
+            </div>
+          </div>
+          <template class="demo-source">
+<div class="panel">
+  <p>Panel content.</p>
+  <hr class="divider" />
+  <p>Content below a divider.</p>
+</div>
+          </template>
+          <div class="demo-actions flex gap-2">
+            <button type="button" class="btn btn-outline btn-sm" data-copy="html">Copy HTML</button>
+            <button type="button" class="btn btn-outline btn-sm" data-copy-class="panel">Copy class</button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- 6. Badges -->
+    <div class="tab-content">
+      <div class="demo">
+        <div class="demo-preview flex flex-wrap gap-3">
+          <span class="badge">Default</span>
+          <span class="badge badge-secondary">Secondary</span>
+          <span class="badge badge-outline">Outline</span>
+          <span class="badge badge-destructive">Destructive</span>
+          <span class="badge badge-success">Success</span>
+        </div>
+        <template class="demo-source">
+<span class="badge">Default</span>
+<span class="badge badge-secondary">Secondary</span>
+<span class="badge badge-outline">Outline</span>
+<span class="badge badge-destructive">Destructive</span>
+<span class="badge badge-success">Success</span>
+        </template>
+        <div class="demo-actions flex gap-2">
+          <button type="button" class="btn btn-outline btn-sm" data-copy="html">Copy HTML</button>
+          <button type="button" class="btn btn-outline btn-sm" data-copy-class="badge">Copy class</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 7. Tabs -->
+    <div class="tab-content">
+      <div class="demo">
+        <div class="demo-preview">
+          <div class="tabs">
+            <div class="tabs-list" role="tablist">
+              <button type="button" class="tab-trigger is-active" role="tab">Overview</button>
+              <button type="button" class="tab-trigger" role="tab">Activity</button>
+              <button type="button" class="tab-trigger" role="tab">Settings</button>
+            </div>
+            <div class="tab-content is-active"><p class="text-sm">Overview panel content.</p></div>
+            <div class="tab-content"><p class="text-sm">Activity panel content.</p></div>
+            <div class="tab-content"><p class="text-sm">Settings panel content.</p></div>
+          </div>
+        </div>
+        <template class="demo-source">
+<div class="tabs">
+  <div class="tabs-list">
+    <button class="tab-trigger is-active">Overview</button>
+    <button class="tab-trigger">Activity</button>
+  </div>
+  <div class="tab-content is-active">Overview panel content.</div>
+  <div class="tab-content">Activity panel content.</div>
+</div>
+        </template>
+        <div class="demo-actions flex gap-2">
+          <button type="button" class="btn btn-outline btn-sm" data-copy="html">Copy HTML</button>
+          <button type="button" class="btn btn-outline btn-sm" data-copy-class="tabs">Copy class</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 8. Tables -->
+    <div class="tab-content">
+      <div class="demo">
+        <div class="demo-preview">
+          <div class="table-wrapper">
+            <table class="table">
+              <thead>
+                <tr><th>Name</th><th>Role</th><th>Status</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>Ada Lovelace</td><td>Engineer</td><td><span class="badge badge-success">Active</span></td></tr>
+                <tr><td>Alan Turing</td><td>Researcher</td><td><span class="badge badge-secondary">Away</span></td></tr>
+                <tr><td>Grace Hopper</td><td>Admiral</td><td><span class="badge badge-outline">Retired</span></td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <template class="demo-source">
+<div class="table-wrapper">
+  <table class="table">
+    <thead><tr><th>Name</th><th>Role</th></tr></thead>
+    <tbody><tr><td>Ada Lovelace</td><td>Engineer</td></tr></tbody>
+  </table>
+</div>
+        </template>
+        <div class="demo-actions flex gap-2">
+          <button type="button" class="btn btn-outline btn-sm" data-copy="html">Copy HTML</button>
+          <button type="button" class="btn btn-outline btn-sm" data-copy-class="table">Copy class</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 9. Preview -->
+    <div class="tab-content">
+      <div class="demo">
+        <div class="demo-preview">
+          <div class="preview-area">
+            <svg class="preview-svg" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <circle cx="12" cy="12" r="9" />
+              <path d="M9 12l2 2 4-4" />
+            </svg>
+          </div>
+        </div>
+        <template class="demo-source">
+<div class="preview-area">
+  <svg class="preview-svg" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+    <circle cx="12" cy="12" r="9" />
+    <path d="M9 12l2 2 4-4" />
+  </svg>
+</div>
+        </template>
+        <div class="demo-actions flex gap-2">
+          <button type="button" class="btn btn-outline btn-sm" data-copy="html">Copy HTML</button>
+          <button type="button" class="btn btn-outline btn-sm" data-copy-class="preview-area">Copy class</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 10. Alerts -->
+    <div class="tab-content">
+      <div class="flex flex-col gap-4">
+
+        <div class="demo">
+          <div class="demo-preview flex flex-col gap-3">
+            <div class="alert"><strong>Heads up.</strong><span>This is a default alert.</span></div>
+            <div class="alert alert-destructive"><strong>Error.</strong><span>Something went wrong.</span></div>
+            <div class="alert alert-success"><strong>Success.</strong><span>Your changes were saved.</span></div>
+            <div class="alert alert-warning"><strong>Warning.</strong><span>Double check this before continuing.</span></div>
+          </div>
+          <template class="demo-source">
+<div class="alert">
+  <strong>Heads up.</strong>
+  <span>This is a default alert.</span>
+</div>
+          </template>
+          <div class="demo-actions flex gap-2">
+            <button type="button" class="btn btn-outline btn-sm" data-copy="html">Copy HTML</button>
+            <button type="button" class="btn btn-outline btn-sm" data-copy-class="alert">Copy class</button>
+          </div>
+        </div>
+
+        <div class="demo">
+          <div class="demo-preview">
+            <button type="button" class="btn btn-primary" id="toast-trigger">Show toast</button>
+          </div>
+          <template class="demo-source">
+<div class="toast is-visible">Saved successfully.</div>
+          </template>
+          <div class="demo-actions flex gap-2">
+            <button type="button" class="btn btn-outline btn-sm" data-copy="html">Copy HTML</button>
+            <button type="button" class="btn btn-outline btn-sm" data-copy-class="toast">Copy class</button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+</main>
+
+<div class="toast" id="toast" role="status" aria-live="polite">Saved successfully.</div>
+
+<script>
+(function () {
+  "use strict";
+
+  /* ---------- Theme toggle ---------- */
+  var root = document.documentElement;
+  var themeToggle = document.getElementById("theme-toggle");
+  var storedTheme = localStorage.getItem("ui-kit-theme");
+  if (storedTheme === "dark") {
+    root.setAttribute("data-theme", "dark");
+  }
+  themeToggle.addEventListener("click", function () {
+    var isDark = root.getAttribute("data-theme") === "dark";
+    if (isDark) {
+      root.removeAttribute("data-theme");
+      localStorage.setItem("ui-kit-theme", "light");
+    } else {
+      root.setAttribute("data-theme", "dark");
+      localStorage.setItem("ui-kit-theme", "dark");
+    }
+  });
+
+  /* ---------- Tabs ---------- */
+  function initTabs() {
+    document.querySelectorAll(".tabs").forEach(function (tabsEl) {
+      var triggers = Array.prototype.slice.call(tabsEl.querySelectorAll(":scope > .tabs-list > .tab-trigger"));
+      var contents = Array.prototype.slice.call(tabsEl.querySelectorAll(":scope > .tab-content"));
+
+      triggers.forEach(function (trigger, index) {
+        trigger.addEventListener("click", function () {
+          triggers.forEach(function (t) { t.classList.remove("is-active"); t.setAttribute("aria-selected", "false"); });
+          contents.forEach(function (c) { c.classList.remove("is-active"); });
+          trigger.classList.add("is-active");
+          trigger.setAttribute("aria-selected", "true");
+          if (contents[index]) contents[index].classList.add("is-active");
+        });
+      });
+    });
+  }
+  initTabs();
+
+  /* ---------- Copy buttons ---------- */
+  function flashCopied(btn, label) {
+    var original = btn.textContent;
+    btn.textContent = "Copied!";
+    showToast(label + " copied to clipboard.");
+    setTimeout(function () { btn.textContent = original; }, 1500);
+  }
+
+  function copyText(text, btn, label) {
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(function () {
+        flashCopied(btn, label);
+      });
+    } else {
+      var textarea = document.createElement("textarea");
+      textarea.value = text;
+      textarea.style.position = "fixed";
+      textarea.style.opacity = "0";
+      document.body.appendChild(textarea);
+      textarea.select();
+      document.execCommand("copy");
+      document.body.removeChild(textarea);
+      flashCopied(btn, label);
+    }
+  }
+
+  document.querySelectorAll('[data-copy="html"]').forEach(function (btn) {
+    btn.addEventListener("click", function () {
+      var demo = btn.closest(".demo");
+      var source = demo.querySelector(".demo-source");
+      copyText(source.innerHTML.trim(), btn, "HTML");
+    });
+  });
+
+  document.querySelectorAll("[data-copy-class]").forEach(function (btn) {
+    btn.addEventListener("click", function () {
+      copyText(btn.getAttribute("data-copy-class"), btn, "Class");
+    });
+  });
+
+  /* ---------- Color token chips ---------- */
+  var colorTokens = [
+    "background", "foreground", "card", "card-foreground", "primary", "primary-foreground",
+    "secondary", "secondary-foreground", "muted", "muted-foreground", "accent", "accent-foreground",
+    "destructive", "destructive-foreground", "success", "success-foreground", "warning", "warning-foreground",
+    "border", "input", "ring"
+  ];
+  var grid = document.getElementById("color-token-grid");
+  colorTokens.forEach(function (name) {
+    var wrap = document.createElement("div");
+    var swatch = document.createElement("div");
+    swatch.className = "swatch";
+    swatch.style.backgroundColor = "hsl(var(--" + name + "))";
+    var label = document.createElement("p");
+    label.className = "swatch-label text-sm mt-2";
+    label.textContent = "--" + name;
+    wrap.appendChild(swatch);
+    wrap.appendChild(label);
+    grid.appendChild(wrap);
+  });
+
+  /* ---------- Toast demo ---------- */
+  var toastEl = document.getElementById("toast");
+  var toastTimer = null;
+  function showToast(message) {
+    toastEl.textContent = message;
+    toastEl.classList.add("is-visible");
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(function () {
+      toastEl.classList.remove("is-visible");
+    }, 2500);
+  }
+  document.getElementById("toast-trigger").addEventListener("click", function () {
+    showToast("Saved successfully.");
+  });
+
+})();
+</script>
+
+</body>
+</html>
