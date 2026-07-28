@@ -28,9 +28,14 @@ ui-kit/
 │   │   ├── tables.css           Таблиці + варіанти стилів
 │   │   ├── alerts.css           Алерти та toast
 │   │   ├── preview.css          SVG preview-область
-│   │   └── layouts.css          Готові лейаут-патерни
+│   │   ├── layouts.css          Готові лейаут-патерни
+│   │   ├── upload.css           .dropzone — файловий дропзон (UI/стан, без мережевої логіки)
+│   │   └── loaders.css          Спінери, .loader-inline/.loader-progress, .progress
 │   ├── layout.css              Flexbox/grid-утиліти, відступи, текстові хелпери, .container
 │   └── gallery.css              Стилі лише для галереї-демо (НЕ копіювати в інші проєкти)
+├── js/
+│   ├── kit.js                   UIKit — вкладки, toast, дропзон, лоадери, розширені інпути (перевикористовуваний)
+│   └── gallery.js               Скрипт лише для галереї-демо (НЕ копіювати в інші проєкти)
 ├── fonts/
 │   └── Montserrat/
 │       ├── Montserrat-Regular.woff2
@@ -44,25 +49,26 @@ ui-kit/
 ## Використання в іншому проєкті
 
 Скопіюйте `css/theme.css`, `css/components.css`, `css/components/` (уся
-папка), `css/layout.css` та `fonts/` у свій проєкт (зберігаючи їхнє
-взаємне розташування — `theme.css` посилається на шрифти через відносний
-шлях `../fonts/Montserrat/...`), після чого підключіть три стилі в такому
-порядку:
+папка), `css/layout.css`, `js/kit.js` та `fonts/` у свій проєкт (зберігаючи
+їхнє взаємне розташування — `theme.css` посилається на шрифти через
+відносний шлях `../fonts/Montserrat/...`), після чого підключіть:
 
 ```html
 <link rel="stylesheet" href="css/theme.css" />
 <link rel="stylesheet" href="css/components.css" />
 <link rel="stylesheet" href="css/layout.css" />
+<script src="js/kit.js"></script>
 ```
 
 `theme.css` має завантажуватись першим — він визначає CSS-змінні, якими
-користуються `components.css` і `layout.css`. Самі стилі не мають
-залежності від JS; невеликий inline-скрипт в `index.html` потрібен лише
-для демо-поведінки вкладок/кнопок копіювання/перемикача теми в галереї і
-не є обов'язковим для повторного використання.
+користуються `components.css` і `layout.css`. `js/kit.js` не обов'язковий,
+якщо ви використовуєте лише статичні компоненти (картки, бейджі, алерти
+тощо), але потрібен для будь-якого інтерактивного компонента (вкладки,
+toast, dropzone, лоадери з кроками, розширені інпути) — він самостійно
+ініціалізується на `DOMContentLoaded`, жодних ручних викликів не потрібно.
 
-`css/gallery.css` та `index.html` — це виключно демо-сайт галереї, їх
-**не потрібно** копіювати в інший проєкт.
+`css/gallery.css`, `js/gallery.js` та `index.html` — це виключно демо-сайт
+галереї, їх **не потрібно** копіювати в інший проєкт.
 
 ## Теми
 
@@ -111,7 +117,13 @@ shadcn/ui) — завжди використовуйте їх обгорнути
   `btn-icon` (комбінуйте клас-варіант із класом розміру; стан `:disabled`
   обробляється автоматично)
 - **Форми** (`forms.css`): `field`, `label`, `field-hint`, `input`,
-  `textarea`, `checkbox`, `radio`
+  `textarea`, `checkbox`, `radio`, а також розширені інпути:
+  `input-search` (+ `input-search-field` / `input-search-icon` /
+  `input-search-clear`), `input-number` (+ `input-number-field` /
+  `input-number-btn`), `input-color` (+ `input-color-swatch` /
+  `input-color-value`, поруч — окремий блок `color-swatches` з
+  `color-swatch`), `textarea-auto` (модифікатор `.textarea`, що росте з
+  вмістом)
 - **Селекти** (`selects.css`): `select` (нативний `<select>`, стилізований
   під `.input`), `select-search` / `select-search-input` /
   `select-search-list` / `select-search-option` (пошуковий
@@ -139,6 +151,17 @@ shadcn/ui) — завжди використовуйте їх обгорнути
   `layout-sidebar` (+ `layout-sidebar-aside` / `layout-sidebar-content`,
   ширина бічної панелі задається змінною `--layout-sidebar-width`),
   `layout-split`
+- **Файловий дропзон** (`upload.css`): `dropzone` (+ `.dropzone--active`
+  під час перетягування, `.dropzone--error` — виставляється вручну
+  застосунком), `dropzone-hint`, `dropzone-list` (+
+  `dropzone-list-item` / `dropzone-list-name` / `dropzone-list-size` /
+  `dropzone-list-remove`) — прив'язуйте через `UIKit.initDropzone()`
+  (автоматично для будь-якого `[data-dropzone]`)
+- **Лоадери** (`loaders.css`): `spinner` (+ `spinner-sm` / `spinner-lg`,
+  чиста CSS-анімація), `loader-inline`, `loader-progress` (+
+  `loader-progress-text`, оновлюється через `UIKit.setLoaderStep()`),
+  `progress` + `progress-bar` (детермінована смуга прогресу, ширина —
+  через CSS-змінну `--progress`)
 
 ## Утиліти лейауту (`layout.css`)
 
@@ -151,6 +174,28 @@ shadcn/ui) — завжди використовуйте їх обгорнути
   `m-0`…`m-6`, `mt-0`…`mt-6`, `mb-0`…`mb-6`
 - Текст: `text-sm`, `text-lg`, `font-semibold`, `font-mono`, `text-muted`
 - Лейаут: `container`
+
+## JavaScript (`js/kit.js`)
+
+Один глобальний об'єкт `UIKit` без залежностей. Викликається автоматично на
+`DOMContentLoaded` (`UIKit.autoInit()`) — ручні виклики потрібні лише якщо
+ви додаєте розмітку компонента динамічно, вже після завантаження сторінки.
+
+| Функція | Що робить |
+|---------|-----------|
+| `UIKit.initTabs(root)` | Вмикає перемикання для кожного `.tabs`-контейнера всередині `root` (за замовчуванням — увесь `document`) |
+| `UIKit.showToast(message, type)` | Показує спливне повідомлення в елементі `#toast`; `type` — необов'язковий модифікатор |
+| `UIKit.initDropzone(el)` | Прив'язує drag-and-drop/клік-вибір файлів до `el`, рендерить список у сусідній `.dropzone-list`, генерує подію `uikit:files-selected` |
+| `UIKit.setLoaderStep(el, text)` | Оновлює текст поточного кроку всередині `.loader-progress`-елемента `el` |
+| `UIKit.initSearchInput(el)` | Прив'язує кнопку очищення `.input-search-clear` до `.input-search`-обгортки `el` |
+| `UIKit.initNumberStepper(el)` | Прив'язує кнопки −/+ до `.input-number`-обгортки `el`, з урахуванням `min`/`max`/`step` |
+| `UIKit.initColorInput(el)` | Синхронізує текстовий hex-readout і кнопки `.color-swatches` з нативним `input[type=color]` усередині `.input-color`-обгортки `el` |
+| `UIKit.initAutoResizeTextarea(el)` | Підганяє висоту `el` під вміст під час вводу |
+| `UIKit.autoInit()` | Викликає всі ініціалізатори вище для кожного відповідного елемента в документі |
+
+`UIKit.autoInit()` шукає елементи за селекторами `.tabs`,
+`[data-dropzone]`, `.input-search`, `.input-number`, `.input-color` та
+`.textarea-auto` — досить додати потрібний клас/атрибут у розмітку.
 
 ## Адаптивність (Responsive)
 
@@ -168,7 +213,7 @@ shadcn/ui) — завжди використовуйте їх обгорнути
 Додатково, незалежно від брейкпоінта:
 - `.table-wrapper` завжди має `overflow-x: auto` — вузькі екрани скролять таблицю горизонтально замість стискання колонок
 - Заголовки `h1`–`h3` масштабуються плавно через `clamp()` між мобільним і десктопним viewport, без стрибків на конкретних брейкпоінтах
-- Головна навігація галереї (`.tabs-list` з 14 вкладками) скролиться горизонтально на mobile/tablet, не переносячись і не ламаючи лейаут
+- Головна навігація галереї (`.tabs-list` з 17 вкладками) скролиться горизонтально на mobile/tablet, не переносячись і не ламаючи лейаут
 
 Реалізовано виключно медіа-запитами та `clamp()` — без `transform: scale`/`zoom`,
 щоб текст лишався різким, а координати кліків — коректними на будь-якій ширині.

@@ -1,0 +1,106 @@
+/*
+  upload.css
+  File dropzone component classes. UI/state only — no upload/network logic;
+  see js/kit.js's initDropzone for the CustomEvent a consuming app can hook.
+*/
+
+.dropzone {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  text-align: center;
+  border-radius: var(--radius);
+  border: 2px dashed hsl(var(--border));
+  background-color: hsl(var(--muted) / 0.3);
+  padding: 2rem 1.5rem;
+  cursor: pointer;
+  transition: border-color 0.15s ease, background-color 0.15s ease;
+}
+
+.dropzone:hover {
+  border-color: hsl(var(--ring) / 0.5);
+}
+
+.dropzone:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 2px hsl(var(--background)), 0 0 0 4px hsl(var(--ring));
+}
+
+.dropzone--active {
+  border-color: hsl(var(--ring));
+  background-color: hsl(var(--accent));
+}
+
+.dropzone--error {
+  border-color: hsl(var(--destructive) / 0.6);
+  background-color: hsl(var(--destructive) / 0.08);
+}
+
+.dropzone-hint {
+  font-size: 0.8125rem;
+  color: hsl(var(--muted-foreground));
+}
+
+.dropzone-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  list-style: none;
+  margin: 0.75rem 0 0;
+  padding: 0;
+}
+
+.dropzone-list-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  border-radius: var(--radius-sm);
+  border: 1px solid hsl(var(--border));
+  background-color: hsl(var(--background));
+  padding: 0.5rem 0.75rem;
+  font-size: 0.8125rem;
+}
+
+.dropzone-list-name {
+  flex: 1 1 auto;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: hsl(var(--foreground));
+}
+
+.dropzone-list-size {
+  flex: 0 0 auto;
+  color: hsl(var(--muted-foreground));
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+}
+
+.dropzone-list-remove {
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.5rem;
+  height: 1.5rem;
+  border: none;
+  border-radius: var(--radius-full);
+  background: transparent;
+  color: hsl(var(--muted-foreground));
+  font-size: 1rem;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.dropzone-list-remove:hover {
+  background-color: hsl(var(--destructive) / 0.1);
+  color: hsl(var(--destructive));
+}
+
+.dropzone-list-remove:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 2px hsl(var(--background)), 0 0 0 4px hsl(var(--ring));
+}
