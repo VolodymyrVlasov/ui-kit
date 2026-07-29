@@ -4,18 +4,23 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>ui-kit — Галерея компонентів</title>
+<link rel="icon" type="image/svg+xml" href="favicon.svg" />
 <link rel="stylesheet" href="css/theme.css" />
 <link rel="stylesheet" href="css/components.css" />
 <link rel="stylesheet" href="css/layout.css" />
 <link rel="stylesheet" href="css/gallery.css" />
+<link rel="stylesheet" href="css/builder.css" />
 </head>
 <body>
 
 <header class="gallery-header">
   <div class="container flex items-center justify-between py-4">
-    <div>
-      <p class="gallery-title">ui-kit</p>
-      <p class="gallery-subtitle text-sm text-muted">Дизайн-система на чистому CSS — галерея компонентів</p>
+    <div class="flex items-center gap-3">
+      <img src="assets/logo.svg" alt="" width="28" height="28" />
+      <div>
+        <p class="gallery-title">ui-kit</p>
+        <p class="gallery-subtitle text-sm text-muted">Дизайн-система на чистому CSS — галерея компонентів</p>
+      </div>
     </div>
     <button type="button" class="btn btn-outline" id="theme-toggle">🌙 Змінити тему</button>
   </div>
@@ -23,7 +28,12 @@
 
 <main class="container py-6">
 
-  <div class="tabs" id="main-tabs">
+  <div class="flex gap-2 mb-4" role="tablist" aria-label="Розділ галереї">
+    <button type="button" class="btn btn-primary" id="nav-group-components" aria-pressed="true">Компоненти</button>
+    <button type="button" class="btn btn-outline" id="nav-group-tools" aria-pressed="false">Інструменти</button>
+  </div>
+
+  <div class="tabs" id="components-tabs">
     <div class="tabs-list" role="tablist">
       <button type="button" class="tab-trigger is-active" role="tab">Кольори та токени</button>
       <button type="button" class="tab-trigger" role="tab">Типографіка</button>
@@ -38,11 +48,10 @@
       <button type="button" class="tab-trigger" role="tab">Лейаути</button>
       <button type="button" class="tab-trigger" role="tab">Селекти</button>
       <button type="button" class="tab-trigger" role="tab">Лейбли</button>
-      <button type="button" class="tab-trigger" role="tab">Налаштування</button>
       <button type="button" class="tab-trigger" role="tab">Файли</button>
       <button type="button" class="tab-trigger" role="tab">Лоадери</button>
       <button type="button" class="tab-trigger" role="tab">Інпути</button>
-      <button type="button" class="tab-trigger" role="tab">Конструктор</button>
+      <button type="button" class="tab-trigger" role="tab">Акордіон</button>
     </div>
 
     <!-- 1. Colors & Tokens -->
@@ -56,8 +65,8 @@
         </details>
         <div>
           <h2 class="section-title">Кольорові токени</h2>
-          <p class="text-sm text-muted mb-3">Кожна кольорова CSS-змінна з <span class="font-mono">theme.css</span>.</p>
-          <div class="swatch-grid gap-4" id="color-token-grid"></div>
+          <p class="text-sm text-muted mb-3">Кожна кольорова CSS-змінна з <span class="font-mono">theme.css</span>, згрупована за призначенням.</p>
+          <div class="flex flex-col gap-5" id="color-token-groups"></div>
         </div>
         <div>
           <h2 class="section-title">Радіус</h2>
@@ -109,6 +118,44 @@
         <div class="demo-actions flex gap-2">
           <button type="button" class="btn btn-outline btn-sm" data-copy="html">Скопіювати HTML</button>
           <button type="button" class="btn btn-outline btn-sm" data-copy-class="text-sm">Скопіювати клас</button>
+        </div>
+      </div>
+
+      <div class="demo mt-4">
+        <div class="demo-preview flex flex-col gap-2">
+          <p class="text-left">Текст ліворуч (.text-left) — типове вирівнювання для більшості інтерфейсів.</p>
+          <p class="text-center">Текст по центру (.text-center) — для заголовків секцій чи порожніх станів.</p>
+          <p class="text-right">Текст праворуч (.text-right) — для чисел у таблицях чи RTL-контексту.</p>
+          <p class="text-justify">Текст по ширині (.text-justify) вирівнює обидва краї рядка, розтягуючи пробіли — використовуйте обережно для довгих абзаців, короткі рядки можуть виглядати нерівномірно через розтягнуті пробіли.</p>
+        </div>
+        <template class="demo-source">
+<p class="text-left">Текст ліворуч.</p>
+<p class="text-center">Текст по центру.</p>
+<p class="text-right">Текст праворуч.</p>
+<p class="text-justify">Текст по ширині.</p>
+        </template>
+        <div class="demo-actions flex gap-2">
+          <button type="button" class="btn btn-outline btn-sm" data-copy="html">Скопіювати HTML</button>
+          <button type="button" class="btn btn-outline btn-sm" data-copy-class="text-center">Скопіювати клас</button>
+        </div>
+      </div>
+
+      <div class="demo mt-4">
+        <div class="demo-preview flex flex-col gap-2">
+          <p>Звичайне посилання без класу: <a href="#">перейти за посиланням</a>.</p>
+          <p>Акцентоване: <span class="link">.link — без підкреслення, з'являється при наведенні</span>.</p>
+          <p>Приглушене: <span class="link-muted">.link-muted — для другорядних дій</span>.</p>
+          <p>Підкреслене: <span class="link-underline">.link-underline — завжди з підкресленням</span>.</p>
+        </div>
+        <template class="demo-source">
+<a href="#">Звичайне посилання</a>
+<a href="#" class="link">.link</a>
+<a href="#" class="link-muted">.link-muted</a>
+<a href="#" class="link-underline">.link-underline</a>
+        </template>
+        <div class="demo-actions flex gap-2">
+          <button type="button" class="btn btn-outline btn-sm" data-copy="html">Скопіювати HTML</button>
+          <button type="button" class="btn btn-outline btn-sm" data-copy-class="link">Скопіювати клас</button>
         </div>
       </div>
     </div>
@@ -307,6 +354,52 @@
           </div>
         </div>
 
+        <div class="demo">
+          <div class="demo-preview">
+            <div class="card">
+              <div class="card-content">
+                <p class="text-sm">Секція над горизонтальним розділювачем.</p>
+                <div class="card-divider"></div>
+                <p class="text-sm">Секція під розділювачем.</p>
+              </div>
+            </div>
+          </div>
+          <template class="demo-source">
+<div class="card-content">
+  <p>Секція зверху.</p>
+  <div class="card-divider"></div>
+  <p>Секція знизу.</p>
+</div>
+          </template>
+          <div class="demo-actions flex gap-2">
+            <button type="button" class="btn btn-outline btn-sm" data-copy="html">Скопіювати HTML</button>
+            <button type="button" class="btn btn-outline btn-sm" data-copy-class="card-divider">Скопіювати клас</button>
+          </div>
+        </div>
+
+        <div class="demo">
+          <div class="demo-preview">
+            <div class="card">
+              <div class="card-content flex">
+                <p class="text-sm">Ліва секція.</p>
+                <div class="card-divider--vertical"></div>
+                <p class="text-sm">Права секція.</p>
+              </div>
+            </div>
+          </div>
+          <template class="demo-source">
+<div class="card-content flex">
+  <p>Ліва секція.</p>
+  <div class="card-divider--vertical"></div>
+  <p>Права секція.</p>
+</div>
+          </template>
+          <div class="demo-actions flex gap-2">
+            <button type="button" class="btn btn-outline btn-sm" data-copy="html">Скопіювати HTML</button>
+            <button type="button" class="btn btn-outline btn-sm" data-copy-class="card-divider--vertical">Скопіювати клас</button>
+          </div>
+        </div>
+
       </div>
     </div>
 
@@ -374,6 +467,35 @@
         <div class="demo-actions flex gap-2">
           <button type="button" class="btn btn-outline btn-sm" data-copy="html">Скопіювати HTML</button>
           <button type="button" class="btn btn-outline btn-sm" data-copy-class="tabs">Скопіювати клас</button>
+        </div>
+      </div>
+
+      <div class="demo mt-4">
+        <div class="demo-preview">
+          <div class="tabs tabs--vertical">
+            <div class="tabs-list" role="tablist">
+              <button type="button" class="tab-trigger is-active" role="tab">Профіль</button>
+              <button type="button" class="tab-trigger" role="tab">Безпека</button>
+              <button type="button" class="tab-trigger" role="tab">Сповіщення</button>
+            </div>
+            <div class="tab-content is-active"><p class="text-sm">Вміст вкладки «Профіль».</p></div>
+            <div class="tab-content"><p class="text-sm">Вміст вкладки «Безпека».</p></div>
+            <div class="tab-content"><p class="text-sm">Вміст вкладки «Сповіщення».</p></div>
+          </div>
+        </div>
+        <template class="demo-source">
+<div class="tabs tabs--vertical">
+  <div class="tabs-list">
+    <button class="tab-trigger is-active">Профіль</button>
+    <button class="tab-trigger">Безпека</button>
+  </div>
+  <div class="tab-content is-active">Вміст вкладки «Профіль».</div>
+  <div class="tab-content">Вміст вкладки «Безпека».</div>
+</div>
+        </template>
+        <div class="demo-actions flex gap-2">
+          <button type="button" class="btn btn-outline btn-sm" data-copy="html">Скопіювати HTML</button>
+          <button type="button" class="btn btn-outline btn-sm" data-copy-class="tabs--vertical">Скопіювати клас</button>
         </div>
       </div>
     </div>
@@ -604,11 +726,34 @@
         </div>
 
         <div class="demo">
-          <div class="demo-preview">
+          <div class="demo-preview flex flex-col gap-3">
+            <div class="grid-2 gap-4">
+              <div class="field">
+                <label class="label" for="toast-demo-variant">Варіант</label>
+                <select class="select" id="toast-demo-variant">
+                  <option value="">Інфо (без варіанту)</option>
+                  <option value="destructive">Помилка</option>
+                  <option value="warning">Попередження</option>
+                  <option value="success">Успіх</option>
+                </select>
+              </div>
+              <div class="field">
+                <label class="label" for="toast-demo-position">Позиція</label>
+                <select class="select" id="toast-demo-position">
+                  <option value="top-left">Верх-ліво</option>
+                  <option value="top-center">Верх-центр</option>
+                  <option value="top-right">Верх-право</option>
+                  <option value="center">Центр</option>
+                  <option value="bottom-left">Низ-ліво</option>
+                  <option value="bottom-center">Низ-центр</option>
+                  <option value="bottom-right" selected>Низ-право</option>
+                </select>
+              </div>
+            </div>
             <button type="button" class="btn btn-primary" id="toast-trigger">Показати сповіщення</button>
           </div>
           <template class="demo-source">
-<div class="toast is-visible">Успішно збережено.</div>
+<div class="toast is-visible toast-container toast-container--bottom-right">Успішно збережено.</div>
           </template>
           <div class="demo-actions flex gap-2">
             <button type="button" class="btn btn-outline btn-sm" data-copy="html">Скопіювати HTML</button>
@@ -850,71 +995,7 @@
       </div>
     </div>
 
-    <!-- 14. Setup -->
-    <div class="tab-content">
-      <details class="component-info mb-4">
-        <summary>Опис і нюанси</summary>
-        <p>Ця вкладка — не компонент, а інструкція: тут зібрано мінімальний набір файлів, які варто скопіювати в інший проєкт, і фрагмент розмітки для підключення. Використовуйте її як чек-лист перед інтеграцією кіту в новий проєкт.</p>
-        <p>Найпоширеніша помилка — скопіювати лише <span class="font-mono">components.css</span>, забувши папку <span class="font-mono">components/</span> (фасад без неї не працює, бо складається з <span class="font-mono">@import</span>), або забувши <span class="font-mono">fonts/Montserrat/</span>, через що theme.css не знайде шрифти за відносним шляхом.</p>
-        <p>Типовий кейс: підключення кіту в новий pywebview-застосунок — досить трьох <span class="font-mono">&lt;link&gt;</span> і двох папок. Другий кейс: оновлення вже інтегрованого кіту — досить замінити <span class="font-mono">css/</span> і <span class="font-mono">fonts/</span> повністю, не займаючи <span class="font-mono">index.html</span>/<span class="font-mono">gallery.css</span>.</p>
-      </details>
-      <div class="flex flex-col gap-6">
-
-        <div>
-          <h2 class="section-title">Що копіювати в інший проєкт</h2>
-          <p class="text-sm text-muted mb-3">Ці файли складають перевикористовувану частину дизайн-системи:</p>
-          <pre class="setup-tree"><code>ui-kit/
-├── css/
-│   ├── theme.css            (токени — тільки :root / [data-theme] і @font-face)
-│   ├── layout.css           (flex/grid-утиліти)
-│   ├── components.css       (фасад з @import)
-│   └── components/          (уся папка — окремі файли по компонентах)
-├── js/
-│   └── kit.js               (UIKit — вкладки, toast, dropzone, лоадери, інпути)
-├── fonts/
-│   └── Montserrat/          (уся папка)
-
-НЕ копіювати (лише для цієї галереї-демо та інструментів розробки):
-├── css/gallery.css
-├── js/gallery.js
-├── js/builder.js
-└── index.html</code></pre>
-        </div>
-
-        <div class="demo">
-          <p class="text-sm font-semibold mb-2">Фрагмент для &lt;head&gt;/кінця &lt;body&gt;</p>
-          <div class="demo-preview">
-            <pre class="setup-tree"><code>&lt;link rel="stylesheet" href="css/theme.css" /&gt;
-&lt;link rel="stylesheet" href="css/components.css" /&gt;
-&lt;link rel="stylesheet" href="css/layout.css" /&gt;
-&lt;script src="js/kit.js"&gt;&lt;/script&gt;</code></pre>
-          </div>
-          <template class="demo-source">
-<link rel="stylesheet" href="css/theme.css" />
-<link rel="stylesheet" href="css/components.css" />
-<link rel="stylesheet" href="css/layout.css" />
-<script src="js/kit.js"></script>
-          </template>
-          <div class="demo-actions flex gap-2">
-            <button type="button" class="btn btn-outline btn-sm" data-copy="html">Скопіювати HTML</button>
-          </div>
-        </div>
-
-        <div>
-          <h2 class="section-title">Як це працює</h2>
-          <div class="flex flex-col gap-2 text-sm">
-            <p>Перемикання теми відбувається через атрибут <span class="font-mono">data-theme="dark"</span> на елементі <span class="font-mono">&lt;html&gt;</span>. Без атрибута (або з будь-яким іншим значенням) застосовується світла тема за замовчуванням.</p>
-            <p>Усі кольорові токени визначені у <span class="font-mono">theme.css</span> — не редагуйте їх без наміру, оскільки від них залежать усі компоненти.</p>
-            <p><span class="font-mono">kit.js</span> самостійно ініціалізується на <span class="font-mono">DOMContentLoaded</span> — жодних ручних викликів налаштування не потрібно, достатньо підключити файл.</p>
-            <p>Складання не потрібне: немає npm, немає CDN, немає build-кроку. Достатньо підключити три файли CSS, один файл JS та локальні шрифти.</p>
-            <p>Вкладка «Конструктор» (dev-інструмент, не входить у список вище) для завантаження шрифтів з Google Fonts і експорту .zip потребує локального HTTP-сервера — відкрийте цю галерею командою <span class="font-mono">python3 -m http.server 8000</span> у корені проєкту, а потім перейдіть на <span class="font-mono">http://localhost:8000</span> у браузері. При відкритті <span class="font-mono">index.html</span> подвійним кліком (протокол <span class="font-mono">file://</span>) браузер блокує такі мережеві запити.</p>
-          </div>
-        </div>
-
-      </div>
-    </div>
-
-    <!-- 15. Upload -->
+    <!-- 14. Upload -->
     <div class="tab-content">
       <details class="component-info mb-4">
         <summary>Опис і нюанси</summary>
@@ -926,6 +1007,11 @@
         <div class="demo-preview">
           <div class="dropzone" data-dropzone tabindex="0">
             <input type="file" multiple style="display: none;" />
+            <svg class="dropzone-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M7 18a4.5 4.5 0 0 1-1.44-8.765 4.5 4.5 0 0 1 8.302-3.046 3.5 3.5 0 0 1 4.504 4.272A4 4 0 0 1 17 18H7Z" />
+              <path d="M12 12v6" />
+              <path d="m9 15 3-3 3 3" />
+            </svg>
             <p class="dropzone-hint">Перетягніть файли сюди або натисніть, щоб обрати</p>
           </div>
           <ul class="dropzone-list"></ul>
@@ -933,6 +1019,10 @@
         <template class="demo-source">
 <div class="dropzone" data-dropzone tabindex="0">
   <input type="file" multiple style="display: none;" />
+  <svg class="dropzone-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+    <path d="M7 18a4.5 4.5 0 0 1-1.44-8.765 4.5 4.5 0 0 1 8.302-3.046 3.5 3.5 0 0 1 4.504 4.272A4 4 0 0 1 17 18H7Z" />
+    <path d="M12 12v6" /><path d="m9 15 3-3 3 3" />
+  </svg>
   <p class="dropzone-hint">Перетягніть файли сюди або натисніть, щоб обрати</p>
 </div>
 <ul class="dropzone-list"></ul>
@@ -942,9 +1032,23 @@
           <button type="button" class="btn btn-outline btn-sm" data-copy-class="dropzone">Скопіювати клас</button>
         </div>
       </div>
+
+      <div class="demo mt-4">
+        <div class="demo-preview flex flex-col gap-3">
+          <button type="button" class="btn btn-outline" data-file-button data-multiple>Обрати файли</button>
+          <p class="field-hint" id="file-button-result"></p>
+        </div>
+        <template class="demo-source">
+<button type="button" class="btn btn-outline" data-file-button data-multiple>Обрати файли</button>
+        </template>
+        <div class="demo-actions flex gap-2">
+          <button type="button" class="btn btn-outline btn-sm" data-copy="html">Скопіювати HTML</button>
+          <button type="button" class="btn btn-outline btn-sm" data-copy-class="btn">Скопіювати клас</button>
+        </div>
+      </div>
     </div>
 
-    <!-- 16. Loaders -->
+    <!-- 15. Loaders -->
     <div class="tab-content">
       <div class="flex flex-col gap-4">
 
@@ -1030,12 +1134,12 @@
       </div>
     </div>
 
-    <!-- 17. Extended inputs -->
+    <!-- 16. Extended inputs -->
     <div class="tab-content">
       <details class="component-info mb-4">
         <summary>Опис і нюанси</summary>
-        <p>Розширення базових <span class="font-mono">.input</span>/<span class="font-mono">.select</span> новими патернами: <span class="font-mono">.input-search</span> — поле з іконкою пошуку та кнопкою очищення, <span class="font-mono">.input-number</span> — числове поле з кнопками −/+, <span class="font-mono">.input-color</span> — вибір кольору через нативний color picker із текстовим hex-значенням і швидкими пресетами, <span class="font-mono">.textarea-auto</span> — модифікатор <span class="font-mono">.textarea</span>, що росте разом із вмістом.</p>
-        <p>Усі чотири патерни самостійно ініціалізуються через <span class="font-mono">UIKit.autoInit()</span> за класом-маркером (<span class="font-mono">.input-search</span>/<span class="font-mono">.input-number</span>/<span class="font-mono">.input-color</span>/<span class="font-mono">.textarea-auto</span>) — жодних ручних викликів не потрібно, достатньо правильної розмітки. <span class="font-mono">.input-number-btn</span> поважає <span class="font-mono">min</span>/<span class="font-mono">max</span>/<span class="font-mono">step</span> нативного input. <span class="font-mono">.color-swatches</span> — це окремий блок кнопок поруч із <span class="font-mono">.input-color</span>, що встановлюють колір через <span class="font-mono">data-color</span>.</p>
+        <p>Розширення базових <span class="font-mono">.input</span>/<span class="font-mono">.select</span> новими патернами: <span class="font-mono">.input-search</span> — поле з іконкою пошуку та кнопкою очищення, <span class="font-mono">.input-number</span> — числове поле з кнопками −/+, <span class="font-mono">.input-color</span> — вибір кольору через нативний color picker із текстовим hex-значенням і швидкими пресетами, <span class="font-mono">.textarea-auto</span> — модифікатор <span class="font-mono">.textarea</span>, що росте разом із вмістом, <span class="font-mono">.input-range</span> — повзунок із видимим числовим значенням поруч.</p>
+        <p>Усі патерни самостійно ініціалізуються через <span class="font-mono">UIKit.autoInit()</span> за класом-маркером (<span class="font-mono">.input-search</span>/<span class="font-mono">.input-number</span>/<span class="font-mono">.input-color</span>/<span class="font-mono">.textarea-auto</span>/<span class="font-mono">.input-range</span>) — жодних ручних викликів не потрібно, достатньо правильної розмітки. <span class="font-mono">.input-number-btn</span> поважає <span class="font-mono">min</span>/<span class="font-mono">max</span>/<span class="font-mono">step</span> нативного input і тепер має ширину «за вмістом», а не на всю ширину контейнера. <span class="font-mono">.color-swatches</span> — це окремий блок кнопок поруч із <span class="font-mono">.input-color</span>, що встановлюють колір через <span class="font-mono">data-color</span>.</p>
         <p>Типовий кейс: <span class="font-mono">.input-search</span> у шапці таблиці для фільтрації рядків. Другий кейс: <span class="font-mono">.input-color</span> для вибору акцентного кольору теми чи мітки в застосунку налаштувань.</p>
       </details>
       <div class="grid-2 gap-6">
@@ -1141,23 +1245,202 @@
           </div>
         </div>
 
+        <div class="demo">
+          <div class="demo-preview">
+            <div class="field">
+              <label class="label" for="demo-range">Гучність</label>
+              <div class="input-range">
+                <input class="input-range-field" id="demo-range" type="range" min="0" max="100" value="40" />
+                <span class="input-range-value">40</span>
+              </div>
+            </div>
+          </div>
+          <template class="demo-source">
+<div class="input-range">
+  <input class="input-range-field" type="range" min="0" max="100" value="40" />
+  <span class="input-range-value">40</span>
+</div>
+          </template>
+          <div class="demo-actions flex gap-2">
+            <button type="button" class="btn btn-outline btn-sm" data-copy="html">Скопіювати HTML</button>
+            <button type="button" class="btn btn-outline btn-sm" data-copy-class="input-range">Скопіювати клас</button>
+          </div>
+        </div>
+
       </div>
     </div>
 
-    <!-- 18. Builder -->
+    <!-- 17. Accordion -->
     <div class="tab-content">
       <details class="component-info mb-4">
         <summary>Опис і нюанси</summary>
-        <p>«Конструктор» — це інструмент розробки (dev-tooling), а не компонент кіту: він дозволяє наживо змінювати кольори, шрифти, типографічну шкалу, відступи, генерувати таблиці й лейаут-співвідношення прямо в галереї, а потім експортувати готову кастомізовану копію кіту. Усі елементи керування побудовані на компонентах самого кіту (<span class="font-mono">input-color</span>, <span class="font-mono">input-number</span>, <span class="font-mono">select</span>) — той самий підхід «dogfooding», що й у решті галереї.</p>
-        <p>Зміни запускаються через <span class="font-mono">document.documentElement.style.setProperty(...)</span> — тому оновлення видно миттєво на вже відкритих вкладках (спробуйте змінити колір «Первинний» тут і перейти на вкладку «Кнопки»). Завантаження шрифтів з Google Fonts і експорт .zip виконують реальні мережеві запити (<span class="font-mono">fetch</span>) до файлів проєкту — це працює лише при відкритті галереї через локальний HTTP-сервер, а не подвійним кліком по <span class="font-mono">index.html</span> (браузери блокують такий <span class="font-mono">fetch()</span> для протоколу <span class="font-mono">file://</span>). Запустіть <span class="font-mono">python3 -m http.server 8000</span> у корені проєкту та відкрийте <span class="font-mono">http://localhost:8000</span>.</p>
-        <p>Типовий кейс: підібрати бренд-кольори й шрифт для нового проєкту, згенерувати стартову таблицю й лейаут, натиснути «Експортувати збірку» — і отримати готову папку <span class="font-mono">ui-kit/</span> із уже «запеченими» значеннями в <span class="font-mono">theme.css</span>, без жодного ручного редагування CSS.</p>
+        <p><span class="font-mono">.accordion</span> побудований на нативних <span class="font-mono">&lt;details&gt;</span>/<span class="font-mono">&lt;summary&gt;</span> — розгортання/згортання працює без жодного JS. Використовуйте його для FAQ, довгих налаштувань чи будь-якого контенту, який доцільно ховати за замовчуванням, щоб не перевантажувати екран.</p>
+        <p>За замовчуванням кожен <span class="font-mono">.accordion-item</span> (це <span class="font-mono">&lt;details&gt;</span>) розгортається незалежно — можна тримати відкритими одразу декілька. Щоб дозволити лише один відкритий елемент за раз, додайте <span class="font-mono">data-accordion</span> і <span class="font-mono">data-single-open</span> на <span class="font-mono">.accordion</span>-контейнер — <span class="font-mono">UIKit.initAccordion()</span> підхопить це автоматично через <span class="font-mono">autoInit()</span>.</p>
+        <p>Типовий кейс: розділ «Часті запитання» на сторінці підтримки. Другий кейс: групи розширених налаштувань, згорнуті за замовчуванням, щоб не лякати новачків.</p>
       </details>
+      <div class="demo">
+        <div class="demo-preview">
+          <div class="accordion" data-accordion data-single-open>
+            <details class="accordion-item" open>
+              <summary class="accordion-trigger">Що таке ui-kit?</summary>
+              <div class="accordion-content">Дизайн-система на чистому CSS без build-кроку та зовнішніх залежностей.</div>
+            </details>
+            <details class="accordion-item">
+              <summary class="accordion-trigger">Чи потрібен build-крок?</summary>
+              <div class="accordion-content">Ні — достатньо підключити CSS/JS файли напряму через &lt;link&gt;/&lt;script&gt;.</div>
+            </details>
+            <details class="accordion-item">
+              <summary class="accordion-trigger">Чи можна тримати кілька пунктів відкритими?</summary>
+              <div class="accordion-content">Так, якщо не додавати data-single-open на контейнер .accordion.</div>
+            </details>
+          </div>
+        </div>
+        <template class="demo-source">
+<div class="accordion" data-accordion data-single-open>
+  <details class="accordion-item" open>
+    <summary class="accordion-trigger">Питання перше</summary>
+    <div class="accordion-content">Відповідь на перше питання.</div>
+  </details>
+  <details class="accordion-item">
+    <summary class="accordion-trigger">Питання друге</summary>
+    <div class="accordion-content">Відповідь на друге питання.</div>
+  </details>
+</div>
+        </template>
+        <div class="demo-actions flex gap-2">
+          <button type="button" class="btn btn-outline btn-sm" data-copy="html">Скопіювати HTML</button>
+          <button type="button" class="btn btn-outline btn-sm" data-copy-class="accordion">Скопіювати клас</button>
+        </div>
+      </div>
+    </div>
 
+  </div>
+
+  <div class="tabs" id="tools-tabs" style="display: none;">
+    <div class="tabs-list" role="tablist">
+      <button type="button" class="tab-trigger is-active" role="tab">Налаштування</button>
+      <button type="button" class="tab-trigger" role="tab">Конструктор</button>
+    </div>
+
+    <!-- Tools 1. Setup -->
+    <div class="tab-content is-active">
+      <details class="component-info mb-4">
+        <summary>Опис і нюанси</summary>
+        <p>Ця вкладка — не компонент, а інструкція: тут зібрано мінімальний набір файлів, які варто скопіювати в інший проєкт, і фрагмент розмітки для підключення. Використовуйте її як чек-лист перед інтеграцією кіту в новий проєкт.</p>
+        <p>Найпоширеніша помилка — скопіювати лише <span class="font-mono">components.css</span>, забувши папку <span class="font-mono">components/</span> (фасад без неї не працює, бо складається з <span class="font-mono">@import</span>), або забувши <span class="font-mono">fonts/Montserrat/</span>, через що theme.css не знайде шрифти за відносним шляхом.</p>
+        <p>Типовий кейс: підключення кіту в новий pywebview-застосунок — досить трьох <span class="font-mono">&lt;link&gt;</span> і двох папок. Другий кейс: оновлення вже інтегрованого кіту — досить замінити <span class="font-mono">css/</span> і <span class="font-mono">fonts/</span> повністю, не займаючи <span class="font-mono">index.html</span>/<span class="font-mono">gallery.css</span>.</p>
+      </details>
       <div class="flex flex-col gap-6">
 
         <div>
-          <h2 class="section-title">Кольори</h2>
-          <div class="grid-3 gap-4 mt-3">
+          <h2 class="section-title">Що копіювати в інший проєкт</h2>
+          <p class="text-sm text-muted mb-3">Ці файли складають перевикористовувану частину дизайн-системи:</p>
+          <pre class="setup-tree"><code>ui-kit/
+├── css/
+│   ├── theme.css            (токени — тільки :root / [data-theme] і @font-face)
+│   ├── layout.css           (flex/grid-утиліти)
+│   ├── components.css       (фасад з @import, включно з links.css і accordion.css)
+│   └── components/          (уся папка — окремі файли по компонентах)
+├── js/
+│   └── kit.js               (UIKit — вкладки, toast, dropzone, лоадери, інпути, акордіон)
+├── fonts/
+│   └── Montserrat/          (уся папка)
+├── favicon.svg              (приклад — замініть на власну іконку)
+└── assets/
+    └── logo.svg              (приклад-заглушка логотипу — замініть на власний)
+
+НЕ копіювати (лише для цієї галереї-демо та інструментів розробки):
+├── css/gallery.css
+├── css/builder.css
+├── js/gallery.js
+├── js/builder.js
+├── js/google-fonts-list.json
+└── index.html</code></pre>
+        </div>
+
+        <div class="demo">
+          <p class="text-sm font-semibold mb-2">Фрагмент для &lt;head&gt;/кінця &lt;body&gt;</p>
+          <div class="demo-preview">
+            <pre class="setup-tree"><code>&lt;link rel="stylesheet" href="css/theme.css" /&gt;
+&lt;link rel="stylesheet" href="css/components.css" /&gt;
+&lt;link rel="stylesheet" href="css/layout.css" /&gt;
+&lt;script src="js/kit.js"&gt;&lt;/script&gt;</code></pre>
+          </div>
+          <template class="demo-source">
+<link rel="stylesheet" href="css/theme.css" />
+<link rel="stylesheet" href="css/components.css" />
+<link rel="stylesheet" href="css/layout.css" />
+<script src="js/kit.js"></script>
+          </template>
+          <div class="demo-actions flex gap-2">
+            <button type="button" class="btn btn-outline btn-sm" data-copy="html">Скопіювати HTML</button>
+          </div>
+        </div>
+
+        <div>
+          <h2 class="section-title">Як це працює</h2>
+          <div class="flex flex-col gap-2 text-sm">
+            <p>Перемикання теми відбувається через атрибут <span class="font-mono">data-theme="dark"</span> на елементі <span class="font-mono">&lt;html&gt;</span>. Без атрибута (або з будь-яким іншим значенням) застосовується світла тема за замовчуванням.</p>
+            <p>Усі кольорові токени визначені у <span class="font-mono">theme.css</span> — не редагуйте їх без наміру, оскільки від них залежать усі компоненти.</p>
+            <p><span class="font-mono">kit.js</span> самостійно ініціалізується на <span class="font-mono">DOMContentLoaded</span> — жодних ручних викликів налаштування не потрібно, достатньо підключити файл.</p>
+            <p>Складання не потрібне: немає npm, немає CDN, немає build-кроку. Достатньо підключити три файли CSS, один файл JS та локальні шрифти.</p>
+            <p>Вкладка «Конструктор» (dev-інструмент, не входить у список вище) для завантаження шрифтів з Google Fonts і експорту .zip потребує локального HTTP-сервера — відкрийте цю галерею командою <span class="font-mono">python3 -m http.server 8000</span> у корені проєкту, а потім перейдіть на <span class="font-mono">http://localhost:8000</span> у браузері. При відкритті <span class="font-mono">index.html</span> подвійним кліком (протокол <span class="font-mono">file://</span>) браузер блокує такі мережеві запити.</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Tools 2. Builder -->
+    <div class="tab-content">
+      <details class="component-info mb-4">
+        <summary>Опис і нюанси</summary>
+        <p>«Конструктор» — це інструмент розробки (dev-tooling), а не компонент кіту: він дозволяє наживо змінювати кольори (окремо для світлої й темної теми), шрифти, типографічну шкалу, відступи, генерувати таблиці й лейаут-співвідношення, а потім експортувати готову кастомізовану копію кіту. Панель угорі (Зберегти/Завантажити/Скинути/Експорт + дві прев'ю-картки) залишається на екрані незалежно від того, яку внутрішню вкладку конструктора ви переглядаєте.</p>
+        <p>Кольори світлої й темної теми зберігаються як два повністю незалежні набори значень — редагування одного ніколи не змінює інший (раніше була помилка, через яку зміна кольору в одній темі непомітно «протікала» в іншу; тепер обидва прев'ю миттєво показують справжній, ізольований стан кожної теми). Завантаження шрифтів з Google Fonts і експорт .zip виконують реальні мережеві запити (<span class="font-mono">fetch</span>) — це працює лише при відкритті галереї через локальний HTTP-сервер, а не подвійним кліком по <span class="font-mono">index.html</span>. Запустіть <span class="font-mono">python3 -m http.server 8000</span> у корені проєкту та відкрийте <span class="font-mono">http://localhost:8000</span>.</p>
+        <p>Типовий кейс: підібрати бренд-кольори окремо для світлої й темної теми та шрифт для нового проєкту, згенерувати стартову таблицю й лейаут, натиснути «Експортувати збірку» — і отримати готову папку <span class="font-mono">ui-kit/</span> із уже «запеченими» значеннями в <span class="font-mono">theme.css</span>, без жодного ручного редагування CSS.</p>
+      </details>
+
+      <div class="builder-toolbar mb-4">
+        <div class="builder-toolbar-actions">
+          <button type="button" class="btn btn-outline btn-sm" id="builder-save">Зберегти налаштування</button>
+          <button type="button" class="btn btn-outline btn-sm" id="builder-load-btn">Завантажити налаштування</button>
+          <input type="file" id="builder-load-input" accept="application/json" style="display: none;" />
+          <button type="button" class="btn btn-ghost btn-sm" id="builder-reset">Скинути</button>
+          <button type="button" class="btn btn-primary btn-sm" id="builder-export">Експортувати збірку (.zip)</button>
+        </div>
+        <div class="builder-toolbar-previews">
+          <div class="builder-preview-card" id="builder-preview-light">
+            <p class="builder-preview-card-label">Світла</p>
+            <p class="font-semibold" style="margin: 0 0 0.25rem;">Заголовок</p>
+            <p style="margin: 0 0 0.5rem;">Приклад тексту.</p>
+            <button type="button" class="btn btn-primary btn-sm" style="pointer-events: none;" tabindex="-1">Кнопка</button>
+          </div>
+          <div class="builder-preview-card" id="builder-preview-dark">
+            <p class="builder-preview-card-label">Темна</p>
+            <p class="font-semibold" style="margin: 0 0 0.25rem;">Заголовок</p>
+            <p style="margin: 0 0 0.5rem;">Приклад тексту.</p>
+            <button type="button" class="btn btn-primary btn-sm" style="pointer-events: none;" tabindex="-1">Кнопка</button>
+          </div>
+        </div>
+      </div>
+      <p class="field-hint mb-4" id="builder-export-status"></p>
+
+      <div class="tabs">
+        <div class="tabs-list" role="tablist">
+          <button type="button" class="tab-trigger is-active" role="tab">Кольори</button>
+          <button type="button" class="tab-trigger" role="tab">Типографіка</button>
+          <button type="button" class="tab-trigger" role="tab">Таблиці</button>
+          <button type="button" class="tab-trigger" role="tab">Лейаути</button>
+          <button type="button" class="tab-trigger" role="tab">Простір/форма</button>
+        </div>
+
+        <!-- Builder sub-tab: Colors -->
+        <div class="tab-content is-active">
+          <div class="builder-edit-switch" role="tablist" aria-label="Редагувати тему">
+            <button type="button" class="btn btn-primary btn-sm" id="builder-edit-light" aria-pressed="true">Редагувати: Світла тема</button>
+            <button type="button" class="btn btn-outline btn-sm" id="builder-edit-dark" aria-pressed="false">Редагувати: Темна тема</button>
+          </div>
+          <div class="grid-3 gap-4">
             <div class="field">
               <label class="label">Первинний</label>
               <div class="input-color">
@@ -1224,22 +1507,28 @@
           </div>
         </div>
 
-        <div>
-          <h2 class="section-title">Типографіка</h2>
-          <div class="grid-2 gap-4 mt-3">
+        <!-- Builder sub-tab: Typography -->
+        <div class="tab-content">
+          <div class="grid-2 gap-4">
             <div class="field">
               <label class="label" for="font-sans-input">Шрифт тіла тексту (Google Fonts)</label>
-              <div class="flex gap-2">
-                <input class="input" type="text" id="font-sans-input" placeholder="Inter" />
-                <button type="button" class="btn btn-outline" id="font-sans-apply">Застосувати</button>
+              <div class="select-search" id="font-sans-search">
+                <input class="select-search-input" type="text" id="font-sans-input" placeholder="Почніть вводити, напр. mont" autocomplete="off" />
+                <div class="select-search-list" id="font-sans-list"></div>
+              </div>
+              <div class="flex gap-2 mt-2">
+                <button type="button" class="btn btn-outline btn-sm" id="font-sans-apply">Застосувати</button>
               </div>
               <span class="field-hint" id="font-sans-error"></span>
             </div>
             <div class="field">
               <label class="label" for="font-heading-input">Шрифт заголовків (Google Fonts)</label>
-              <div class="flex gap-2">
-                <input class="input" type="text" id="font-heading-input" placeholder="Playfair Display" />
-                <button type="button" class="btn btn-outline" id="font-heading-apply">Застосувати</button>
+              <div class="select-search" id="font-heading-search">
+                <input class="select-search-input" type="text" id="font-heading-input" placeholder="Почніть вводити, напр. play" autocomplete="off" />
+                <div class="select-search-list" id="font-heading-list"></div>
+              </div>
+              <div class="flex gap-2 mt-2">
+                <button type="button" class="btn btn-outline btn-sm" id="font-heading-apply">Застосувати</button>
               </div>
               <span class="field-hint" id="font-heading-error"></span>
             </div>
@@ -1304,9 +1593,68 @@
           </div>
         </div>
 
-        <div>
-          <h2 class="section-title">Відступи та форма</h2>
-          <div class="grid-4 gap-4 mt-3">
+        <!-- Builder sub-tab: Tables -->
+        <div class="tab-content">
+          <div class="demo">
+            <div class="demo-preview">
+              <div class="grid-3 gap-4 mb-4">
+                <div class="field">
+                  <label class="label" for="table-gen-variant">Варіант</label>
+                  <select class="select" id="table-gen-variant">
+                    <option value="default">Звичайна</option>
+                    <option value="striped">Смугаста (striped)</option>
+                    <option value="bordered">З рамками (bordered)</option>
+                    <option value="compact">Компактна (compact)</option>
+                  </select>
+                </div>
+                <div class="field">
+                  <label class="label" for="table-gen-cols">Колонки</label>
+                  <div class="input-number">
+                    <button type="button" class="input-number-btn" data-step="-1" aria-label="Зменшити">−</button>
+                    <input class="input-number-field" id="table-gen-cols" type="number" value="3" min="1" max="8" step="1" />
+                    <button type="button" class="input-number-btn" data-step="1" aria-label="Збільшити">+</button>
+                  </div>
+                </div>
+                <div class="field">
+                  <label class="label" for="table-gen-rows">Рядки</label>
+                  <div class="input-number">
+                    <button type="button" class="input-number-btn" data-step="-1" aria-label="Зменшити">−</button>
+                    <input class="input-number-field" id="table-gen-rows" type="number" value="3" min="1" max="10" step="1" />
+                    <button type="button" class="input-number-btn" data-step="1" aria-label="Збільшити">+</button>
+                  </div>
+                </div>
+              </div>
+              <div id="table-gen-preview"></div>
+            </div>
+            <template class="demo-source" id="table-gen-source"></template>
+            <div class="demo-actions flex gap-2">
+              <button type="button" class="btn btn-outline btn-sm" data-copy="html">Скопіювати HTML</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Builder sub-tab: Layouts -->
+        <div class="tab-content">
+          <div class="demo">
+            <div class="demo-preview flex flex-col gap-3">
+              <div class="field">
+                <label class="label" for="layout-gen-ratio">Співвідношення колонок (наприклад, 30/70 або 25/25/50)</label>
+                <input class="input" type="text" id="layout-gen-ratio" value="30/70" />
+                <span class="field-hint" id="layout-gen-error"></span>
+              </div>
+              <div id="layout-gen-preview"></div>
+            </div>
+            <template class="demo-source" id="layout-gen-source"></template>
+            <div class="demo-actions flex gap-2">
+              <button type="button" class="btn btn-outline btn-sm" data-copy="html">Скопіювати HTML</button>
+              <button type="button" class="btn btn-outline btn-sm" id="layout-gen-copy-css">Скопіювати CSS</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Builder sub-tab: Spacing/shape -->
+        <div class="tab-content">
+          <div class="grid-4 gap-4">
             <div class="field">
               <label class="label" for="cfg-spacing-unit">Крок відступу (rem)</label>
               <div class="input-number">
@@ -1348,77 +1696,6 @@
               </div>
             </div>
           </div>
-        </div>
-
-        <div>
-          <h2 class="section-title">Генератор таблиць</h2>
-          <div class="demo mt-3">
-            <div class="demo-preview">
-              <div class="grid-3 gap-4 mb-4">
-                <div class="field">
-                  <label class="label" for="table-gen-variant">Варіант</label>
-                  <select class="select" id="table-gen-variant">
-                    <option value="default">Звичайна</option>
-                    <option value="striped">Смугаста (striped)</option>
-                    <option value="bordered">З рамками (bordered)</option>
-                    <option value="compact">Компактна (compact)</option>
-                  </select>
-                </div>
-                <div class="field">
-                  <label class="label" for="table-gen-cols">Колонки</label>
-                  <div class="input-number">
-                    <button type="button" class="input-number-btn" data-step="-1" aria-label="Зменшити">−</button>
-                    <input class="input-number-field" id="table-gen-cols" type="number" value="3" min="1" max="8" step="1" />
-                    <button type="button" class="input-number-btn" data-step="1" aria-label="Збільшити">+</button>
-                  </div>
-                </div>
-                <div class="field">
-                  <label class="label" for="table-gen-rows">Рядки</label>
-                  <div class="input-number">
-                    <button type="button" class="input-number-btn" data-step="-1" aria-label="Зменшити">−</button>
-                    <input class="input-number-field" id="table-gen-rows" type="number" value="3" min="1" max="10" step="1" />
-                    <button type="button" class="input-number-btn" data-step="1" aria-label="Збільшити">+</button>
-                  </div>
-                </div>
-              </div>
-              <div id="table-gen-preview"></div>
-            </div>
-            <template class="demo-source" id="table-gen-source"></template>
-            <div class="demo-actions flex gap-2">
-              <button type="button" class="btn btn-outline btn-sm" data-copy="html">Скопіювати HTML</button>
-            </div>
-          </div>
-        </div>
-
-        <div>
-          <h2 class="section-title">Генератор лейаут-співвідношень</h2>
-          <div class="demo mt-3">
-            <div class="demo-preview flex flex-col gap-3">
-              <div class="field">
-                <label class="label" for="layout-gen-ratio">Співвідношення колонок (наприклад, 30/70 або 25/25/50)</label>
-                <input class="input" type="text" id="layout-gen-ratio" value="30/70" />
-                <span class="field-hint" id="layout-gen-error"></span>
-              </div>
-              <div id="layout-gen-preview"></div>
-            </div>
-            <template class="demo-source" id="layout-gen-source"></template>
-            <div class="demo-actions flex gap-2">
-              <button type="button" class="btn btn-outline btn-sm" data-copy="html">Скопіювати HTML</button>
-              <button type="button" class="btn btn-outline btn-sm" id="layout-gen-copy-css">Скопіювати CSS</button>
-            </div>
-          </div>
-        </div>
-
-        <div>
-          <h2 class="section-title">Налаштування та експорт</h2>
-          <div class="flex flex-wrap gap-3 items-center mt-3">
-            <button type="button" class="btn btn-outline" id="builder-save">Зберегти налаштування</button>
-            <button type="button" class="btn btn-outline" id="builder-load-btn">Завантажити налаштування</button>
-            <input type="file" id="builder-load-input" accept="application/json" style="display: none;" />
-            <button type="button" class="btn btn-ghost" id="builder-reset">Скинути</button>
-            <button type="button" class="btn btn-primary" id="builder-export">Експортувати збірку (.zip)</button>
-          </div>
-          <p class="field-hint mt-2" id="builder-export-status"></p>
         </div>
 
       </div>

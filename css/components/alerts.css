@@ -47,18 +47,75 @@
   box-shadow: var(--shadow-lg);
   padding: 0.875rem 1rem;
   font-size: 0.875rem;
-  position: fixed;
-  bottom: 1.5rem;
-  right: 1.5rem;
   opacity: 0;
-  transform: translateY(0.5rem);
   pointer-events: none;
-  transition: opacity 0.2s ease, transform 0.2s ease;
+  transition: opacity 0.2s ease;
   z-index: 1000;
 }
 
 .toast.is-visible {
   opacity: 1;
-  transform: translateY(0);
   pointer-events: auto;
+}
+
+.toast[data-toast-type="destructive"] {
+  border-color: hsl(var(--destructive) / 0.5);
+  color: hsl(var(--destructive));
+}
+
+.toast[data-toast-type="success"] {
+  border-color: hsl(var(--success) / 0.5);
+  color: hsl(var(--success));
+}
+
+.toast[data-toast-type="warning"] {
+  border-color: hsl(var(--warning) / 0.5);
+  color: hsl(var(--warning));
+}
+
+/* ==========================================================================
+   Toast position — applied together with .toast on the same element (a
+   single toast instance moves between positions; no extra wrapper needed).
+   ========================================================================== */
+
+.toast-container {
+  position: fixed;
+}
+
+.toast-container--top-left {
+  top: 1.5rem;
+  left: 1.5rem;
+}
+
+.toast-container--top-center {
+  top: 1.5rem;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.toast-container--top-right {
+  top: 1.5rem;
+  right: 1.5rem;
+}
+
+.toast-container--center {
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.toast-container--bottom-left {
+  bottom: 1.5rem;
+  left: 1.5rem;
+}
+
+.toast-container--bottom-center {
+  bottom: 1.5rem;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.toast-container--bottom-right {
+  bottom: 1.5rem;
+  right: 1.5rem;
 }

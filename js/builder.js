@@ -110,14 +110,11 @@
 
   /* ==========================================================================
      State
+     Colors are theme-dependent (:root vs [data-theme="dark"]) so they get
+     TWO independent objects. Everything else (spacing, typography scale,
+     fonts) has no dark variant in theme.css, so a single shared value is
+     correct for those — no leak risk there.
      ========================================================================== */
-
-  var builderState = {
-    fonts: {
-      sans: null,   // { family, slug, files: {weight: ArrayBuffer}, cssText }
-      heading: null
-    }
-  };
 
   var COLOR_FIELDS = [
     "primary", "secondary", "accent", "destructive",
@@ -139,30 +136,172 @@
     { id: "cfg-transition-duration", varName: "--transition-duration", unit: "ms" }
   ];
 
+  var state = { light: {}, dark: {} };
+  var currentEditingTheme = "light";
   var DEFAULT_CONFIG = null;
 
+  var builderState = {
+    fonts: {
+      sans: null,   // { family, slug, files: {weight: ArrayBuffer}, cssText }
+      heading: null
+    }
+  };
+
   /* ==========================================================================
-     Color pickers
+     Read the actual :root / [data-theme="dark"] rule text from the loaded
+     theme.css stylesheet via the CSSOM — NOT via getComputedStyle(<html>),
+     which would already be contaminated by any prior inline-style leak.
      ========================================================================== */
+
+  function findThemeRules() {
+    var rootRule = null;
+    var darkRule = null;
+    for (var i = 0; i < document.styleSheets.length; i++) {
+      var sheet = document.styleSheets[i];
+      var rules;
+      try {
+        rules = sheet.cssRules;
+      } catch (e) {
+        continue; // cross-origin sheet; not ours, skip
+      }
+      if (!rules) continue;
+      for (var j = 0; j < rules.length; j++) {
+        var rule = rules[j];
+        if (!rule.selectorText) continue;
+        if (rule.selectorText === ":root" && !rootRule) rootRule = rule;
+        if (rule.selectorText === '[data-theme="dark"]' && !darkRule) darkRule = rule;
+      }
+      if (rootRule && darkRule) break;
+    }
+    return { rootRule: rootRule, darkRule: darkRule };
+  }
+
+  function parseInitialColorState() {
+    var found = findThemeRules();
+    var light = {};
+    var dark = {};
+    COLOR_FIELDS.forEach(function (role) {
+      var lightVal = found.rootRule ? found.rootRule.style.getPropertyValue("--" + role).trim() : "";
+      var darkVal = found.darkRule ? found.darkRule.style.getPropertyValue("--" + role).trim() : "";
+      light[role] = lightVal || getVarValue("--" + role);
+      dark[role] = darkVal || light[role];
+    });
+    return { light: light, dark: dark };
+  }
+
+  /* ==========================================================================
+     Live preview — a single dedicated <style> element with two independent
+     rule blocks, inserted after theme.css so normal cascade/source-order
+     rules apply. Editing light NEVER touches dark's block and vice versa.
+     ========================================================================== */
+
+  function getOrCreatePreviewStyleEl() {
+    var styleEl = document.getElementById("builder-live-preview");
+    if (styleEl) return styleEl;
+    styleEl = document.createElement("style");
+    styleEl.id = "builder-live-preview";
+    var themeLink = document.querySelector('link[href*="theme.css"]');
+    if (themeLink && themeLink.parentNode) {
+      themeLink.parentNode.insertBefore(styleEl, themeLink.nextSibling);
+    } else {
+      document.head.appendChild(styleEl);
+    }
+    return styleEl;
+  }
+
+  function renderPreviewStyle() {
+    var styleEl = getOrCreatePreviewStyleEl();
+    var lightDecls = COLOR_FIELDS.map(function (role) {
+      return "  --" + role + ": " + state.light[role] + ";";
+    }).join("\n");
+    var darkDecls = COLOR_FIELDS.map(function (role) {
+      return "  --" + role + ": " + state.dark[role] + ";";
+    }).join("\n");
+    styleEl.textContent =
+      ":root {\n" + lightDecls + "\n}\n" +
+      '[data-theme="dark"] {\n' + darkDecls + "\n}";
+  }
+
+  /* ==========================================================================
+     Dual preview cards — each card gets ALL 9 color vars set directly as
+     inline style on itself, so it renders correctly regardless of the
+     ambient page theme (isolated from <html>'s data-theme attribute).
+     ========================================================================== */
+
+  function renderPreviewCards() {
+    var lightCard = document.getElementById("builder-preview-light");
+    var darkCard = document.getElementById("builder-preview-dark");
+    if (lightCard) {
+      COLOR_FIELDS.forEach(function (role) {
+        lightCard.style.setProperty("--" + role, state.light[role]);
+      });
+    }
+    if (darkCard) {
+      COLOR_FIELDS.forEach(function (role) {
+        darkCard.style.setProperty("--" + role, state.dark[role]);
+      });
+    }
+  }
+
+  function refreshColorPreview() {
+    renderPreviewStyle();
+    renderPreviewCards();
+  }
+
+  /* ==========================================================================
+     Color pickers — one shared set of 9 pickers; the light/dark segmented
+     switch decides which state object they read from and write to.
+     ========================================================================== */
+
+  function syncColorPickerUI() {
+    COLOR_FIELDS.forEach(function (role) {
+      var input = document.getElementById("cfg-color-" + role);
+      var hexEl = document.getElementById("cfg-color-" + role + "-hex");
+      if (!input || !hexEl) return;
+      var hex = hslTripleToHex(state[currentEditingTheme][role]);
+      input.value = hex;
+      hexEl.textContent = hex.toUpperCase();
+    });
+  }
 
   function initColorFields() {
     COLOR_FIELDS.forEach(function (role) {
       var input = document.getElementById("cfg-color-" + role);
       var hexEl = document.getElementById("cfg-color-" + role + "-hex");
       if (!input || !hexEl) return;
-      var current = getVarValue("--" + role);
-      var hex = hslTripleToHex(current);
-      input.value = hex;
-      hexEl.textContent = hex.toUpperCase();
       input.addEventListener("input", function () {
+        var triple = hexToHslTriple(input.value);
+        state[currentEditingTheme][role] = triple;
         hexEl.textContent = input.value.toUpperCase();
-        setVar("--" + role, hexToHslTriple(input.value));
+        refreshColorPreview();
       });
     });
+    syncColorPickerUI();
+  }
+
+  function initThemeEditSwitch() {
+    var lightBtn = document.getElementById("builder-edit-light");
+    var darkBtn = document.getElementById("builder-edit-dark");
+    if (!lightBtn || !darkBtn) return;
+
+    function setEditing(theme) {
+      currentEditingTheme = theme;
+      lightBtn.classList.toggle("btn-primary", theme === "light");
+      lightBtn.classList.toggle("btn-outline", theme !== "light");
+      lightBtn.setAttribute("aria-pressed", theme === "light" ? "true" : "false");
+      darkBtn.classList.toggle("btn-primary", theme === "dark");
+      darkBtn.classList.toggle("btn-outline", theme !== "dark");
+      darkBtn.setAttribute("aria-pressed", theme === "dark" ? "true" : "false");
+      syncColorPickerUI();
+    }
+
+    lightBtn.addEventListener("click", function () { setEditing("light"); });
+    darkBtn.addEventListener("click", function () { setEditing("dark"); });
   }
 
   /* ==========================================================================
-     Numeric tokens (spacing/typography scale)
+     Numeric tokens (spacing/typography scale) — theme-invariant, so a plain
+     inline style on <html> is safe here (no dark counterpart to leak into).
      ========================================================================== */
 
   function initNumberFields() {
@@ -182,6 +321,18 @@
      ========================================================================== */
 
   var FONT_WEIGHTS = [400, 500, 600, 700];
+  var GOOGLE_FONTS_LIST = [];
+
+  function loadGoogleFontsList() {
+    return fetch("js/google-fonts-list.json").then(function (resp) {
+      if (!resp.ok) throw new Error("HTTP " + resp.status);
+      return resp.json();
+    }).then(function (list) {
+      GOOGLE_FONTS_LIST = list;
+    }).catch(function () {
+      GOOGLE_FONTS_LIST = [];
+    });
+  }
 
   function fetchGoogleFont(familyName, weights) {
     var weightParam = weights.join(";");
@@ -254,48 +405,122 @@
     errorEl.style.color = message ? "hsl(var(--destructive))" : "";
   }
 
-  function initFontPicker(role, varName) {
-    var input = document.getElementById("font-" + role + "-input");
+  function applyFontToRole(role, varName, familyName) {
+    if (!familyName) {
+      showFontError(role, "Вкажіть назву шрифту з Google Fonts.");
+      return;
+    }
+    showFontError(role, "");
     var applyBtn = document.getElementById("font-" + role + "-apply");
-    if (!input || !applyBtn) return;
-
-    applyBtn.addEventListener("click", function () {
-      var familyName = input.value.trim();
-      if (!familyName) {
-        showFontError(role, "Вкажіть назву шрифту з Google Fonts.");
-        return;
-      }
-      showFontError(role, "");
+    var originalText = applyBtn ? applyBtn.textContent : "";
+    if (applyBtn) {
       applyBtn.disabled = true;
-      var originalText = applyBtn.textContent;
       applyBtn.textContent = "Завантаження...";
+    }
 
-      fetchGoogleFont(familyName, FONT_WEIGHTS).then(function (fontData) {
-        var previewStyleId = "builder-font-preview-" + role;
-        var styleEl = document.getElementById(previewStyleId);
-        if (!styleEl) {
-          styleEl = document.createElement("style");
-          styleEl.id = previewStyleId;
-          document.head.appendChild(styleEl);
-        }
-        var blobRules = Object.keys(fontData.files).map(function (w) {
-          var blob = new Blob([fontData.files[w]], { type: "font/woff2" });
-          var url = URL.createObjectURL(blob);
-          return '@font-face { font-family: "' + fontData.family + '"; src: url("' + url +
-            '") format("woff2"); font-weight: ' + w + "; font-style: normal; font-display: swap; }";
-        }).join("\n");
-        styleEl.textContent = blobRules;
+    fetchGoogleFont(familyName, FONT_WEIGHTS).then(function (fontData) {
+      var previewStyleId = "builder-font-preview-" + role;
+      var styleEl = document.getElementById(previewStyleId);
+      if (!styleEl) {
+        styleEl = document.createElement("style");
+        styleEl.id = previewStyleId;
+        document.head.appendChild(styleEl);
+      }
+      var blobRules = Object.keys(fontData.files).map(function (w) {
+        var blob = new Blob([fontData.files[w]], { type: "font/woff2" });
+        var url = URL.createObjectURL(blob);
+        return '@font-face { font-family: "' + fontData.family + '"; src: url("' + url +
+          '") format("woff2"); font-weight: ' + w + "; font-style: normal; font-display: swap; }";
+      }).join("\n");
+      styleEl.textContent = blobRules;
 
-        setVar(varName, '"' + fontData.family + '", "Segoe UI", sans-serif');
-        builderState.fonts[role] = fontData;
-      }).catch(function (err) {
-        showFontError(role, "Помилка завантаження шрифту: " + err.message +
-          ". Переконайтесь, що галерея відкрита через локальний сервер (не file://) і назва існує в Google Fonts.");
-      }).then(function () {
+      setVar(varName, '"' + fontData.family + '", "Segoe UI", sans-serif');
+      builderState.fonts[role] = fontData;
+    }).catch(function (err) {
+      showFontError(role, "Помилка завантаження шрифту: " + err.message +
+        ". Переконайтесь, що галерея відкрита через локальний сервер (не file://) і назва існує в Google Fonts.");
+    }).then(function () {
+      if (applyBtn) {
         applyBtn.disabled = false;
         applyBtn.textContent = originalText;
-      });
+      }
     });
+  }
+
+  /* ==========================================================================
+     Searchable font picker — substring match against the bundled local
+     JSON list (no network call for the search itself); each dropdown
+     option renders its own name in its actual font, fetched on demand.
+     ========================================================================== */
+
+  var optionPreviewCache = {}; // familyName -> local preview font-family name (avoids refetching)
+
+  function renderOptionPreview(optBtn, familyName) {
+    if (optionPreviewCache[familyName]) {
+      optBtn.style.fontFamily = '"' + optionPreviewCache[familyName] + '", sans-serif';
+      return;
+    }
+    fetchGoogleFont(familyName, [400]).then(function (fontData) {
+      var blob = new Blob([fontData.files[400]], { type: "font/woff2" });
+      var url = URL.createObjectURL(blob);
+      var previewFamily = "uikit-font-option-" + fontData.slug;
+      var styleEl = document.createElement("style");
+      styleEl.textContent = '@font-face { font-family: "' + previewFamily +
+        '"; src: url("' + url + '") format("woff2"); font-weight: 400; }';
+      document.head.appendChild(styleEl);
+      optionPreviewCache[familyName] = previewFamily;
+      optBtn.style.fontFamily = '"' + previewFamily + '", sans-serif';
+    }).catch(function () {
+      // Preview rendering is a nice-to-have, not critical — leave the
+      // fallback font on the option row rather than surfacing an error.
+    });
+  }
+
+  function initFontSearchPicker(role, varName) {
+    var input = document.getElementById("font-" + role + "-input");
+    var listEl = document.getElementById("font-" + role + "-list");
+    var applyBtn = document.getElementById("font-" + role + "-apply");
+    if (!input || !listEl) return;
+
+    var debounceTimer = null;
+
+    function renderOptions(matches) {
+      listEl.innerHTML = "";
+      matches.slice(0, 5).forEach(function (name) {
+        var optBtn = document.createElement("button");
+        optBtn.type = "button";
+        optBtn.className = "select-search-option";
+        optBtn.textContent = name;
+        listEl.appendChild(optBtn);
+        renderOptionPreview(optBtn, name);
+        optBtn.addEventListener("click", function () {
+          input.value = name;
+          listEl.innerHTML = "";
+          applyFontToRole(role, varName, name);
+        });
+      });
+    }
+
+    input.addEventListener("input", function () {
+      clearTimeout(debounceTimer);
+      var query = input.value.trim().toLowerCase();
+      if (!query) {
+        listEl.innerHTML = "";
+        return;
+      }
+      debounceTimer = setTimeout(function () {
+        var matches = GOOGLE_FONTS_LIST.filter(function (name) {
+          return name.toLowerCase().indexOf(query) !== -1;
+        });
+        renderOptions(matches);
+      }, 200);
+    });
+
+    if (applyBtn) {
+      applyBtn.addEventListener("click", function () {
+        applyFontToRole(role, varName, input.value.trim());
+      });
+    }
   }
 
   /* ==========================================================================
@@ -410,13 +635,16 @@
 
   /* ==========================================================================
      Config serialize / apply / save / load / reset
+     `light` and `dark` are distinct top-level keys — never a single shared
+     color object.
      ========================================================================== */
 
   function serializeConfig() {
-    var config = { colors: {}, numbers: {}, fonts: {}, table: {}, layoutRatio: "" };
+    var config = { light: {}, dark: {}, numbers: {}, fonts: {}, table: {}, layoutRatio: "" };
 
     COLOR_FIELDS.forEach(function (role) {
-      config.colors[role] = getVarValue("--" + role);
+      config.light[role] = state.light[role];
+      config.dark[role] = state.dark[role];
     });
     NUMBER_FIELDS.forEach(function (field) {
       config.numbers[field.varName] = getVarValue(field.varName);
@@ -439,25 +667,19 @@
     var ratioInput = document.getElementById("layout-gen-ratio");
     config.layoutRatio = ratioInput ? ratioInput.value : "30/70";
 
-    return config;
+    return JSON.parse(JSON.stringify(config)); // defensive deep copy
   }
 
   function applyConfig(config) {
     if (!config) return;
 
-    if (config.colors) {
+    if (config.light && config.dark) {
       COLOR_FIELDS.forEach(function (role) {
-        var value = config.colors[role];
-        if (!value) return;
-        setVar("--" + role, value);
-        var input = document.getElementById("cfg-color-" + role);
-        var hexEl = document.getElementById("cfg-color-" + role + "-hex");
-        if (input) {
-          var hex = hslTripleToHex(value);
-          input.value = hex;
-          if (hexEl) hexEl.textContent = hex.toUpperCase();
-        }
+        if (config.light[role]) state.light[role] = config.light[role];
+        if (config.dark[role]) state.dark[role] = config.dark[role];
       });
+      refreshColorPreview();
+      syncColorPickerUI();
     }
 
     if (config.numbers) {
@@ -657,29 +879,43 @@
     "css/components/badges.css", "css/components/tabs.css", "css/components/tables.css",
     "css/components/alerts.css", "css/components/preview.css", "css/components/selects.css",
     "css/components/labels.css", "css/components/layouts.css", "css/components/upload.css",
-    "css/components/loaders.css"
+    "css/components/loaders.css", "css/components/links.css", "css/components/accordion.css"
   ];
 
   var MONTSERRAT_FILES = ["Regular", "Medium", "SemiBold", "Bold"];
 
-  function bakeThemeCss(text, config) {
+  function replaceVarsInBlock(text, blockRegex, values) {
+    return text.replace(blockRegex, function (fullMatch) {
+      var modified = fullMatch;
+      Object.keys(values).forEach(function (role) {
+        var re = new RegExp("(--" + role + ":)[^;]+;");
+        modified = modified.replace(re, "$1 " + values[role] + ";");
+      });
+      return modified;
+    });
+  }
+
+  function bakeThemeCss(text, exportData) {
     var result = text;
 
-    Object.keys(config.colors).forEach(function (name) {
-      var re = new RegExp("(--" + name + ":)[^;]+;", "g");
-      result = result.replace(re, "$1 " + config.colors[name] + ";");
-    });
-    Object.keys(config.numbers).forEach(function (varName) {
+    // Colors: scoped substitution — light values ONLY inside :root, dark
+    // values ONLY inside [data-theme="dark"]. This is the fix for the
+    // color-leak bug: never a single blind global replace for colors.
+    result = replaceVarsInBlock(result, /:root\s*\{[\s\S]*?\n\}/, exportData.light);
+    result = replaceVarsInBlock(result, /\[data-theme="dark"\]\s*\{[\s\S]*?\n\}/, exportData.dark);
+
+    // Numbers/fonts have no dark counterpart — safe as a global replace.
+    Object.keys(exportData.numbers).forEach(function (varName) {
       var name = varName.replace(/^--/, "");
       var re = new RegExp("(--" + name + ":)[^;]+;", "g");
-      result = result.replace(re, "$1 " + config.numbers[varName] + ";");
+      result = result.replace(re, "$1 " + exportData.numbers[varName] + ";");
     });
 
-    if (config.fonts.sansVar) {
-      result = result.replace(/(--font-sans:)[^;]+;/, "$1 " + config.fonts.sansVar + ";");
+    if (exportData.fonts.sansVar) {
+      result = result.replace(/(--font-sans:)[^;]+;/, "$1 " + exportData.fonts.sansVar + ";");
     }
-    if (config.fonts.headingVar) {
-      result = result.replace(/(--font-heading:)[^;]+;/, "$1 " + config.fonts.headingVar + ";");
+    if (exportData.fonts.headingVar) {
+      result = result.replace(/(--font-heading:)[^;]+;/, "$1 " + exportData.fonts.headingVar + ";");
     }
 
     var extraFontFaces = "";
@@ -765,6 +1001,7 @@
 
     var files = {};
     var config = serializeConfig();
+    var exportData = { light: config.light, dark: config.dark, numbers: config.numbers, fonts: config.fonts };
 
     return fetch("css/theme.css")
       .then(function (resp) {
@@ -772,7 +1009,7 @@
         return resp.text();
       })
       .then(function (themeCssText) {
-        files["ui-kit/css/theme.css"] = new TextEncoder().encode(bakeThemeCss(themeCssText, config));
+        files["ui-kit/css/theme.css"] = new TextEncoder().encode(bakeThemeCss(themeCssText, exportData));
         return Promise.all(CSS_FILES.map(function (path) {
           return fetch(path).then(function (resp) {
             if (!resp.ok) throw new Error("Не вдалося отримати " + path + " (HTTP " + resp.status + ")");
@@ -825,10 +1062,18 @@
   document.addEventListener("DOMContentLoaded", function () {
     if (!document.getElementById("cfg-color-primary")) return; // Builder tab not present
 
+    var parsed = parseInitialColorState();
+    state.light = parsed.light;
+    state.dark = parsed.dark;
+
+    initThemeEditSwitch();
     initColorFields();
+    refreshColorPreview();
     initNumberFields();
-    initFontPicker("sans", "--font-sans");
-    initFontPicker("heading", "--font-heading");
+    loadGoogleFontsList().then(function () {
+      initFontSearchPicker("sans", "--font-sans");
+      initFontSearchPicker("heading", "--font-heading");
+    });
     initTableGenerator();
     initLayoutGenerator();
     initSaveLoadReset();

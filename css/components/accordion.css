@@ -1,0 +1,68 @@
+/*
+  accordion.css
+  Built on native <details>/<summary> — works with zero JS by default.
+  UIKit.initAccordion() only adds the optional "only one open at a time"
+  behavior; the disclosure itself needs no JS.
+*/
+
+.accordion {
+  display: flex;
+  flex-direction: column;
+  border-radius: var(--radius);
+  border: 1px solid hsl(var(--border));
+  overflow: hidden;
+}
+
+.accordion-item {
+  border-bottom: 1px solid hsl(var(--border));
+}
+
+.accordion-item:last-child {
+  border-bottom: none;
+}
+
+.accordion-trigger {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding: 0.875rem 1rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: hsl(var(--foreground));
+  cursor: pointer;
+  list-style: none;
+  background-color: hsl(var(--card));
+  transition: background-color var(--transition-duration) ease;
+}
+
+.accordion-trigger::-webkit-details-marker {
+  display: none;
+}
+
+.accordion-trigger::after {
+  content: "+";
+  flex: 0 0 auto;
+  font-size: 1rem;
+  color: hsl(var(--muted-foreground));
+  transition: transform var(--transition-duration) ease;
+}
+
+.accordion-item[open] > .accordion-trigger::after {
+  content: "\2212";
+}
+
+.accordion-trigger:hover {
+  background-color: hsl(var(--accent));
+}
+
+.accordion-trigger:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 2px hsl(var(--ring) / 0.3) inset;
+}
+
+.accordion-content {
+  padding: 0 1rem 1rem;
+  font-size: 0.875rem;
+  color: hsl(var(--muted-foreground));
+}

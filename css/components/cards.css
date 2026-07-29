@@ -56,3 +56,16 @@
   border-top: var(--border-width) solid hsl(var(--border));
   margin: 1rem 0;
 }
+
+.card-divider {
+  border-top: var(--border-width) solid hsl(var(--border));
+  margin: 1rem 0;
+}
+
+.card-divider--vertical {
+  border-top: none;
+  border-left: var(--border-width) solid hsl(var(--border));
+  margin: 0 1rem;
+  align-self: stretch;
+  width: 0;
+}

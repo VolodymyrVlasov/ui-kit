@@ -9,12 +9,19 @@
   font-family: var(--font-sans);
   font-size: 0.875rem;
   line-height: 1.25rem;
-  padding: 0.5rem 0.75rem;
+  padding: 0.5rem 2.25rem 0.5rem 0.75rem;
   border-radius: var(--radius);
   border: var(--border-width) solid hsl(var(--input));
   background-color: hsl(var(--background));
   color: hsl(var(--foreground));
   transition: border-color var(--transition-duration) ease, box-shadow var(--transition-duration) ease;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16' fill='none' stroke='%2371717a' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='4 6 8 10 12 6'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 0.75rem center;
+  background-size: 1rem;
 }
 
 .select:hover {
