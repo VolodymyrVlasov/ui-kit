@@ -276,8 +276,35 @@
       if (!input || !hexEl) return;
       var hex = hslTripleToHex(state[currentEditingTheme][role]);
       input.value = hex;
-      hexEl.textContent = hex.toUpperCase();
+      hexEl.value = hex.toUpperCase();
     });
+  }
+
+  // Accepts "#RGB", "#RRGGBB", or the same without the leading "#";
+  // returns a normalized lowercase "#rrggbb" string, or null if the input
+  // isn't a complete, valid hex color yet (e.g. still mid-typing).
+  var HEX_COLOR_PATTERN = /^#?([0-9a-fA-F]{6}|[0-9a-fA-F]{3})$/;
+
+  function normalizeHexInput(raw) {
+    var match = HEX_COLOR_PATTERN.exec(raw.trim());
+    if (!match) return null;
+    var hex = match[1];
+    if (hex.length === 3) {
+      hex = hex[0] + hex[0] + hex[1] + hex[1] + hex[2] + hex[2];
+    }
+    return "#" + hex.toLowerCase();
+  }
+
+  // Single state-update path shared by both the swatch (<input type=color>,
+  // always a valid hex by construction) and the editable hex text input
+  // (Step 3) — whichever one changes, both stay in sync and the same
+  // preview/autosave side effects run.
+  function commitColorValue(role, input, hexEl, hex) {
+    var triple = hexToHslTriple(hex);
+    state[currentEditingTheme][role] = triple;
+    input.value = hex;
+    hexEl.value = hex.toUpperCase();
+    refreshColorPreview();
   }
 
   function initColorFields() {
@@ -285,11 +312,25 @@
       var input = document.getElementById("cfg-color-" + role);
       var hexEl = document.getElementById("cfg-color-" + role + "-hex");
       if (!input || !hexEl) return;
+
+      // Snapshot once per interaction (on focus, before any edit in this
+      // session lands) rather than on every 'input' event — a native color
+      // picker fires 'input' continuously while dragging, and snapshotting
+      // each of those would make "undo" only revert the last micro-step
+      // instead of the whole gesture.
+      input.addEventListener("focus", snapshotForUndo);
+      hexEl.addEventListener("focus", snapshotForUndo);
+
       input.addEventListener("input", function () {
-        var triple = hexToHslTriple(input.value);
-        state[currentEditingTheme][role] = triple;
-        hexEl.textContent = input.value.toUpperCase();
-        refreshColorPreview();
+        commitColorValue(role, input, hexEl, input.value);
+        persistDraft();
+      });
+
+      hexEl.addEventListener("input", function () {
+        var normalized = normalizeHexInput(hexEl.value);
+        if (!normalized) return; // incomplete/invalid — don't commit yet
+        commitColorValue(role, input, hexEl, normalized);
+        persistDraft();
       });
     });
     syncColorPickerUI();
@@ -327,8 +368,10 @@
       if (!input) return;
       var current = getVarValue(field.varName);
       input.value = parseFloat(current) || 0;
+      input.addEventListener("focus", snapshotForUndo);
       input.addEventListener("input", function () {
         setVar(field.varName, input.value + field.unit);
+        persistDraft();
       });
     });
   }
@@ -438,6 +481,7 @@
     }
 
     fetchGoogleFont(familyName, FONT_WEIGHTS).then(function (fontData) {
+      snapshotForUndo(); // right before the mutation, only on confirmed success
       var previewStyleId = "builder-font-preview-" + role;
       var styleEl = document.getElementById(previewStyleId);
       if (!styleEl) {
@@ -455,6 +499,7 @@
 
       setVar(varName, '"' + fontData.family + '", "Segoe UI", sans-serif');
       builderState.fonts[role] = fontData;
+      persistDraft();
     }).catch(function (err) {
       showFontError(role, "Помилка завантаження шрифту: " + err.message +
         ". Переконайтесь, що галерея відкрита через локальний сервер (не file://) і назва існує в Google Fonts.");
@@ -602,8 +647,12 @@
       var html = buildTableHTML(variantSel.value, colsInput.value, rowsInput.value);
       previewEl.innerHTML = html;
       if (sourceTpl) sourceTpl.innerHTML = html;
+      persistDraft();
     }
 
+    [variantSel, colsInput, rowsInput].forEach(function (el) {
+      el.addEventListener("focus", snapshotForUndo);
+    });
     variantSel.addEventListener("change", render);
     colsInput.addEventListener("input", render);
     rowsInput.addEventListener("input", render);
@@ -658,8 +707,10 @@
           errorEl.style.color = "hsl(var(--destructive))";
         }
       }
+      persistDraft();
     }
 
+    ratioInput.addEventListener("focus", snapshotForUndo);
     ratioInput.addEventListener("input", render);
     if (copyCssBtn) {
       copyCssBtn.addEventListener("click", function () {
@@ -776,6 +827,62 @@
     }
   }
 
+  /* ==========================================================================
+     Autosave draft (localStorage) + single-step undo.
+     Separate from the file-based Save/Load below — this is a silent,
+     automatic safety net so in-progress edits survive an accidental reload,
+     not something the user manages directly (aside from the Undo button).
+     ========================================================================== */
+
+  var AUTOSAVE_KEY = "ui-kit-builder-draft";
+  var lastSnapshot = null; // single full-config snapshot, not a history stack
+  var persistDraftTimer = null;
+
+  function updateUndoButtonState() {
+    var undoBtn = document.getElementById("builder-undo");
+    if (undoBtn) undoBtn.disabled = !lastSnapshot;
+  }
+
+  // Captured on focus of a field (before that field's edit session starts)
+  // rather than on every keystroke/drag-step — a native <input type=color>
+  // fires 'input' continuously while its picker is being dragged, and
+  // snapshotting each of those would make undo only revert the very last
+  // micro-step instead of the whole change the user actually made.
+  function snapshotForUndo() {
+    lastSnapshot = serializeConfig();
+    updateUndoButtonState();
+  }
+
+  function persistDraft() {
+    clearTimeout(persistDraftTimer);
+    persistDraftTimer = setTimeout(function () {
+      try {
+        localStorage.setItem(AUTOSAVE_KEY, JSON.stringify(serializeConfig()));
+      } catch (e) {
+        // Private-browsing / quota / disabled storage — autosave is a
+        // convenience, not critical; fail silently rather than surfacing
+        // an error for something the user didn't explicitly trigger.
+      }
+    }, 400);
+  }
+
+  function initUndoButton() {
+    var undoBtn = document.getElementById("builder-undo");
+    if (!undoBtn) return;
+    updateUndoButtonState();
+    undoBtn.addEventListener("click", function () {
+      if (!lastSnapshot) {
+        UIKit.showToast("Немає останньої зміни для скасування", "warning");
+        return;
+      }
+      applyConfig(lastSnapshot);
+      lastSnapshot = null; // single-step: consumed, not a redo-able stack
+      updateUndoButtonState();
+      persistDraft();
+      UIKit.showToast("Останню зміну скасовано", "success");
+    });
+  }
+
   function initSaveLoadReset() {
     var saveBtn = document.getElementById("builder-save");
     var loadBtn = document.getElementById("builder-load-btn");
@@ -803,6 +910,7 @@
           try {
             var config = JSON.parse(String(reader.result));
             applyConfig(config);
+            persistDraft(); // an explicit file Load becomes the new autosaved baseline
             UIKit.showToast("Налаштування завантажено", "success");
           } catch (err) {
             UIKit.showToast("Не вдалося прочитати config.json: " + err.message, "destructive");
@@ -816,6 +924,13 @@
     if (resetBtn) {
       resetBtn.addEventListener("click", function () {
         applyConfig(DEFAULT_CONFIG);
+        // Overwrite the draft too — otherwise reloading right after Reset
+        // would resurrect the pre-reset draft instead of staying reset.
+        try {
+          localStorage.setItem(AUTOSAVE_KEY, JSON.stringify(DEFAULT_CONFIG));
+        } catch (e) {
+          // Same non-critical-storage reasoning as persistDraft().
+        }
         UIKit.showToast("Скинуто до початкових значень", "success");
       });
     }
@@ -1131,8 +1246,20 @@
     initLayoutGenerator();
     initSaveLoadReset();
     initExport();
+    initUndoButton();
 
+    // Must keep representing the original shipped defaults — captured
+    // BEFORE any autosaved draft is restored below, never after.
     DEFAULT_CONFIG = serializeConfig();
+
+    try {
+      var draftRaw = localStorage.getItem(AUTOSAVE_KEY);
+      if (draftRaw) {
+        applyConfig(JSON.parse(draftRaw));
+      }
+    } catch (e) {
+      // Corrupt/unreadable draft — ignore silently, keep shipped defaults.
+    }
   });
 
 })();

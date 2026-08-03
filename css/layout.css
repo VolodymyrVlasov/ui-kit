@@ -239,7 +239,12 @@
 
 .page-shell {
   display: flex;
-  align-items: flex-start;
+  /* stretch (not flex-start): .page-shell-aside needs a containing block as
+     tall as its sibling .tabs--vertical column, otherwise a sticky child
+     (.tools-card) runs out of room to stick partway through a long page —
+     it would detach and scroll away once past the aside's own short
+     content height, long before the user finishes scrolling the page. */
+  align-items: stretch;
   gap: 1.5rem;
   width: 100%;
 }
@@ -262,5 +267,48 @@
   .page-shell-aside {
     width: 100%;
     flex: 1 1 auto;
+  }
+}
+
+/* ==========================================================================
+   Sticky tools card (settings.html's page-shell-aside) — same top offset
+   the old .builder-toolbar used (css/builder.css) to clear the sticky
+   .gallery-header. Un-stickied at the same breakpoint .page-shell itself
+   collapses at, since .page-shell-aside no longer sits beside the tall
+   scrolling content once stacked below it.
+   ========================================================================== */
+
+.tools-card {
+  position: sticky;
+  top: 4.5rem;
+}
+
+@media (max-width: 1023px) {
+  .tools-card {
+    position: static;
+  }
+}
+
+/* ==========================================================================
+   Color group row (settings.html's Кольори panel) — fields in a left
+   sub-column, live preview in a right sub-column, roughly equal width.
+   Collapses to stacked below tablet, matching every other responsive
+   pattern in this kit.
+   ========================================================================== */
+
+.color-group-row {
+  display: flex;
+  gap: 1.5rem;
+  align-items: flex-start;
+}
+
+.color-group-row > * {
+  flex: 1 1 0%;
+  min-width: 0;
+}
+
+@media (max-width: 1023px) {
+  .color-group-row {
+    flex-direction: column;
   }
 }
