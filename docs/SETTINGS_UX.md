@@ -53,8 +53,9 @@
 5. Група "Службові" — border/input/ring, з прев'ю (рамка інпута, фокус-кільце)
 
 ### Вирішено (уточнення)
-- Success/Warning НЕ отримують кнопкового варіанту (`btn-success`/`btn-warning` не додаємо) — ці ролі лишаються тільки в alerts.css/badges.css, і саме там отримують hover/disabled токени.
-- Hover/disabled токени додаються одразу в усіх інтерактивних компонентах (buttons, inputs, selects, tabs, alerts, badges), а не лише в кнопках — це більший рефактор, робимо його зараз, а не розтягуємо по Фазах 1–4.
+- Success/Warning НЕ отримують кнопкового варіанту (`btn-success`/`btn-warning` не додаємо) — ці ролі лишаються тільки в alerts.css/badges.css.
+- Hover/disabled токени додаються одразу в усіх інтерактивних компонентах, а не лише в кнопках — але **реалізовано (PR #9):** alerts і badges зараз статичні (немає жодного hover/disabled стану в CSS), тому `--success-hover/-disabled`/`--warning-hover/-disabled` додані в `theme.css`, але поки без споживача — зарезервовані під майбутній інтерактивний success/warning-елемент (напр. закриваємий badge чи toast). Tabs/forms/selects теж підтверджено поза межами цього рефакторингу (немає рольового відображення на primary/secondary/accent/destructive).
+- `.btn-outline`/`.btn-ghost`: `--accent` лишається прямим hover-кольором (без окремого `--accent-hover` — це був би зайвий шар), disabled застосовує `--accent-disabled` лише до border/тексту, не до фону (щоб не з'явився новий "заповнений" вигляд).
 
 ---
 

@@ -105,8 +105,16 @@
      ========================================================================== */
 
   var COLOR_FIELDS = [
-    "primary", "secondary", "accent", "destructive",
-    "background", "foreground", "muted", "border", "ring"
+    "background", "foreground",
+    "card", "card-foreground",
+    "primary", "primary-foreground", "primary-hover", "primary-disabled",
+    "secondary", "secondary-foreground", "secondary-hover", "secondary-disabled",
+    "accent", "accent-foreground", "accent-hover", "accent-disabled",
+    "destructive", "destructive-foreground", "destructive-hover", "destructive-disabled",
+    "success", "success-foreground",
+    "warning", "warning-foreground",
+    "muted", "muted-foreground",
+    "border", "input", "ring"
   ];
 
   var NUMBER_FIELDS = [
@@ -231,9 +239,29 @@
     }
   }
 
+  /* ==========================================================================
+     Per-group live previews (Кольори panel on settings.html) — every real
+     component used as a preview (card/buttons/badges/alerts/input) lives
+     inside one shared #color-groups-preview-scope wrapper. Setting all 29
+     COLOR_FIELDS as inline custom properties on that single ancestor lets
+     every nested hsl(var(--role)) resolve to whichever theme is currently
+     being edited, via ordinary CSS inheritance — isolated from the page's
+     own ambient [data-theme], same isolation idea as the old preview cards,
+     just scoped to one wrapper instead of duplicated per element.
+     ========================================================================== */
+
+  function renderColorGroupPreviews() {
+    var scopeEl = document.getElementById("color-groups-preview-scope");
+    if (!scopeEl) return;
+    COLOR_FIELDS.forEach(function (role) {
+      scopeEl.style.setProperty("--" + role, state[currentEditingTheme][role]);
+    });
+  }
+
   function refreshColorPreview() {
     renderPreviewStyle();
     renderPreviewCards();
+    renderColorGroupPreviews();
   }
 
   /* ==========================================================================
@@ -281,6 +309,7 @@
       darkBtn.classList.toggle("btn-outline", theme !== "dark");
       darkBtn.setAttribute("aria-pressed", theme === "dark" ? "true" : "false");
       syncColorPickerUI();
+      renderColorGroupPreviews();
     }
 
     lightBtn.addEventListener("click", function () { setEditing("light"); });
@@ -758,6 +787,7 @@
         var json = JSON.stringify(serializeConfig(), null, 2);
         var blob = new Blob([json], { type: "application/json" });
         downloadBlob(blob, "config.json");
+        UIKit.showToast("Налаштування збережено", "success");
       });
     }
 
@@ -773,8 +803,9 @@
           try {
             var config = JSON.parse(String(reader.result));
             applyConfig(config);
+            UIKit.showToast("Налаштування завантажено", "success");
           } catch (err) {
-            window.alert("Не вдалося прочитати config.json: " + err.message);
+            UIKit.showToast("Не вдалося прочитати config.json: " + err.message, "destructive");
           }
         };
         reader.readAsText(file);
@@ -785,6 +816,7 @@
     if (resetBtn) {
       resetBtn.addEventListener("click", function () {
         applyConfig(DEFAULT_CONFIG);
+        UIKit.showToast("Скинуто до початкових значень", "success");
       });
     }
   }
