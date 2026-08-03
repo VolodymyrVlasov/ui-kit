@@ -43,6 +43,12 @@
   color: hsl(var(--muted-foreground));
 }
 
+.dropzone-icon {
+  width: 2rem;
+  height: 2rem;
+  color: hsl(var(--muted-foreground));
+}
+
 .dropzone-list {
   display: flex;
   flex-direction: column;

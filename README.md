@@ -30,19 +30,26 @@ ui-kit/
 │   │   ├── preview.css          SVG preview-область
 │   │   ├── layouts.css          Готові лейаут-патерни
 │   │   ├── upload.css           .dropzone — файловий дропзон (UI/стан, без мережевої логіки)
-│   │   └── loaders.css          Спінери, .loader-inline/.loader-progress, .progress
+│   │   ├── loaders.css          Спінери, .loader-inline/.loader-progress, .progress
+│   │   ├── links.css            Стилі посилань за замовчуванням + .link/.link-muted/.link-underline
+│   │   └── accordion.css        .accordion на <details>/<summary>
 │   ├── layout.css              Flexbox/grid-утиліти, відступи, текстові хелпери, .container
-│   └── gallery.css              Стилі лише для галереї-демо (НЕ копіювати в інші проєкти)
+│   ├── gallery.css              Стилі лише для галереї-демо (НЕ копіювати в інші проєкти)
+│   └── builder.css              Стилі Конструктора (toolbar, дві прев'ю-картки) — НЕ копіювати
 ├── js/
-│   ├── kit.js                   UIKit — вкладки, toast, дропзон, лоадери, розширені інпути (перевикористовуваний)
-│   ├── gallery.js               Скрипт лише для галереї-демо (НЕ копіювати в інші проєкти)
-│   └── builder.js               Конструктор теми/експорт .zip — dev-інструмент (НЕ копіювати в інші проєкти)
+│   ├── kit.js                   UIKit — вкладки, toast, дропзон, лоадери, розширені інпути, акордіон (перевикористовуваний)
+│   ├── gallery.js               Скрипт лише для галереї-демо, включно з перемикачем Компоненти/Інструменти (НЕ копіювати)
+│   ├── builder.js               Конструктор теми/експорт .zip — dev-інструмент (НЕ копіювати в інші проєкти)
+│   └── google-fonts-list.json   Локальний список назв Google Fonts для пошуку в Конструкторі (НЕ копіювати)
 ├── fonts/
 │   └── Montserrat/
 │       ├── Montserrat-Regular.woff2
 │       ├── Montserrat-Medium.woff2
 │       ├── Montserrat-SemiBold.woff2
 │       └── Montserrat-Bold.woff2
+├── favicon.svg                  Приклад — замініть на власну іконку
+├── assets/
+│   └── logo.svg                  Приклад-заглушка логотипу — замініть на власний
 ├── README.md
 └── .gitignore
 ```
@@ -68,8 +75,13 @@ ui-kit/
 toast, dropzone, лоадери з кроками, розширені інпути) — він самостійно
 ініціалізується на `DOMContentLoaded`, жодних ручних викликів не потрібно.
 
-`css/gallery.css`, `js/gallery.js` та `index.html` — це виключно демо-сайт
-галереї, їх **не потрібно** копіювати в інший проєкт.
+`css/gallery.css`, `css/builder.css`, `js/gallery.js`, `js/builder.js`,
+`js/google-fonts-list.json` та `index.html` — це виключно демо-сайт
+галереї й dev-інструменти, їх **не потрібно** копіювати в інший проєкт.
+
+`favicon.svg` та `assets/logo.svg` — приклади-заглушки (проста абстрактна
+іконка з квадратів), не обов'язкова частина кіту; скопіюйте їх лише якщо
+хочете стартову точку, і замініть на власний бренд.
 
 ## Теми
 
@@ -122,12 +134,16 @@ shadcn/ui) — завжди використовуйте їх обгорнути
   `textarea`, `checkbox`, `radio`, а також розширені інпути:
   `input-search` (+ `input-search-field` / `input-search-icon` /
   `input-search-clear`), `input-number` (+ `input-number-field` /
-  `input-number-btn`), `input-color` (+ `input-color-swatch` /
+  `input-number-btn`; тепер має ширину «за вмістом», а не на всю ширину
+  контейнера), `input-color` (+ `input-color-swatch` /
   `input-color-value`, поруч — окремий блок `color-swatches` з
   `color-swatch`), `textarea-auto` (модифікатор `.textarea`, що росте з
-  вмістом)
+  вмістом), `input-range` (+ `input-range-field` / `input-range-value` —
+  повзунок із видимим значенням, прив'язується через
+  `UIKit.initRangeInput()`)
 - **Селекти** (`selects.css`): `select` (нативний `<select>`, стилізований
-  під `.input`), `select-search` / `select-search-input` /
+  під `.input`, тепер із власною стрілкою-шевроном з рівним відступом від
+  краю), `select-search` / `select-search-input` /
   `select-search-list` / `select-search-option` (пошуковий
   комбобокс-патерн на чистих HTML/CSS/JS)
 - **Лейбли** (`labels.css`): `label-text` (текст лише для читання),
@@ -135,24 +151,37 @@ shadcn/ui) — завжди використовуйте їх обгорнути
   `label-field--row` / `label-field--col`
 - **Картки та панелі** (`cards.css`): `card`, `card-header`,
   `card-title`, `card-description`, `card-content`, `card-footer`,
-  `panel`, `divider`
+  `panel`, `divider`, `card-divider` (горизонтальний, для
+  `.card-content`), `card-divider--vertical` (для секцій поруч)
 - **Бейджі** (`badges.css`): `badge`, `badge-secondary`, `badge-outline`,
   `badge-destructive`, `badge-success`
 - **Вкладки** (`tabs.css`): `tabs`, `tabs-list`, `tab-trigger` (+
   `.is-active`), `tab-content` (+ `.is-active`) — прив'язуйте поведінку
   кліків за патерном `initTabs()` з `index.html` (будь-який контейнер
-  `.tabs` виявляється автоматично, ідентифікатори не потрібні)
+  `.tabs` виявляється автоматично, ідентифікатори не потрібні). Модифікатор
+  `tabs--vertical` перетворює список вкладок на бічну панель зліва — чиста
+  CSS-заміна, `initTabs()` не залежить від напрямку розкладки
 - **Таблиці** (`tables.css`): `table-wrapper`, `table`, а також варіанти
   `table-striped`, `table-bordered`, `table-compact` та статичний
   індикатор сортованого стовпця `th.sortable` (+ `.sort-asc` /
   `.sort-desc`)
 - **Алерти та toast** (`alerts.css`): `alert`, `alert-destructive`,
-  `alert-success`, `alert-warning`, `toast` (+ `.is-visible`)
+  `alert-success`, `alert-warning`, `toast` (+ `.is-visible`), позиція —
+  через `toast-container` + один із 7 модифікаторів
+  `toast-container--top-left/top-center/top-right/center/bottom-left/bottom-center/bottom-right`,
+  усе разом викликається через `UIKit.showToast(message, type, position)`
 - **Preview** (`preview.css`): `preview-area`, `preview-svg`
 - **Лейаути** (`layouts.css`): `layout-row`, `layout-col`, `layout-full`,
   `layout-sidebar` (+ `layout-sidebar-aside` / `layout-sidebar-content`,
   ширина бічної панелі задається змінною `--layout-sidebar-width`),
   `layout-split`
+- **Посилання** (`links.css`): базовий стиль `<a>` за замовчуванням +
+  `link`, `link-muted`, `link-underline` (усі з hover/focus/visited)
+- **Акордіон** (`accordion.css`): `accordion`, `accordion-item` (це
+  `<details>`), `accordion-trigger` (це `<summary>`), `accordion-content`
+  — працює без JS; `UIKit.initAccordion(el, { singleOpen: true })` (або
+  атрибути `data-accordion`/`data-single-open` на контейнер) додає
+  поведінку «лише один розкритий пункт за раз»
 - **Файловий дропзон** (`upload.css`): `dropzone` (+ `.dropzone--active`
   під час перетягування, `.dropzone--error` — виставляється вручну
   застосунком), `dropzone-hint`, `dropzone-list` (+
@@ -174,7 +203,8 @@ shadcn/ui) — завжди використовуйте їх обгорнути
 - Відступ між елементами (flex або grid): `gap-1` … `gap-6`
 - Внутрішні/зовнішні відступи: `p-0`…`p-6`, `px-0`…`px-6`, `py-0`…`py-6`,
   `m-0`…`m-6`, `mt-0`…`mt-6`, `mb-0`…`mb-6`
-- Текст: `text-sm`, `text-lg`, `font-semibold`, `font-mono`, `text-muted`
+- Текст: `text-sm`, `text-lg`, `font-semibold`, `font-mono`, `text-muted`,
+  `text-left`, `text-center`, `text-right`, `text-justify`
 - Лейаут: `container`
 
 ## JavaScript (`js/kit.js`)
@@ -185,53 +215,86 @@ shadcn/ui) — завжди використовуйте їх обгорнути
 
 | Функція | Що робить |
 |---------|-----------|
-| `UIKit.initTabs(root)` | Вмикає перемикання для кожного `.tabs`-контейнера всередині `root` (за замовчуванням — увесь `document`) |
-| `UIKit.showToast(message, type)` | Показує спливне повідомлення в елементі `#toast`; `type` — необов'язковий модифікатор |
+| `UIKit.initTabs(root)` | Вмикає перемикання для кожного `.tabs`-контейнера всередині `root` (за замовчуванням — увесь `document`); не залежить від горизонтальної чи вертикальної (`.tabs--vertical`) розкладки |
+| `UIKit.showToast(message, type, position)` | Показує спливне повідомлення в елементі `#toast`; `type` — необов'язковий модифікатор (`destructive`/`success`/`warning`), `position` — один із 7 варіантів (`top-left`, `top-center`, `top-right`, `center`, `bottom-left`, `bottom-center`, `bottom-right`; за замовчуванням `bottom-right`) |
 | `UIKit.initDropzone(el)` | Прив'язує drag-and-drop/клік-вибір файлів до `el`, рендерить список у сусідній `.dropzone-list`, генерує подію `uikit:files-selected` |
+| `UIKit.initFileButton(el)` | Проста альтернатива дропзону: звичайна `.btn`, що відкриває нативний вибір файлів і генерує ту саму подію `uikit:files-selected` (без chrome драг-н-дропу) |
 | `UIKit.setLoaderStep(el, text)` | Оновлює текст поточного кроку всередині `.loader-progress`-елемента `el` |
 | `UIKit.initSearchInput(el)` | Прив'язує кнопку очищення `.input-search-clear` до `.input-search`-обгортки `el` |
 | `UIKit.initNumberStepper(el)` | Прив'язує кнопки −/+ до `.input-number`-обгортки `el`, з урахуванням `min`/`max`/`step` |
 | `UIKit.initColorInput(el)` | Синхронізує текстовий hex-readout і кнопки `.color-swatches` з нативним `input[type=color]` усередині `.input-color`-обгортки `el` |
 | `UIKit.initAutoResizeTextarea(el)` | Підганяє висоту `el` під вміст під час вводу |
+| `UIKit.initRangeInput(el)` | Синхронізує текстовий readout `.input-range-value` з нативним `input[type=range]` усередині `.input-range`-обгортки `el` |
+| `UIKit.initAccordion(el, { singleOpen })` | За потреби (`singleOpen: true`) закриває інші `.accordion-item` при відкритті одного — сам акордіон і без цього працює нативно на `<details>` |
 | `UIKit.autoInit()` | Викликає всі ініціалізатори вище для кожного відповідного елемента в документі |
 
 `UIKit.autoInit()` шукає елементи за селекторами `.tabs`,
-`[data-dropzone]`, `.input-search`, `.input-number`, `.input-color` та
-`.textarea-auto` — досить додати потрібний клас/атрибут у розмітку.
+`[data-dropzone]`, `[data-file-button]`, `.input-search`, `.input-number`,
+`.input-color`, `.textarea-auto`, `.input-range` та
+`[data-accordion]` (з опційним `data-single-open`) — досить додати
+потрібний клас/атрибут у розмітку.
 
-## Конструктор (`js/builder.js`, вкладка «Конструктор»)
+## Конструктор (`js/builder.js`, розділ «Інструменти» → вкладка «Конструктор»)
 
 Dev-інструмент у галереї (не входить у список файлів для копіювання в інший
 проєкт — див. вкладку «Налаштування»). Дозволяє наживо налаштувати тему й
-вивантажити готову кастомізовану копію кіту, не редагуючи CSS вручну:
+вивантажити готову кастомізовану копію кіту, не редагуючи CSS вручну.
 
-- **Кольори** — 9 `.input-color`-пікерів (primary/secondary/accent/
-  destructive/background/foreground/muted/border/ring), кожен одразу
-  записує обране значення у відповідну CSS-змінну на `<html>` — оновлення
-  видно миттєво на будь-якій вже відкритій вкладці.
-- **Типографіка** — два незалежні пікери шрифтів з Google Fonts (тіло
-  тексту / заголовки, окрема змінна `--font-heading`), а також числові
-  поля для `--font-size-base` і меж `clamp()` заголовків (`--h1-min`/
-  `--h1-max` тощо).
-- **Відступи та форма** — `--spacing-unit`, `--radius`, `--border-width`,
-  `--container-max-width`, `--transition-duration`.
-- **Генератор таблиць** — варіант (звичайна/striped/bordered/compact) +
-  кількість колонок і рядків → жива прев'ю-таблиця й кнопка «Скопіювати
-  HTML».
-- **Генератор лейаут-співвідношень** — рядок на кшталт `30/70` або
+### Виправлення критичного бага (light/dark color leak)
+
+Раніше живе прев'ю писало кожну зміну кольору напряму в `<html>.style` —
+inline-стилі мають вищий пріоритет за ОБИДВА селектори `:root` і
+`[data-theme="dark"]` одночасно, тож редагування кольору в одній темі
+непомітно перезаписувало те саме значення в іншій; при експорті це
+«протікання» потрапляло і в збережений `theme.css`, назавжди знищуючи
+відмінність темної теми від світлої. Тепер `light`- і `dark`-стан
+зберігаються як два повністю незалежні JS-об'єкти (парсяться напряму з
+CSSOM-правил `:root`/`[data-theme="dark"]`, а не через
+`getComputedStyle(<html>)`, який міг би вже бути «забруднений»), живе
+прев'ю рендериться в окремий `<style id="builder-live-preview">` з двома
+власними блоками, а бекап/експорт пишуть кожен блок `theme.css`
+винятково зі свого відповідного стану. Редагування світлої теми більше
+ніколи не чіпає темну, і навпаки.
+
+### Що є в конструкторі
+
+- **Панель інструментів** (`.builder-toolbar`, `position: sticky`) —
+  Зберегти/Завантажити/Скинути/Експорт та дві мініатюрні прев'ю-картки
+  (світла + темна тема одночасно) — усе це залишається на екрані
+  незалежно від того, яку внутрішню вкладку конструктора відкрито.
+- **Кольори** (внутрішня вкладка) — сегментований перемикач «Редагувати:
+  Світла тема / Темна тема» над 9 спільними `.input-color`-пікерами
+  (primary/secondary/accent/destructive/background/foreground/muted/
+  border/ring) — перемикач визначає, який із двох незалежних станів
+  редагують ці 9 полів; обидві прев'ю-картки в тулбарі оновлюються
+  миттєво незалежно від того, яку сторону редагують.
+- **Типографіка** — два незалежні шрифтові пікери з Google Fonts (тіло
+  тексту / заголовки, окрема змінна `--font-heading`) як пошукові
+  комбобокси: підстрокове співпадіння за локальним
+  `js/google-fonts-list.json` (без мережевого запиту для самого пошуку),
+  кожен варіант у випадному списку рендериться його ж власним шрифтом
+  (одноразово підвантаженим для прев'ю), плюс числові поля для
+  `--font-size-base` і меж `clamp()` заголовків (`--h1-min`/`--h1-max` тощо).
+- **Простір/форма** (внутрішня вкладка) — `--spacing-unit`, `--radius`,
+  `--border-width`, `--container-max-width`, `--transition-duration`.
+- **Таблиці** (внутрішня вкладка) — варіант (звичайна/striped/bordered/
+  compact) + кількість колонок і рядків → жива прев'ю-таблиця й кнопка
+  «Скопіювати HTML».
+- **Лейаути** (внутрішня вкладка) — рядок на кшталт `30/70` або
   `25/25/50` → прев'ю колонок у відповідній пропорції, копіювання HTML і
   чистого CSS-значення `grid-template-columns`.
-- **Зберегти/Завантажити налаштування** — експортує/імпортує `config.json`
-  з усіма поточними значеннями. **Скинути** повертає все до значень зі
-  старту сторінки.
+- **Зберегти/Завантажити налаштування** — `config.json` з `light` і
+  `dark` як окремими ключами верхнього рівня (плюс числа/шрифти/генератори).
+  **Скинути** повертає обидва стани та решту полів до значень зі старту
+  сторінки.
 - **Експортувати збірку (.zip)** — збирає самодостатню копію кіту:
-  `theme.css` з «запеченими» (а не runtime-override) поточними
-  значеннями токенів, усі незмінені `layout.css`/`components.css`/
-  `components/*.css`, `js/kit.js`, шрифти (Montserrat завжди + будь-який
-  підключений Google Font під `fonts/<slug>/`) та `starter.html` з
-  прикладом згенерованої таблиці й лейаут-співвідношення. ZIP збирається
-  вручну на чистому JS (STORE-метод, без стиснення, власна реалізація
-  CRC32) — жодної zip-бібліотеки.
+  `theme.css` з «запеченими» значеннями (світлий і темний блоки —
+  окремо, зі своїх станів), усі незмінені `layout.css`/`components.css`/
+  `components/*.css` (включно з `links.css`/`accordion.css`), `js/kit.js`,
+  шрифти (Montserrat завжди + будь-який підключений Google Font під
+  `fonts/<slug>/`) та `starter.html` з прикладом згенерованої таблиці й
+  лейаут-співвідношення. ZIP збирається вручну на чистому JS (STORE-метод,
+  без стиснення, власна реалізація CRC32) — жодної zip-бібліотеки.
 
 **Вимога локального сервера:** завантаження шрифтів з Google Fonts і
 експорт .zip виконують реальні `fetch()`-запити до файлів проєкту, що
@@ -244,6 +307,18 @@ python3 -m http.server 8000
 і перейдіть на `http://localhost:8000` — після цього обидві функції
 працюють. Якщо сервера немає, обидві дії показують видиму помилку в
 самому інтерфейсі (не лише в консолі).
+
+## Навігація галереї (Компоненти / Інструменти)
+
+Верхній перемикач розділяє галерею на дві групи вкладок:
+**«Компоненти»** (усі демо компонентів) і **«Інструменти»** (лише
+«Налаштування» та «Конструктор»). Видима лише одна група одночасно;
+перемикання не знищує стан жодної з них — наприклад, стан Конструктора
+(вибрані кольори, завантажені шрифти) зберігається, навіть якщо ви
+перейшли на «Компоненти» й повернулися назад. Реалізовано в
+`js/gallery.js` двома окремими `.tabs`-контейнерами
+(`#components-tabs`/`#tools-tabs`), кожен із яких `UIKit.initTabs()`
+підхоплює незалежно — перемикач лише показує/ховає потрібний контейнер.
 
 ## Адаптивність (Responsive)
 
@@ -261,7 +336,7 @@ python3 -m http.server 8000
 Додатково, незалежно від брейкпоінта:
 - `.table-wrapper` завжди має `overflow-x: auto` — вузькі екрани скролять таблицю горизонтально замість стискання колонок
 - Заголовки `h1`–`h3` масштабуються плавно через `clamp()` між мобільним і десктопним viewport, без стрибків на конкретних брейкпоінтах
-- Головна навігація галереї (`.tabs-list` з 18 вкладками) скролиться горизонтально на mobile/tablet, не переносячись і не ламаючи лейаут
+- Навігація галереї (`.tabs-list` кожної з двох груп — 17 вкладок «Компоненти», 2 вкладки «Інструменти») скролиться горизонтально на mobile/tablet, не переносячись і не ламаючи лейаут
 
 Реалізовано виключно медіа-запитами та `clamp()` — без `transform: scale`/`zoom`,
 щоб текст лишався різким, а координати кліків — коректними на будь-якій ширині.

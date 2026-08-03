@@ -36,17 +36,27 @@ window.UIKit = (function () {
      ========================================================================== */
 
   var toastTimer = null;
+  var TOAST_POSITIONS = [
+    "top-left", "top-center", "top-right",
+    "center",
+    "bottom-left", "bottom-center", "bottom-right"
+  ];
 
-  function showToast(message, type) {
+  function showToast(message, type, position) {
     var toastEl = document.getElementById("toast");
     if (!toastEl) return;
     toastEl.textContent = message;
-    toastEl.classList.add("is-visible");
+    toastEl.classList.add("is-visible", "toast-container");
     if (type) {
       toastEl.setAttribute("data-toast-type", type);
     } else {
       toastEl.removeAttribute("data-toast-type");
     }
+    var pos = TOAST_POSITIONS.indexOf(position) !== -1 ? position : "bottom-right";
+    TOAST_POSITIONS.forEach(function (p) {
+      toastEl.classList.remove("toast-container--" + p);
+    });
+    toastEl.classList.add("toast-container--" + pos);
     clearTimeout(toastTimer);
     toastTimer = setTimeout(function () {
       toastEl.classList.remove("is-visible");
@@ -240,6 +250,71 @@ window.UIKit = (function () {
   }
 
   /* ==========================================================================
+     Range input — keeps the value readout in sync
+     ========================================================================== */
+
+  function initRangeInput(wrap) {
+    var input = wrap.querySelector(".input-range-field");
+    var valueEl = wrap.querySelector(".input-range-value");
+    if (!input) return;
+    function sync() {
+      if (valueEl) valueEl.textContent = input.value;
+    }
+    input.addEventListener("input", sync);
+    sync();
+  }
+
+  /* ==========================================================================
+     Accordion — built on native <details>/<summary>; this only adds the
+     optional "close the others when one opens" behavior.
+     ========================================================================== */
+
+  function initAccordion(el, options) {
+    var singleOpen = !!(options && options.singleOpen);
+    if (!singleOpen) return;
+    var items = Array.prototype.slice.call(el.querySelectorAll(":scope > .accordion-item"));
+    items.forEach(function (item) {
+      item.addEventListener("toggle", function () {
+        if (!item.open) return;
+        items.forEach(function (other) {
+          if (other !== item) other.open = false;
+        });
+      });
+    });
+  }
+
+  /* ==========================================================================
+     Plain file-select button — same 'uikit:files-selected' event pattern as
+     initDropzone, for when the full drag-and-drop zone isn't needed.
+     ========================================================================== */
+
+  function initFileButton(el) {
+    var fileInput = document.createElement("input");
+    fileInput.type = "file";
+    fileInput.style.display = "none";
+    if (el.hasAttribute("data-multiple")) fileInput.multiple = true;
+    if (el.hasAttribute("data-accept")) fileInput.accept = el.getAttribute("data-accept");
+    // Inserted as a sibling, not a child — <input> nested inside <button> is
+    // invalid HTML (button is already interactive content).
+    if (el.parentNode) {
+      el.parentNode.insertBefore(fileInput, el.nextSibling);
+    } else {
+      document.body.appendChild(fileInput);
+    }
+
+    el.addEventListener("click", function () {
+      fileInput.click();
+    });
+
+    fileInput.addEventListener("change", function () {
+      if (fileInput.files && fileInput.files.length) {
+        var files = Array.prototype.slice.call(fileInput.files);
+        el.dispatchEvent(new CustomEvent("uikit:files-selected", { detail: { files: files } }));
+      }
+    });
+  }
+
+  /* ==========================================================================
      Auto-init
      ========================================================================== */
 
@@ -250,6 +325,11 @@ window.UIKit = (function () {
     document.querySelectorAll(".input-number").forEach(initNumberStepper);
     document.querySelectorAll(".input-color").forEach(initColorInput);
     document.querySelectorAll(".textarea-auto").forEach(initAutoResizeTextarea);
+    document.querySelectorAll(".input-range").forEach(initRangeInput);
+    document.querySelectorAll("[data-accordion]").forEach(function (el) {
+      initAccordion(el, { singleOpen: el.hasAttribute("data-single-open") });
+    });
+    document.querySelectorAll("[data-file-button]").forEach(initFileButton);
   }
 
   document.addEventListener("DOMContentLoaded", autoInit);
@@ -263,6 +343,9 @@ window.UIKit = (function () {
     initNumberStepper: initNumberStepper,
     initColorInput: initColorInput,
     initAutoResizeTextarea: initAutoResizeTextarea,
+    initRangeInput: initRangeInput,
+    initAccordion: initAccordion,
+    initFileButton: initFileButton,
     autoInit: autoInit
   };
 })();
