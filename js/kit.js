@@ -10,6 +10,30 @@ window.UIKit = (function () {
   "use strict";
 
   /* ==========================================================================
+     Clipboard
+     Shared by gallery.js (demo "Copy HTML"/"Copy class" buttons) and
+     builder.js (generator "Copy CSS" button) — only the copy mechanism
+     lives here; callers own their own visual feedback (button text, toast).
+     ========================================================================== */
+
+  function copyText(text) {
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      return navigator.clipboard.writeText(text);
+    }
+    return new Promise(function (resolve) {
+      var textarea = document.createElement("textarea");
+      textarea.value = text;
+      textarea.style.position = "fixed";
+      textarea.style.opacity = "0";
+      document.body.appendChild(textarea);
+      textarea.select();
+      document.execCommand("copy");
+      document.body.removeChild(textarea);
+      resolve();
+    });
+  }
+
+  /* ==========================================================================
      Tabs
      ========================================================================== */
 
@@ -183,6 +207,31 @@ window.UIKit = (function () {
   }
 
   /* ==========================================================================
+     Searchable select / combobox — filters .select-search-option rows by
+     substring match against the typed query, and fills the input on click.
+     ========================================================================== */
+
+  function initSelectSearch(wrap) {
+    var input = wrap.querySelector(".select-search-input");
+    if (!input) return;
+    var options = Array.prototype.slice.call(wrap.querySelectorAll(".select-search-option"));
+
+    input.addEventListener("input", function () {
+      var query = input.value.trim().toLowerCase();
+      options.forEach(function (opt) {
+        var match = opt.textContent.toLowerCase().indexOf(query) !== -1;
+        opt.classList.toggle("is-hidden", !match);
+      });
+    });
+
+    options.forEach(function (opt) {
+      opt.addEventListener("click", function () {
+        input.value = opt.textContent.trim();
+      });
+    });
+  }
+
+  /* ==========================================================================
      Number stepper
      ========================================================================== */
 
@@ -322,6 +371,7 @@ window.UIKit = (function () {
     initTabs();
     document.querySelectorAll("[data-dropzone]").forEach(initDropzone);
     document.querySelectorAll(".input-search").forEach(initSearchInput);
+    document.querySelectorAll(".select-search").forEach(initSelectSearch);
     document.querySelectorAll(".input-number").forEach(initNumberStepper);
     document.querySelectorAll(".input-color").forEach(initColorInput);
     document.querySelectorAll(".textarea-auto").forEach(initAutoResizeTextarea);
@@ -335,11 +385,13 @@ window.UIKit = (function () {
   document.addEventListener("DOMContentLoaded", autoInit);
 
   return {
+    copyText: copyText,
     initTabs: initTabs,
     showToast: showToast,
     initDropzone: initDropzone,
     setLoaderStep: setLoaderStep,
     initSearchInput: initSearchInput,
+    initSelectSearch: initSelectSearch,
     initNumberStepper: initNumberStepper,
     initColorInput: initColorInput,
     initAutoResizeTextarea: initAutoResizeTextarea,

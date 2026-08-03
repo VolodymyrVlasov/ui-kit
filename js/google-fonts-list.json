@@ -1,20 +1,956 @@
 [
-  "Roboto", "Open Sans", "Lato", "Montserrat", "Oswald", "Raleway", "Poppins",
-  "Nunito", "Nunito Sans", "Merriweather", "Playfair Display", "PT Sans", "PT Serif",
-  "Rubik", "Inter", "Work Sans", "Mulish", "Karla", "Quicksand", "Ubuntu",
-  "Source Sans Pro", "Source Serif Pro", "Noto Sans", "Noto Serif", "Fira Sans",
-  "Fira Code", "JetBrains Mono", "IBM Plex Sans", "IBM Plex Serif", "IBM Plex Mono",
-  "Josefin Sans", "Josefin Slab", "Cabin", "Dosis", "Barlow", "Barlow Condensed",
-  "Manrope", "DM Sans", "DM Serif Display", "Space Grotesk", "Space Mono",
-  "Archivo", "Archivo Black", "Bitter", "Crimson Text", "Crimson Pro", "Lora",
-  "Libre Baskerville", "Libre Franklin", "EB Garamond", "Cormorant", "Cormorant Garamond",
-  "Playfair", "Vollkorn", "Zilla Slab", "Domine", "Alegreya", "Alegreya Sans",
-  "Abril Fatface", "Bebas Neue", "Anton", "Righteous", "Pacifico", "Lobster",
-  "Caveat", "Dancing Script", "Sacramento", "Great Vibes", "Shadows Into Light",
-  "Comfortaa", "Baloo 2", "Kanit", "Prompt", "Chivo", "Heebo", "Assistant",
-  "Hind", "Hind Siliguri", "Mukta", "Titillium Web", "Signika", "Signika Negative",
-  "Overpass", "Exo 2", "Exo", "Orbitron", "Teko", "Yanone Kaffeesatz",
-  "Varela Round", "Questrion", "Questrial", "Amiri", "Tajawal", "Noto Kufi Arabic",
-  "Roboto Slab", "Roboto Condensed", "Roboto Mono", "Public Sans", "Sora",
-  "Outfit", "Plus Jakarta Sans", "Figtree", "Onest", "Instrument Sans"
+  {
+    "name": "Roboto",
+    "subsets": [
+      "cyrillic",
+      "cyrillic-ext",
+      "greek",
+      "greek-ext",
+      "latin",
+      "latin-ext",
+      "math",
+      "symbols",
+      "vietnamese"
+    ]
+  },
+  {
+    "name": "Open Sans",
+    "subsets": [
+      "cyrillic",
+      "cyrillic-ext",
+      "greek",
+      "greek-ext",
+      "hebrew",
+      "latin",
+      "latin-ext",
+      "math",
+      "symbols",
+      "vietnamese"
+    ]
+  },
+  {
+    "name": "Lato",
+    "subsets": [
+      "latin",
+      "latin-ext"
+    ]
+  },
+  {
+    "name": "Montserrat",
+    "subsets": [
+      "cyrillic",
+      "cyrillic-ext",
+      "latin",
+      "latin-ext",
+      "vietnamese"
+    ]
+  },
+  {
+    "name": "Oswald",
+    "subsets": [
+      "cyrillic",
+      "cyrillic-ext",
+      "latin",
+      "latin-ext",
+      "vietnamese"
+    ]
+  },
+  {
+    "name": "Raleway",
+    "subsets": [
+      "cyrillic",
+      "cyrillic-ext",
+      "latin",
+      "latin-ext",
+      "vietnamese"
+    ]
+  },
+  {
+    "name": "Poppins",
+    "subsets": [
+      "devanagari",
+      "latin",
+      "latin-ext"
+    ]
+  },
+  {
+    "name": "Nunito",
+    "subsets": [
+      "cyrillic",
+      "cyrillic-ext",
+      "latin",
+      "latin-ext",
+      "vietnamese"
+    ]
+  },
+  {
+    "name": "Nunito Sans",
+    "subsets": [
+      "cyrillic",
+      "cyrillic-ext",
+      "latin",
+      "latin-ext",
+      "vietnamese"
+    ]
+  },
+  {
+    "name": "Merriweather",
+    "subsets": [
+      "cyrillic",
+      "cyrillic-ext",
+      "latin",
+      "latin-ext",
+      "vietnamese"
+    ]
+  },
+  {
+    "name": "Playfair Display",
+    "subsets": [
+      "cyrillic",
+      "latin",
+      "latin-ext",
+      "vietnamese"
+    ]
+  },
+  {
+    "name": "PT Sans",
+    "subsets": [
+      "cyrillic",
+      "cyrillic-ext",
+      "latin",
+      "latin-ext"
+    ]
+  },
+  {
+    "name": "PT Serif",
+    "subsets": [
+      "cyrillic",
+      "cyrillic-ext",
+      "latin",
+      "latin-ext"
+    ]
+  },
+  {
+    "name": "Rubik",
+    "subsets": [
+      "arabic",
+      "cyrillic",
+      "cyrillic-ext",
+      "hebrew",
+      "latin",
+      "latin-ext"
+    ]
+  },
+  {
+    "name": "Inter",
+    "subsets": [
+      "cyrillic",
+      "cyrillic-ext",
+      "greek",
+      "greek-ext",
+      "latin",
+      "latin-ext",
+      "vietnamese"
+    ]
+  },
+  {
+    "name": "Work Sans",
+    "subsets": [
+      "latin",
+      "latin-ext",
+      "vietnamese"
+    ]
+  },
+  {
+    "name": "Mulish",
+    "subsets": [
+      "cyrillic",
+      "cyrillic-ext",
+      "latin",
+      "latin-ext",
+      "vietnamese"
+    ]
+  },
+  {
+    "name": "Karla",
+    "subsets": [
+      "latin",
+      "latin-ext"
+    ]
+  },
+  {
+    "name": "Quicksand",
+    "subsets": [
+      "latin",
+      "latin-ext",
+      "vietnamese"
+    ]
+  },
+  {
+    "name": "Ubuntu",
+    "subsets": [
+      "cyrillic",
+      "cyrillic-ext",
+      "greek",
+      "greek-ext",
+      "latin",
+      "latin-ext"
+    ]
+  },
+  {
+    "name": "Source Sans Pro",
+    "subsets": [
+      "cyrillic",
+      "cyrillic-ext",
+      "greek",
+      "greek-ext",
+      "latin",
+      "latin-ext",
+      "vietnamese"
+    ]
+  },
+  {
+    "name": "Source Serif Pro",
+    "subsets": [
+      "cyrillic",
+      "cyrillic-ext",
+      "greek",
+      "latin",
+      "latin-ext",
+      "vietnamese"
+    ]
+  },
+  {
+    "name": "Noto Sans",
+    "subsets": [
+      "cyrillic",
+      "cyrillic-ext",
+      "devanagari",
+      "greek",
+      "greek-ext",
+      "latin",
+      "latin-ext",
+      "vietnamese"
+    ]
+  },
+  {
+    "name": "Noto Serif",
+    "subsets": [
+      "cyrillic",
+      "cyrillic-ext",
+      "greek",
+      "greek-ext",
+      "latin",
+      "latin-ext",
+      "math",
+      "vietnamese"
+    ]
+  },
+  {
+    "name": "Fira Sans",
+    "subsets": [
+      "cyrillic",
+      "cyrillic-ext",
+      "greek",
+      "greek-ext",
+      "latin",
+      "latin-ext",
+      "vietnamese"
+    ]
+  },
+  {
+    "name": "Fira Code",
+    "subsets": [
+      "cyrillic",
+      "cyrillic-ext",
+      "greek",
+      "greek-ext",
+      "latin",
+      "latin-ext",
+      "symbols2"
+    ]
+  },
+  {
+    "name": "JetBrains Mono",
+    "subsets": [
+      "cyrillic",
+      "cyrillic-ext",
+      "greek",
+      "latin",
+      "latin-ext",
+      "vietnamese"
+    ]
+  },
+  {
+    "name": "IBM Plex Sans",
+    "subsets": [
+      "cyrillic",
+      "cyrillic-ext",
+      "greek",
+      "latin",
+      "latin-ext",
+      "vietnamese"
+    ]
+  },
+  {
+    "name": "IBM Plex Serif",
+    "subsets": [
+      "cyrillic",
+      "cyrillic-ext",
+      "latin",
+      "latin-ext",
+      "vietnamese"
+    ]
+  },
+  {
+    "name": "IBM Plex Mono",
+    "subsets": [
+      "cyrillic",
+      "cyrillic-ext",
+      "latin",
+      "latin-ext",
+      "vietnamese"
+    ]
+  },
+  {
+    "name": "Josefin Sans",
+    "subsets": [
+      "latin",
+      "latin-ext",
+      "vietnamese"
+    ]
+  },
+  {
+    "name": "Josefin Slab",
+    "subsets": [
+      "latin"
+    ]
+  },
+  {
+    "name": "Cabin",
+    "subsets": [
+      "latin",
+      "latin-ext",
+      "vietnamese"
+    ]
+  },
+  {
+    "name": "Dosis",
+    "subsets": [
+      "latin",
+      "latin-ext",
+      "vietnamese"
+    ]
+  },
+  {
+    "name": "Barlow",
+    "subsets": [
+      "latin",
+      "latin-ext",
+      "vietnamese"
+    ]
+  },
+  {
+    "name": "Barlow Condensed",
+    "subsets": [
+      "latin",
+      "latin-ext",
+      "vietnamese"
+    ]
+  },
+  {
+    "name": "Manrope",
+    "subsets": [
+      "cyrillic",
+      "cyrillic-ext",
+      "greek",
+      "latin",
+      "latin-ext",
+      "vietnamese"
+    ]
+  },
+  {
+    "name": "DM Sans",
+    "subsets": [
+      "latin",
+      "latin-ext"
+    ]
+  },
+  {
+    "name": "DM Serif Display",
+    "subsets": [
+      "latin",
+      "latin-ext"
+    ]
+  },
+  {
+    "name": "Space Grotesk",
+    "subsets": [
+      "latin",
+      "latin-ext",
+      "vietnamese"
+    ]
+  },
+  {
+    "name": "Space Mono",
+    "subsets": [
+      "latin",
+      "latin-ext",
+      "vietnamese"
+    ]
+  },
+  {
+    "name": "Archivo",
+    "subsets": [
+      "latin",
+      "latin-ext",
+      "vietnamese"
+    ]
+  },
+  {
+    "name": "Archivo Black",
+    "subsets": [
+      "latin",
+      "latin-ext"
+    ]
+  },
+  {
+    "name": "Bitter",
+    "subsets": [
+      "cyrillic",
+      "cyrillic-ext",
+      "latin",
+      "latin-ext",
+      "vietnamese"
+    ]
+  },
+  {
+    "name": "Crimson Text",
+    "subsets": [
+      "latin",
+      "latin-ext",
+      "vietnamese"
+    ]
+  },
+  {
+    "name": "Crimson Pro",
+    "subsets": [
+      "latin",
+      "latin-ext",
+      "vietnamese"
+    ]
+  },
+  {
+    "name": "Lora",
+    "subsets": [
+      "cyrillic",
+      "cyrillic-ext",
+      "latin",
+      "latin-ext",
+      "math",
+      "symbols",
+      "vietnamese"
+    ]
+  },
+  {
+    "name": "Libre Baskerville",
+    "subsets": [
+      "latin",
+      "latin-ext"
+    ]
+  },
+  {
+    "name": "Libre Franklin",
+    "subsets": [
+      "cyrillic",
+      "cyrillic-ext",
+      "latin",
+      "latin-ext",
+      "vietnamese"
+    ]
+  },
+  {
+    "name": "EB Garamond",
+    "subsets": [
+      "cyrillic",
+      "cyrillic-ext",
+      "greek",
+      "greek-ext",
+      "latin",
+      "latin-ext",
+      "vietnamese"
+    ]
+  },
+  {
+    "name": "Cormorant",
+    "subsets": [
+      "cyrillic",
+      "cyrillic-ext",
+      "latin",
+      "latin-ext",
+      "vietnamese"
+    ]
+  },
+  {
+    "name": "Cormorant Garamond",
+    "subsets": [
+      "cyrillic",
+      "cyrillic-ext",
+      "latin",
+      "latin-ext",
+      "vietnamese"
+    ]
+  },
+  {
+    "name": "Playfair",
+    "subsets": [
+      "cyrillic",
+      "cyrillic-ext",
+      "latin",
+      "latin-ext",
+      "vietnamese"
+    ]
+  },
+  {
+    "name": "Vollkorn",
+    "subsets": [
+      "cyrillic",
+      "cyrillic-ext",
+      "greek",
+      "latin",
+      "latin-ext",
+      "vietnamese"
+    ]
+  },
+  {
+    "name": "Zilla Slab",
+    "subsets": [
+      "latin",
+      "latin-ext"
+    ]
+  },
+  {
+    "name": "Domine",
+    "subsets": [
+      "latin",
+      "latin-ext"
+    ]
+  },
+  {
+    "name": "Alegreya",
+    "subsets": [
+      "cyrillic",
+      "cyrillic-ext",
+      "greek",
+      "greek-ext",
+      "latin",
+      "latin-ext",
+      "vietnamese"
+    ]
+  },
+  {
+    "name": "Alegreya Sans",
+    "subsets": [
+      "cyrillic",
+      "cyrillic-ext",
+      "greek",
+      "greek-ext",
+      "latin",
+      "latin-ext",
+      "vietnamese"
+    ]
+  },
+  {
+    "name": "Abril Fatface",
+    "subsets": [
+      "latin",
+      "latin-ext"
+    ]
+  },
+  {
+    "name": "Bebas Neue",
+    "subsets": [
+      "latin",
+      "latin-ext"
+    ]
+  },
+  {
+    "name": "Anton",
+    "subsets": [
+      "latin",
+      "latin-ext",
+      "vietnamese"
+    ]
+  },
+  {
+    "name": "Righteous",
+    "subsets": [
+      "latin",
+      "latin-ext"
+    ]
+  },
+  {
+    "name": "Pacifico",
+    "subsets": [
+      "cyrillic",
+      "cyrillic-ext",
+      "latin",
+      "latin-ext",
+      "vietnamese"
+    ]
+  },
+  {
+    "name": "Lobster",
+    "subsets": [
+      "cyrillic",
+      "cyrillic-ext",
+      "latin",
+      "latin-ext",
+      "vietnamese"
+    ]
+  },
+  {
+    "name": "Caveat",
+    "subsets": [
+      "cyrillic",
+      "cyrillic-ext",
+      "latin",
+      "latin-ext"
+    ]
+  },
+  {
+    "name": "Dancing Script",
+    "subsets": [
+      "latin",
+      "latin-ext",
+      "vietnamese"
+    ]
+  },
+  {
+    "name": "Sacramento",
+    "subsets": [
+      "latin",
+      "latin-ext"
+    ]
+  },
+  {
+    "name": "Great Vibes",
+    "subsets": [
+      "cyrillic",
+      "cyrillic-ext",
+      "greek-ext",
+      "latin",
+      "latin-ext",
+      "vietnamese"
+    ]
+  },
+  {
+    "name": "Shadows Into Light",
+    "subsets": [
+      "latin",
+      "latin-ext"
+    ]
+  },
+  {
+    "name": "Comfortaa",
+    "subsets": [
+      "cyrillic",
+      "cyrillic-ext",
+      "greek",
+      "latin",
+      "latin-ext",
+      "vietnamese"
+    ]
+  },
+  {
+    "name": "Baloo 2",
+    "subsets": [
+      "devanagari",
+      "latin",
+      "latin-ext",
+      "vietnamese"
+    ]
+  },
+  {
+    "name": "Kanit",
+    "subsets": [
+      "latin",
+      "latin-ext",
+      "thai",
+      "vietnamese"
+    ]
+  },
+  {
+    "name": "Prompt",
+    "subsets": [
+      "latin",
+      "latin-ext",
+      "thai",
+      "vietnamese"
+    ]
+  },
+  {
+    "name": "Chivo",
+    "subsets": [
+      "latin",
+      "latin-ext",
+      "vietnamese"
+    ]
+  },
+  {
+    "name": "Heebo",
+    "subsets": [
+      "hebrew",
+      "latin",
+      "latin-ext",
+      "math",
+      "symbols"
+    ]
+  },
+  {
+    "name": "Assistant",
+    "subsets": [
+      "hebrew",
+      "latin",
+      "latin-ext"
+    ]
+  },
+  {
+    "name": "Hind",
+    "subsets": [
+      "devanagari",
+      "latin",
+      "latin-ext"
+    ]
+  },
+  {
+    "name": "Hind Siliguri",
+    "subsets": [
+      "bengali",
+      "latin",
+      "latin-ext"
+    ]
+  },
+  {
+    "name": "Mukta",
+    "subsets": [
+      "devanagari",
+      "latin",
+      "latin-ext"
+    ]
+  },
+  {
+    "name": "Titillium Web",
+    "subsets": [
+      "latin",
+      "latin-ext"
+    ]
+  },
+  {
+    "name": "Signika",
+    "subsets": [
+      "latin",
+      "latin-ext",
+      "vietnamese"
+    ]
+  },
+  {
+    "name": "Signika Negative",
+    "subsets": [
+      "latin",
+      "latin-ext",
+      "vietnamese"
+    ]
+  },
+  {
+    "name": "Overpass",
+    "subsets": [
+      "cyrillic",
+      "cyrillic-ext",
+      "latin",
+      "latin-ext",
+      "vietnamese"
+    ]
+  },
+  {
+    "name": "Exo 2",
+    "subsets": [
+      "cyrillic",
+      "cyrillic-ext",
+      "latin",
+      "latin-ext",
+      "vietnamese"
+    ]
+  },
+  {
+    "name": "Exo",
+    "subsets": [
+      "latin",
+      "latin-ext",
+      "vietnamese"
+    ]
+  },
+  {
+    "name": "Orbitron",
+    "subsets": [
+      "latin"
+    ]
+  },
+  {
+    "name": "Teko",
+    "subsets": [
+      "devanagari",
+      "latin",
+      "latin-ext"
+    ]
+  },
+  {
+    "name": "Yanone Kaffeesatz",
+    "subsets": [
+      "cyrillic",
+      "cyrillic-ext",
+      "latin",
+      "latin-ext",
+      "math",
+      "symbols",
+      "vietnamese"
+    ]
+  },
+  {
+    "name": "Varela Round",
+    "subsets": [
+      "hebrew",
+      "latin",
+      "latin-ext",
+      "vietnamese"
+    ]
+  },
+  {
+    "name": "Questrion",
+    "subsets": [
+      "latin"
+    ]
+  },
+  {
+    "name": "Questrial",
+    "subsets": [
+      "latin",
+      "latin-ext",
+      "vietnamese"
+    ]
+  },
+  {
+    "name": "Amiri",
+    "subsets": [
+      "arabic",
+      "latin",
+      "latin-ext"
+    ]
+  },
+  {
+    "name": "Tajawal",
+    "subsets": [
+      "arabic",
+      "latin"
+    ]
+  },
+  {
+    "name": "Noto Kufi Arabic",
+    "subsets": [
+      "arabic",
+      "latin",
+      "latin-ext",
+      "math",
+      "symbols"
+    ]
+  },
+  {
+    "name": "Roboto Slab",
+    "subsets": [
+      "cyrillic",
+      "cyrillic-ext",
+      "greek",
+      "greek-ext",
+      "latin",
+      "latin-ext",
+      "vietnamese"
+    ]
+  },
+  {
+    "name": "Roboto Condensed",
+    "subsets": [
+      "cyrillic",
+      "cyrillic-ext",
+      "greek",
+      "greek-ext",
+      "latin",
+      "latin-ext",
+      "vietnamese"
+    ]
+  },
+  {
+    "name": "Roboto Mono",
+    "subsets": [
+      "cyrillic",
+      "cyrillic-ext",
+      "greek",
+      "latin",
+      "latin-ext",
+      "vietnamese"
+    ]
+  },
+  {
+    "name": "Public Sans",
+    "subsets": [
+      "latin",
+      "latin-ext",
+      "vietnamese"
+    ]
+  },
+  {
+    "name": "Sora",
+    "subsets": [
+      "latin",
+      "latin-ext"
+    ]
+  },
+  {
+    "name": "Outfit",
+    "subsets": [
+      "latin",
+      "latin-ext"
+    ]
+  },
+  {
+    "name": "Plus Jakarta Sans",
+    "subsets": [
+      "cyrillic-ext",
+      "latin",
+      "latin-ext",
+      "vietnamese"
+    ]
+  },
+  {
+    "name": "Figtree",
+    "subsets": [
+      "latin",
+      "latin-ext"
+    ]
+  },
+  {
+    "name": "Onest",
+    "subsets": [
+      "cyrillic",
+      "cyrillic-ext",
+      "latin",
+      "latin-ext"
+    ]
+  },
+  {
+    "name": "Instrument Sans",
+    "subsets": [
+      "latin",
+      "latin-ext"
+    ]
+  }
 ]

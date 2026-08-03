@@ -32,19 +32,7 @@
       btn.textContent = "Скопійовано!";
       setTimeout(function () { btn.textContent = original; }, 1500);
     }
-    if (navigator.clipboard && navigator.clipboard.writeText) {
-      navigator.clipboard.writeText(text).then(done);
-    } else {
-      var textarea = document.createElement("textarea");
-      textarea.value = text;
-      textarea.style.position = "fixed";
-      textarea.style.opacity = "0";
-      document.body.appendChild(textarea);
-      textarea.select();
-      document.execCommand("copy");
-      document.body.removeChild(textarea);
-      done();
-    }
+    UIKit.copyText(text).then(done);
   }
 
   /* ==========================================================================
@@ -321,7 +309,9 @@
      ========================================================================== */
 
   var FONT_WEIGHTS = [400, 500, 600, 700];
+  // Each entry: { name: "Roboto", subsets: ["cyrillic", "latin", ...] }.
   var GOOGLE_FONTS_LIST = [];
+  var CYRILLIC_SUBSETS = ["cyrillic", "cyrillic-ext"];
 
   function loadGoogleFontsList() {
     return fetch("js/google-fonts-list.json").then(function (resp) {
@@ -480,24 +470,36 @@
     var input = document.getElementById("font-" + role + "-input");
     var listEl = document.getElementById("font-" + role + "-list");
     var applyBtn = document.getElementById("font-" + role + "-apply");
+    var cyrillicFilterEl = document.getElementById("font-" + role + "-cyrillic-filter");
     if (!input || !listEl) return;
 
     var debounceTimer = null;
 
     function renderOptions(matches) {
       listEl.innerHTML = "";
-      matches.slice(0, 5).forEach(function (name) {
+      matches.slice(0, 5).forEach(function (font) {
         var optBtn = document.createElement("button");
         optBtn.type = "button";
         optBtn.className = "select-search-option";
-        optBtn.textContent = name;
+        optBtn.textContent = font.name;
         listEl.appendChild(optBtn);
-        renderOptionPreview(optBtn, name);
+        renderOptionPreview(optBtn, font.name);
         optBtn.addEventListener("click", function () {
-          input.value = name;
+          input.value = font.name;
           listEl.innerHTML = "";
-          applyFontToRole(role, varName, name);
+          applyFontToRole(role, varName, font.name);
         });
+      });
+    }
+
+    function findMatches(query) {
+      var onlyCyrillic = !!(cyrillicFilterEl && cyrillicFilterEl.checked);
+      return GOOGLE_FONTS_LIST.filter(function (font) {
+        var nameMatches = font.name.toLowerCase().indexOf(query) !== -1;
+        if (!nameMatches) return false;
+        if (!onlyCyrillic) return true;
+        var subsets = font.subsets || [];
+        return CYRILLIC_SUBSETS.some(function (s) { return subsets.indexOf(s) !== -1; });
       });
     }
 
@@ -509,12 +511,17 @@
         return;
       }
       debounceTimer = setTimeout(function () {
-        var matches = GOOGLE_FONTS_LIST.filter(function (name) {
-          return name.toLowerCase().indexOf(query) !== -1;
-        });
-        renderOptions(matches);
+        renderOptions(findMatches(query));
       }, 200);
     });
+
+    if (cyrillicFilterEl) {
+      cyrillicFilterEl.addEventListener("change", function () {
+        var query = input.value.trim().toLowerCase();
+        if (!query) return;
+        renderOptions(findMatches(query));
+      });
+    }
 
     if (applyBtn) {
       applyBtn.addEventListener("click", function () {

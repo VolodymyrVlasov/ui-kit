@@ -2,11 +2,9 @@
   layouts.css
   Ready-made layout patterns, built on top of the .flex/.grid utilities in
   layout.css rather than duplicating them.
+  --layout-sidebar-width itself is declared in theme.css alongside the
+  other design tokens; only the rules consuming it live here.
 */
-
-:root {
-  --layout-sidebar-width: 16rem;
-}
 
 .layout-row {
   display: flex;
