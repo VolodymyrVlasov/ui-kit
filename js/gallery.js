@@ -21,34 +21,6 @@
     }
   });
 
-  /* ---------- Компоненти / Інструменти group switch ----------
-     Two separate .tabs containers (each already wired independently by
-     UIKit.initTabs()); this just shows/hides one group at a time. Nothing
-     is removed from the DOM, so switching away and back never loses state
-     (e.g. the Builder's in-memory theme state). */
-  (function initNavGroups() {
-    var componentsBtn = document.getElementById("nav-group-components");
-    var toolsBtn = document.getElementById("nav-group-tools");
-    var componentsTabs = document.getElementById("components-tabs");
-    var toolsTabs = document.getElementById("tools-tabs");
-    if (!componentsBtn || !toolsBtn || !componentsTabs || !toolsTabs) return;
-
-    function setGroup(group) {
-      var isComponents = group === "components";
-      componentsTabs.style.display = isComponents ? "" : "none";
-      toolsTabs.style.display = isComponents ? "none" : "";
-      componentsBtn.classList.toggle("btn-primary", isComponents);
-      componentsBtn.classList.toggle("btn-outline", !isComponents);
-      componentsBtn.setAttribute("aria-pressed", isComponents ? "true" : "false");
-      toolsBtn.classList.toggle("btn-primary", !isComponents);
-      toolsBtn.classList.toggle("btn-outline", isComponents);
-      toolsBtn.setAttribute("aria-pressed", !isComponents ? "true" : "false");
-    }
-
-    componentsBtn.addEventListener("click", function () { setGroup("components"); });
-    toolsBtn.addEventListener("click", function () { setGroup("tools"); });
-  })();
-
   /* ---------- Copy buttons ---------- */
   function flashCopied(btn, label) {
     var original = btn.textContent;
@@ -168,13 +140,16 @@
     warning: "Перевірте введені дані.",
     success: "Операція виконана успішно."
   };
-  document.getElementById("toast-trigger").addEventListener("click", function () {
-    var variantSel = document.getElementById("toast-demo-variant");
-    var positionSel = document.getElementById("toast-demo-position");
-    var variant = variantSel ? variantSel.value : "";
-    var position = positionSel ? positionSel.value : "bottom-right";
-    UIKit.showToast(TOAST_DEMO_MESSAGES[variant] || TOAST_DEMO_MESSAGES[""], variant || undefined, position);
-  });
+  var toastTriggerBtn = document.getElementById("toast-trigger");
+  if (toastTriggerBtn) {
+    toastTriggerBtn.addEventListener("click", function () {
+      var variantSel = document.getElementById("toast-demo-variant");
+      var positionSel = document.getElementById("toast-demo-position");
+      var variant = variantSel ? variantSel.value : "";
+      var position = positionSel ? positionSel.value : "bottom-right";
+      UIKit.showToast(TOAST_DEMO_MESSAGES[variant] || TOAST_DEMO_MESSAGES[""], variant || undefined, position);
+    });
+  }
 
   /* ---------- Searchable select (demo) ----------
      Filtering behavior now lives in UIKit.initSelectSearch(), auto-wired by

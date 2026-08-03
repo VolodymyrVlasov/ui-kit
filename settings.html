@@ -1,0 +1,346 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>ui-kit — Галерея компонентів</title>
+<link rel="icon" type="image/svg+xml" href="favicon.svg" />
+<link rel="stylesheet" href="css/theme.css" />
+<link rel="stylesheet" href="css/components.css" />
+<link rel="stylesheet" href="css/layout.css" />
+<link rel="stylesheet" href="css/gallery.css" />
+<link rel="stylesheet" href="css/builder.css" />
+</head>
+<body>
+
+<header class="gallery-header">
+  <div class="container flex items-center justify-between py-4">
+    <div class="flex items-center gap-3">
+      <a href="settings.html"><img src="assets/logo.svg" alt="" width="28" height="28" /></a>
+      <div>
+        <p class="gallery-title">ui-kit</p>
+        <p class="gallery-subtitle text-sm text-muted">Дизайн-система на чистому CSS — галерея компонентів</p>
+      </div>
+    </div>
+    <button type="button" class="btn btn-outline" id="theme-toggle">🌙 Змінити тему</button>
+  </div>
+</header>
+
+<main class="container py-6">
+
+  <nav class="flex gap-2 mb-4" aria-label="Сторінки">
+    <a class="btn btn-outline" href="components.html">Компоненти</a>
+    <a class="btn btn-primary" href="settings.html" aria-current="page">Налаштування</a>
+  </nav>
+
+  <div class="page-shell">
+    <div class="tabs tabs--vertical">
+      <div class="tabs-list" role="tablist">
+        <button type="button" class="tab-trigger is-active" role="tab">Кольори</button>
+        <button type="button" class="tab-trigger" role="tab">Типографіка</button>
+        <button type="button" class="tab-trigger" role="tab">Розміри</button>
+      </div>
+
+      <!-- Colors -->
+      <div class="tab-content is-active">
+        <div class="builder-edit-switch" role="tablist" aria-label="Редагувати тему">
+          <button type="button" class="btn btn-primary btn-sm" id="builder-edit-light" aria-pressed="true">Редагувати: Світла тема</button>
+          <button type="button" class="btn btn-outline btn-sm" id="builder-edit-dark" aria-pressed="false">Редагувати: Темна тема</button>
+        </div>
+        <div class="grid-3 gap-4">
+          <div class="field">
+            <label class="label">Первинний</label>
+            <div class="input-color">
+              <label class="input-color-swatch"><input type="color" id="cfg-color-primary" /></label>
+              <span class="input-color-value font-mono" id="cfg-color-primary-hex"></span>
+            </div>
+          </div>
+          <div class="field">
+            <label class="label">Вторинний</label>
+            <div class="input-color">
+              <label class="input-color-swatch"><input type="color" id="cfg-color-secondary" /></label>
+              <span class="input-color-value font-mono" id="cfg-color-secondary-hex"></span>
+            </div>
+          </div>
+          <div class="field">
+            <label class="label">Акцент</label>
+            <div class="input-color">
+              <label class="input-color-swatch"><input type="color" id="cfg-color-accent" /></label>
+              <span class="input-color-value font-mono" id="cfg-color-accent-hex"></span>
+            </div>
+          </div>
+          <div class="field">
+            <label class="label">Небезпечний</label>
+            <div class="input-color">
+              <label class="input-color-swatch"><input type="color" id="cfg-color-destructive" /></label>
+              <span class="input-color-value font-mono" id="cfg-color-destructive-hex"></span>
+            </div>
+          </div>
+          <div class="field">
+            <label class="label">Фон</label>
+            <div class="input-color">
+              <label class="input-color-swatch"><input type="color" id="cfg-color-background" /></label>
+              <span class="input-color-value font-mono" id="cfg-color-background-hex"></span>
+            </div>
+          </div>
+          <div class="field">
+            <label class="label">Текст</label>
+            <div class="input-color">
+              <label class="input-color-swatch"><input type="color" id="cfg-color-foreground" /></label>
+              <span class="input-color-value font-mono" id="cfg-color-foreground-hex"></span>
+            </div>
+          </div>
+          <div class="field">
+            <label class="label">Приглушений</label>
+            <div class="input-color">
+              <label class="input-color-swatch"><input type="color" id="cfg-color-muted" /></label>
+              <span class="input-color-value font-mono" id="cfg-color-muted-hex"></span>
+            </div>
+          </div>
+          <div class="field">
+            <label class="label">Рамка</label>
+            <div class="input-color">
+              <label class="input-color-swatch"><input type="color" id="cfg-color-border" /></label>
+              <span class="input-color-value font-mono" id="cfg-color-border-hex"></span>
+            </div>
+          </div>
+          <div class="field">
+            <label class="label">Фокус (ring)</label>
+            <div class="input-color">
+              <label class="input-color-swatch"><input type="color" id="cfg-color-ring" /></label>
+              <span class="input-color-value font-mono" id="cfg-color-ring-hex"></span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Typography -->
+      <div class="tab-content">
+        <div class="grid-2 gap-4">
+          <div class="field">
+            <label class="label" for="font-sans-input">Шрифт тіла тексту (Google Fonts)</label>
+            <div class="select-search" id="font-sans-search">
+              <input class="select-search-input" type="text" id="font-sans-input" placeholder="Почніть вводити, напр. mont" autocomplete="off" />
+              <div class="select-search-list" id="font-sans-list"></div>
+            </div>
+            <label class="flex items-center gap-2 mt-2 text-sm">
+              <input class="checkbox" type="checkbox" id="font-sans-cyrillic-filter" />
+              Лише шрифти з підтримкою кирилиці
+            </label>
+            <div class="flex gap-2 mt-2">
+              <button type="button" class="btn btn-outline btn-sm" id="font-sans-apply">Застосувати</button>
+            </div>
+            <span class="field-hint" id="font-sans-error"></span>
+          </div>
+          <div class="field">
+            <label class="label" for="font-heading-input">Шрифт заголовків (Google Fonts)</label>
+            <div class="select-search" id="font-heading-search">
+              <input class="select-search-input" type="text" id="font-heading-input" placeholder="Почніть вводити, напр. play" autocomplete="off" />
+              <div class="select-search-list" id="font-heading-list"></div>
+            </div>
+            <label class="flex items-center gap-2 mt-2 text-sm">
+              <input class="checkbox" type="checkbox" id="font-heading-cyrillic-filter" />
+              Лише шрифти з підтримкою кирилиці
+            </label>
+            <div class="flex gap-2 mt-2">
+              <button type="button" class="btn btn-outline btn-sm" id="font-heading-apply">Застосувати</button>
+            </div>
+            <span class="field-hint" id="font-heading-error"></span>
+          </div>
+        </div>
+        <div class="grid-4 gap-4 mt-4">
+          <div class="field">
+            <label class="label" for="cfg-font-size-base">Базовий розмір (px)</label>
+            <div class="input-number">
+              <button type="button" class="input-number-btn" data-step="-1" aria-label="Зменшити">−</button>
+              <input class="input-number-field" id="cfg-font-size-base" type="number" min="10" max="24" step="1" />
+              <button type="button" class="input-number-btn" data-step="1" aria-label="Збільшити">+</button>
+            </div>
+          </div>
+          <div class="field">
+            <label class="label" for="cfg-h1-min">H1 min (rem)</label>
+            <div class="input-number">
+              <button type="button" class="input-number-btn" data-step="-1" aria-label="Зменшити">−</button>
+              <input class="input-number-field" id="cfg-h1-min" type="number" min="1" max="4" step="0.05" />
+              <button type="button" class="input-number-btn" data-step="1" aria-label="Збільшити">+</button>
+            </div>
+          </div>
+          <div class="field">
+            <label class="label" for="cfg-h1-max">H1 max (rem)</label>
+            <div class="input-number">
+              <button type="button" class="input-number-btn" data-step="-1" aria-label="Зменшити">−</button>
+              <input class="input-number-field" id="cfg-h1-max" type="number" min="1" max="5" step="0.05" />
+              <button type="button" class="input-number-btn" data-step="1" aria-label="Збільшити">+</button>
+            </div>
+          </div>
+          <div class="field">
+            <label class="label" for="cfg-h2-min">H2 min (rem)</label>
+            <div class="input-number">
+              <button type="button" class="input-number-btn" data-step="-1" aria-label="Зменшити">−</button>
+              <input class="input-number-field" id="cfg-h2-min" type="number" min="1" max="4" step="0.05" />
+              <button type="button" class="input-number-btn" data-step="1" aria-label="Збільшити">+</button>
+            </div>
+          </div>
+          <div class="field">
+            <label class="label" for="cfg-h2-max">H2 max (rem)</label>
+            <div class="input-number">
+              <button type="button" class="input-number-btn" data-step="-1" aria-label="Зменшити">−</button>
+              <input class="input-number-field" id="cfg-h2-max" type="number" min="1" max="4" step="0.05" />
+              <button type="button" class="input-number-btn" data-step="1" aria-label="Збільшити">+</button>
+            </div>
+          </div>
+          <div class="field">
+            <label class="label" for="cfg-h3-min">H3 min (rem)</label>
+            <div class="input-number">
+              <button type="button" class="input-number-btn" data-step="-1" aria-label="Зменшити">−</button>
+              <input class="input-number-field" id="cfg-h3-min" type="number" min="1" max="3" step="0.05" />
+              <button type="button" class="input-number-btn" data-step="1" aria-label="Збільшити">+</button>
+            </div>
+          </div>
+          <div class="field">
+            <label class="label" for="cfg-h3-max">H3 max (rem)</label>
+            <div class="input-number">
+              <button type="button" class="input-number-btn" data-step="-1" aria-label="Зменшити">−</button>
+              <input class="input-number-field" id="cfg-h3-max" type="number" min="1" max="3" step="0.05" />
+              <button type="button" class="input-number-btn" data-step="1" aria-label="Збільшити">+</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Sizes (was "Простір/форма") -->
+      <div class="tab-content">
+        <div class="grid-4 gap-4">
+          <div class="field">
+            <label class="label" for="cfg-spacing-unit">Крок відступу (rem)</label>
+            <div class="input-number">
+              <button type="button" class="input-number-btn" data-step="-1" aria-label="Зменшити">−</button>
+              <input class="input-number-field" id="cfg-spacing-unit" type="number" min="0.1" max="1" step="0.05" />
+              <button type="button" class="input-number-btn" data-step="1" aria-label="Збільшити">+</button>
+            </div>
+          </div>
+          <div class="field">
+            <label class="label" for="cfg-radius">Радіус (rem)</label>
+            <div class="input-number">
+              <button type="button" class="input-number-btn" data-step="-1" aria-label="Зменшити">−</button>
+              <input class="input-number-field" id="cfg-radius" type="number" min="0" max="2" step="0.05" />
+              <button type="button" class="input-number-btn" data-step="1" aria-label="Збільшити">+</button>
+            </div>
+          </div>
+          <div class="field">
+            <label class="label" for="cfg-border-width">Товщина рамки (px)</label>
+            <div class="input-number">
+              <button type="button" class="input-number-btn" data-step="-1" aria-label="Зменшити">−</button>
+              <input class="input-number-field" id="cfg-border-width" type="number" min="0" max="4" step="1" />
+              <button type="button" class="input-number-btn" data-step="1" aria-label="Збільшити">+</button>
+            </div>
+          </div>
+          <div class="field">
+            <label class="label" for="cfg-container-max-width">Макс. ширина контейнера (rem)</label>
+            <div class="input-number">
+              <button type="button" class="input-number-btn" data-step="-1" aria-label="Зменшити">−</button>
+              <input class="input-number-field" id="cfg-container-max-width" type="number" min="40" max="120" step="1" />
+              <button type="button" class="input-number-btn" data-step="1" aria-label="Збільшити">+</button>
+            </div>
+          </div>
+          <div class="field">
+            <label class="label" for="cfg-transition-duration">Тривалість переходів (ms)</label>
+            <div class="input-number">
+              <button type="button" class="input-number-btn" data-step="-1" aria-label="Зменшити">−</button>
+              <input class="input-number-field" id="cfg-transition-duration" type="number" min="0" max="500" step="10" />
+              <button type="button" class="input-number-btn" data-step="1" aria-label="Збільшити">+</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="page-shell-aside">
+      <div class="flex flex-col gap-2">
+        <button type="button" class="btn btn-outline btn-sm" id="builder-save">Зберегти налаштування</button>
+        <button type="button" class="btn btn-outline btn-sm" id="builder-load-btn">Завантажити налаштування</button>
+        <input type="file" id="builder-load-input" accept="application/json" style="display: none;" />
+        <button type="button" class="btn btn-ghost btn-sm" id="builder-reset">Скинути</button>
+        <button type="button" class="btn btn-primary btn-sm" id="builder-export">Експортувати збірку (.zip)</button>
+        <p class="field-hint" id="builder-export-status"></p>
+      </div>
+    </div>
+  </div>
+
+  <details class="component-info mt-6">
+    <summary>Інтеграція в інший проєкт</summary>
+    <p>Ця вкладка — не компонент, а інструкція: тут зібрано мінімальний набір файлів, які варто скопіювати в інший проєкт, і фрагмент розмітки для підключення. Використовуйте її як чек-лист перед інтеграцією кіту в новий проєкт.</p>
+    <p>Найпоширеніша помилка — скопіювати лише <span class="font-mono">components.css</span>, забувши папку <span class="font-mono">components/</span> (фасад без неї не працює, бо складається з <span class="font-mono">@import</span>), або забувши <span class="font-mono">fonts/Montserrat/</span>, через що theme.css не знайде шрифти за відносним шляхом.</p>
+    <p>Типовий кейс: підключення кіту в новий pywebview-застосунок — досить трьох <span class="font-mono">&lt;link&gt;</span> і двох папок. Другий кейс: оновлення вже інтегрованого кіту — досить замінити <span class="font-mono">css/</span> і <span class="font-mono">fonts/</span> повністю, не займаючи <span class="font-mono">index.html</span>/<span class="font-mono">gallery.css</span>.</p>
+
+    <div class="flex flex-col gap-6 mt-4">
+
+      <div>
+        <h2 class="section-title">Що копіювати в інший проєкт</h2>
+        <p class="text-sm text-muted mb-3">Ці файли складають перевикористовувану частину дизайн-системи:</p>
+        <pre class="setup-tree"><code>ui-kit/
+├── css/
+│   ├── theme.css            (токени — тільки :root / [data-theme] і @font-face)
+│   ├── layout.css           (flex/grid-утиліти)
+│   ├── components.css       (фасад з @import, включно з links.css і accordion.css)
+│   └── components/          (уся папка — окремі файли по компонентах)
+├── js/
+│   └── kit.js               (UIKit — вкладки, toast, dropzone, лоадери, інпути, акордіон)
+├── fonts/
+│   └── Montserrat/          (уся папка)
+├── favicon.svg              (приклад — замініть на власну іконку)
+└── assets/
+    └── logo.svg              (приклад-заглушка логотипу — замініть на власний)
+
+НЕ копіювати (лише для цієї галереї-демо та інструментів розробки):
+├── css/gallery.css
+├── css/builder.css
+├── js/gallery.js
+├── js/builder.js
+├── js/google-fonts-list.json
+└── index.html</code></pre>
+      </div>
+
+      <div class="demo">
+        <p class="text-sm font-semibold mb-2">Фрагмент для &lt;head&gt;/кінця &lt;body&gt;</p>
+        <div class="demo-preview">
+          <pre class="setup-tree"><code>&lt;link rel="stylesheet" href="css/theme.css" /&gt;
+&lt;link rel="stylesheet" href="css/components.css" /&gt;
+&lt;link rel="stylesheet" href="css/layout.css" /&gt;
+&lt;script src="js/kit.js"&gt;&lt;/script&gt;</code></pre>
+        </div>
+        <template class="demo-source">
+<link rel="stylesheet" href="css/theme.css" />
+<link rel="stylesheet" href="css/components.css" />
+<link rel="stylesheet" href="css/layout.css" />
+<script src="js/kit.js"></script>
+        </template>
+        <div class="demo-actions flex gap-2">
+          <button type="button" class="btn btn-outline btn-sm" data-copy="html">Скопіювати HTML</button>
+        </div>
+      </div>
+
+      <div>
+        <h2 class="section-title">Як це працює</h2>
+        <div class="flex flex-col gap-2 text-sm">
+          <p>Перемикання теми відбувається через атрибут <span class="font-mono">data-theme="dark"</span> на елементі <span class="font-mono">&lt;html&gt;</span>. Без атрибута (або з будь-яким іншим значенням) застосовується світла тема за замовчуванням.</p>
+          <p>Усі кольорові токени визначені у <span class="font-mono">theme.css</span> — не редагуйте їх без наміру, оскільки від них залежать усі компоненти.</p>
+          <p><span class="font-mono">kit.js</span> самостійно ініціалізується на <span class="font-mono">DOMContentLoaded</span> — жодних ручних викликів налаштування не потрібно, достатньо підключити файл.</p>
+          <p>Складання не потрібне: немає npm, немає CDN, немає build-кроку. Достатньо підключити три файли CSS, один файл JS та локальні шрифти.</p>
+          <p>Вкладка «Конструктор» (dev-інструмент, не входить у список вище) для завантаження шрифтів з Google Fonts і експорту .zip потребує локального HTTP-сервера — відкрийте цю галерею командою <span class="font-mono">python3 -m http.server 8000</span> у корені проєкту, а потім перейдіть на <span class="font-mono">http://localhost:8000</span> у браузері. При відкритті <span class="font-mono">index.html</span> подвійним кліком (протокол <span class="font-mono">file://</span>) браузер блокує такі мережеві запити.</p>
+        </div>
+      </div>
+
+    </div>
+  </details>
+
+</main>
+
+<div class="toast" id="toast" role="status" aria-live="polite">Успішно збережено.</div>
+
+<script src="js/kit.js"></script>
+<script src="js/gallery.js"></script>
+<script src="js/builder.js"></script>
+
+</body>
+</html>
