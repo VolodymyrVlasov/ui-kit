@@ -104,6 +104,12 @@
      correct for those — no leak risk there.
      ========================================================================== */
 
+  // The 29 "Палітра проекту" fields, plus "card-border" (30th) — a
+  // genuinely separate, non-palette token (see css/theme.css/cards.css),
+  // just riding the same generic picker/hex/preview/autosave/undo
+  // machinery below rather than duplicating it. Its picker lives only in
+  // the Картки card, not in Палітра — being in this array is purely for
+  // infrastructure reuse, not a UI placement decision.
   var COLOR_FIELDS = [
     "background", "foreground",
     "card", "card-foreground",
@@ -114,7 +120,8 @@
     "success", "success-foreground",
     "warning", "warning-foreground",
     "muted", "muted-foreground",
-    "border", "input", "ring"
+    "border", "input", "ring",
+    "card-border"
   ];
 
   var NUMBER_FIELDS = [
@@ -135,6 +142,89 @@
   var state = { light: {}, dark: {} };
   var currentEditingTheme = "light";
   var DEFAULT_CONFIG = null;
+
+  /* ==========================================================================
+     Hardcoded shadcn/ui defaults ("Відновити кольори") — deliberately NOT
+     read from the live page (theme.css is user-editable and could drift
+     from either source over time). Verified against shadcn/ui's official
+     Neutral-theme docs — see docs/SETTINGS_UX.md, "Кольори — раунд 2":
+     the 17 base tokens (background/foreground/card(-foreground)/
+     primary(-foreground)/secondary(-foreground)/muted(-foreground)/
+     accent(-foreground)/destructive(-foreground)/border/input/ring) are
+     real, unmodified shadcn values. success/warning and every
+     -hover/-disabled token are this project's own additions (PR #9) —
+     not from shadcn — so those are pinned to this project's own original
+     shipped values instead, not a shadcn source. card-border has no
+     shadcn equivalent either; pinned to its own original default (the
+     project's border color) for the same reason. Does not touch
+     typography/sizes — that's what the separate "Скинути" already does.
+     ========================================================================== */
+  var SHADCN_COLOR_DEFAULTS = {
+    light: {
+      "background": "0 0% 100%",
+      "foreground": "240 10% 3.9%",
+      "card": "0 0% 100%",
+      "card-foreground": "240 10% 3.9%",
+      "card-border": "240 5.9% 90%",
+      "primary": "240 5.9% 10%",
+      "primary-foreground": "0 0% 98%",
+      "primary-hover": "240 2.8% 19%",
+      "primary-disabled": "240 0.7% 55%",
+      "secondary": "240 4.8% 95.9%",
+      "secondary-foreground": "240 5.9% 10%",
+      "secondary-hover": "240 4.8% 96.7%",
+      "secondary-disabled": "240 4.8% 98%",
+      "muted": "240 4.8% 95.9%",
+      "muted-foreground": "240 3.8% 46.1%",
+      "accent": "240 4.8% 95.9%",
+      "accent-foreground": "240 5.9% 10%",
+      "accent-hover": "240 4.8% 96.7%",
+      "accent-disabled": "240 4.8% 98%",
+      "destructive": "0 84.2% 60.2%",
+      "destructive-foreground": "0 0% 98%",
+      "destructive-hover": "0 84.2% 64.2%",
+      "destructive-disabled": "0 84.2% 80.1%",
+      "success": "142 71% 45%",
+      "success-foreground": "0 0% 98%",
+      "warning": "38 92% 50%",
+      "warning-foreground": "240 10% 3.9%",
+      "border": "240 5.9% 90%",
+      "input": "240 5.9% 90%",
+      "ring": "240 5.9% 10%"
+    },
+    dark: {
+      "background": "240 10% 3.9%",
+      "foreground": "0 0% 98%",
+      "card": "240 10% 5.9%",
+      "card-foreground": "0 0% 98%",
+      "card-border": "240 3.7% 15.9%",
+      "primary": "0 0% 98%",
+      "primary-foreground": "240 5.9% 10%",
+      "primary-hover": "240 0.3% 88.6%",
+      "primary-disabled": "240 0.4% 51%",
+      "secondary": "240 3.7% 15.9%",
+      "secondary-foreground": "0 0% 98%",
+      "secondary-hover": "240 4.1% 13.5%",
+      "secondary-disabled": "240 4.9% 9.9%",
+      "muted": "240 3.7% 15.9%",
+      "muted-foreground": "240 5% 64.9%",
+      "accent": "240 3.7% 15.9%",
+      "accent-foreground": "0 0% 98%",
+      "accent-hover": "240 4.1% 13.5%",
+      "accent-disabled": "240 4.9% 9.9%",
+      "destructive": "0 62.8% 30.6%",
+      "destructive-foreground": "0 0% 98%",
+      "destructive-hover": "0 62% 27.9%",
+      "destructive-disabled": "0 56.3% 17.1%",
+      "success": "142 71% 45%",
+      "success-foreground": "0 0% 98%",
+      "warning": "38 92% 50%",
+      "warning-foreground": "240 10% 3.9%",
+      "border": "240 3.7% 15.9%",
+      "input": "240 3.7% 15.9%",
+      "ring": "240 4.9% 83.9%"
+    }
+  };
 
   var builderState = {
     fonts: {
@@ -172,15 +262,34 @@
     return { rootRule: rootRule, darkRule: darkRule };
   }
 
+  // Roles whose --theme-{role} primitive doesn't exist because they alias a
+  // DIFFERENT primitive by default — currently just card-border, which
+  // aliases --theme-border (see theme.css). Needed so the dark-theme read
+  // below finds --theme-border's own dark value instead of silently
+  // falling back to light's (border legitimately differs between themes;
+  // reusing light[role] there would be wrong, not just imprecise).
+  var PRIMITIVE_FALLBACK = { "card-border": "border" };
+
   function parseInitialColorState() {
     var found = findThemeRules();
     var light = {};
     var dark = {};
     COLOR_FIELDS.forEach(function (role) {
-      var lightVal = found.rootRule ? found.rootRule.style.getPropertyValue("--" + role).trim() : "";
-      var darkVal = found.darkRule ? found.darkRule.style.getPropertyValue("--" + role).trim() : "";
+      // Read from the --theme-{role} PRIMITIVE (or its PRIMITIVE_FALLBACK
+      // stand-in), not --{role} itself — since the "Палітра" architecture,
+      // --{role} in the stylesheet is just `var(--theme-{role})` (literal
+      // token text, not a resolved value), so reading it straight from the
+      // CSSOM would return that unresolved "var(...)" string instead of a
+      // real "H S% L%" triple.
+      var primitiveRole = PRIMITIVE_FALLBACK[role] || role;
+      var lightVal = found.rootRule ? found.rootRule.style.getPropertyValue("--theme-" + primitiveRole).trim() : "";
+      var darkVal = found.darkRule ? found.darkRule.style.getPropertyValue("--theme-" + primitiveRole).trim() : "";
       light[role] = lightVal || getVarValue("--" + role);
-      dark[role] = darkVal || light[role];
+      // Falls back to getVarValue() (ambient computed style), NOT
+      // light[role] — with card-border in the mix, light and dark
+      // legitimately differ, so silently reusing light's value here would
+      // be wrong, not just imprecise, whenever that fallback path is hit.
+      dark[role] = darkVal || getVarValue("--" + role);
     });
     return { light: light, dark: dark };
   }
@@ -727,7 +836,7 @@
      ========================================================================== */
 
   function serializeConfig() {
-    var config = { light: {}, dark: {}, numbers: {}, fonts: {}, table: {}, layoutRatio: "" };
+    var config = { light: {}, dark: {}, numbers: {}, fonts: {}, table: {}, layoutRatio: "", cardShadow: false };
 
     COLOR_FIELDS.forEach(function (role) {
       config.light[role] = state.light[role];
@@ -736,6 +845,9 @@
     NUMBER_FIELDS.forEach(function (field) {
       config.numbers[field.varName] = getVarValue(field.varName);
     });
+
+    var cardShadowCheckbox = document.getElementById("cfg-card-shadow");
+    config.cardShadow = !!(cardShadowCheckbox && cardShadowCheckbox.checked);
 
     var fontSansInput = document.getElementById("font-sans-input");
     var fontHeadingInput = document.getElementById("font-heading-input");
@@ -825,6 +937,14 @@
         ratioInput.dispatchEvent(new Event("input", { bubbles: true }));
       }
     }
+
+    if (config.cardShadow !== undefined) {
+      var cardShadowCheckbox = document.getElementById("cfg-card-shadow");
+      if (cardShadowCheckbox) {
+        cardShadowCheckbox.checked = !!config.cardShadow;
+        applyCardShadowState();
+      }
+    }
   }
 
   /* ==========================================================================
@@ -881,6 +1001,45 @@
       persistDraft();
       UIKit.showToast("Останню зміну скасовано", "success");
     });
+  }
+
+  // "Відновити кольори" — colors only, hardcoded shadcn/project-original
+  // values (SHADCN_COLOR_DEFAULTS above), distinct from "Скинути" which
+  // resets everything (colors + typography + sizes) back to whatever
+  // theme.css happened to ship with on this page load.
+  function initRestoreShadcnButton() {
+    var btn = document.getElementById("builder-restore-shadcn");
+    if (!btn) return;
+    btn.addEventListener("click", function () {
+      snapshotForUndo();
+      applyConfig({ light: SHADCN_COLOR_DEFAULTS.light, dark: SHADCN_COLOR_DEFAULTS.dark });
+      persistDraft();
+      UIKit.showToast("Кольори відновлено до shadcn-дефолтів", "success");
+    });
+  }
+
+  /* ==========================================================================
+     Card border color already rides the generic COLOR_FIELDS machinery
+     (initColorFields() below wires cfg-color-card-border same as every
+     other field). Only the shadow checkbox needs its own small handler.
+     ========================================================================== */
+
+  function applyCardShadowState() {
+    var checkbox = document.getElementById("cfg-card-shadow");
+    var previewCard = document.getElementById("palette-card-preview-example");
+    if (!checkbox || !previewCard) return;
+    previewCard.classList.toggle("has-shadow", checkbox.checked);
+  }
+
+  function initCardShadowToggle() {
+    var checkbox = document.getElementById("cfg-card-shadow");
+    if (!checkbox) return;
+    checkbox.addEventListener("focus", snapshotForUndo);
+    checkbox.addEventListener("change", function () {
+      applyCardShadowState();
+      persistDraft();
+    });
+    applyCardShadowState();
   }
 
   function initSaveLoadReset() {
@@ -1056,7 +1215,13 @@
     return text.replace(blockRegex, function (fullMatch) {
       var modified = fullMatch;
       Object.keys(values).forEach(function (role) {
-        var re = new RegExp("(--" + role + ":)[^;]+;");
+        // Matches BOTH the --{role} alias and its --theme-{role} primitive
+        // (if one exists — --card-border has none, and this pattern simply
+        // finds no second match for it, which is fine) so baking a role's
+        // edited value keeps the primitive and the alias it feeds in sync
+        // in the exported theme.css, instead of leaving --theme-* stale
+        // while --{role} moves on ahead of it.
+        var re = new RegExp("(--(?:theme-)?" + role + ":)[^;]+;", "g");
         modified = modified.replace(re, "$1 " + values[role] + ";");
       });
       return modified;
@@ -1247,6 +1412,8 @@
     initSaveLoadReset();
     initExport();
     initUndoButton();
+    initRestoreShadcnButton();
+    initCardShadowToggle();
 
     // Must keep representing the original shipped defaults — captured
     // BEFORE any autosaved draft is restored below, never after.

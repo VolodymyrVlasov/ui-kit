@@ -28,6 +28,43 @@
     outline-offset: 2px;
     border-radius: var(--radius-sm);
   }
+
+  /* Page-scoped only (not a css/layout.css change — out of scope for this
+     task): fields|preview split with a visible divider border between the
+     two columns, used throughout the Кольори panel's cards. Deliberately
+     NOT the existing .color-group-row (css/layout.css) — that class's
+     ` > * { flex: 1 1 0%; }` rule would apply equal flex-grow to a third
+     divider element inserted between the two columns, making it fight the
+     two real columns for space instead of staying a thin line; a
+     border-right on the fields column avoids that entirely. */
+  .palette-row {
+    display: flex;
+    gap: 1.5rem;
+    align-items: flex-start;
+    width: 100%;
+  }
+  .palette-row-fields {
+    flex: 1 1 0%;
+    min-width: 0;
+    padding-right: 1.5rem;
+    border-right: var(--border-width) solid hsl(var(--border));
+  }
+  .palette-row-preview {
+    flex: 1 1 0%;
+    min-width: 0;
+  }
+  @media (max-width: 1023px) {
+    .palette-row {
+      flex-direction: column;
+    }
+    .palette-row-fields {
+      width: 100%;
+      padding-right: 0;
+      padding-bottom: 1.5rem;
+      border-right: none;
+      border-bottom: var(--border-width) solid hsl(var(--border));
+    }
+  }
 </style>
 </head>
 <body>
@@ -75,105 +112,427 @@
              wrapper instead of a dedicated preview card per element. -->
         <div id="color-groups-preview-scope" class="flex flex-col gap-8">
 
-          <!-- Основа -->
-          <div>
-            <h3>Основа</h3>
-            <div class="color-group-row mt-3">
-              <div class="flex flex-col gap-3">
-                <div class="field">
-                  <label class="label">Фон</label>
-                  <div class="input-color">
-                    <label class="input-color-swatch"><input type="color" id="cfg-color-background" /></label>
-                    <input type="text" class="input-color-value font-mono" id="cfg-color-background-hex" autocomplete="off" spellcheck="false" />
+          <!-- Палітра проекту — the only card in this panel with editable
+               color fields. Every --theme-* primitive (docs/SETTINGS_UX.md,
+               "Кольори — раунд 2") lives here, grouped Нейтральні/Кнопки/
+               Success-Warning, same three groupings the primitives
+               themselves use in theme.css. -->
+          <div class="card">
+            <div class="card-header">
+              <h3 class="card-title">Палітра проекту</h3>
+              <p class="card-description">Єдине джерело кольорів — кожне поле нижче редагує один <span class="font-mono">--theme-*</span> примітив у theme.css. Решта карток на цій вкладці лише показують, де ці кольори застосовуються.</p>
+            </div>
+            <div class="card-content flex flex-col gap-6">
+
+              <!-- Нейтральні -->
+              <div>
+                <h4>Нейтральні</h4>
+                <div class="palette-row mt-2">
+                  <div class="palette-row-fields">
+                    <div class="flex flex-col gap-3">
+                      <div class="field">
+                        <label class="label">Фон</label>
+                        <div class="input-color">
+                          <label class="input-color-swatch"><input type="color" id="cfg-color-background" /></label>
+                          <input type="text" class="input-color-value font-mono" id="cfg-color-background-hex" autocomplete="off" spellcheck="false" />
+                        </div>
+                      </div>
+                      <div class="field">
+                        <label class="label">Текст</label>
+                        <div class="input-color">
+                          <label class="input-color-swatch"><input type="color" id="cfg-color-foreground" /></label>
+                          <input type="text" class="input-color-value font-mono" id="cfg-color-foreground-hex" autocomplete="off" spellcheck="false" />
+                        </div>
+                      </div>
+                      <div class="field">
+                        <label class="label">Фон картки</label>
+                        <div class="input-color">
+                          <label class="input-color-swatch"><input type="color" id="cfg-color-card" /></label>
+                          <input type="text" class="input-color-value font-mono" id="cfg-color-card-hex" autocomplete="off" spellcheck="false" />
+                        </div>
+                      </div>
+                      <div class="field">
+                        <label class="label">Текст картки</label>
+                        <div class="input-color">
+                          <label class="input-color-swatch"><input type="color" id="cfg-color-card-foreground" /></label>
+                          <input type="text" class="input-color-value font-mono" id="cfg-color-card-foreground-hex" autocomplete="off" spellcheck="false" />
+                        </div>
+                      </div>
+                      <div class="field">
+                        <label class="label">Приглушений фон</label>
+                        <div class="input-color">
+                          <label class="input-color-swatch"><input type="color" id="cfg-color-muted" /></label>
+                          <input type="text" class="input-color-value font-mono" id="cfg-color-muted-hex" autocomplete="off" spellcheck="false" />
+                        </div>
+                      </div>
+                      <div class="field">
+                        <label class="label">Приглушений текст</label>
+                        <div class="input-color">
+                          <label class="input-color-swatch"><input type="color" id="cfg-color-muted-foreground" /></label>
+                          <input type="text" class="input-color-value font-mono" id="cfg-color-muted-foreground-hex" autocomplete="off" spellcheck="false" />
+                        </div>
+                      </div>
+                      <div class="field">
+                        <label class="label">Рамка</label>
+                        <div class="input-color">
+                          <label class="input-color-swatch"><input type="color" id="cfg-color-border" /></label>
+                          <input type="text" class="input-color-value font-mono" id="cfg-color-border-hex" autocomplete="off" spellcheck="false" />
+                        </div>
+                      </div>
+                      <div class="field">
+                        <label class="label">Поле</label>
+                        <div class="input-color">
+                          <label class="input-color-swatch"><input type="color" id="cfg-color-input" /></label>
+                          <input type="text" class="input-color-value font-mono" id="cfg-color-input-hex" autocomplete="off" spellcheck="false" />
+                        </div>
+                      </div>
+                      <div class="field">
+                        <label class="label">Фокус (ring)</label>
+                        <div class="input-color">
+                          <label class="input-color-swatch"><input type="color" id="cfg-color-ring" /></label>
+                          <input type="text" class="input-color-value font-mono" id="cfg-color-ring-hex" autocomplete="off" spellcheck="false" />
+                        </div>
+                      </div>
+                    </div>
                   </div>
-                </div>
-                <div class="field">
-                  <label class="label">Текст</label>
-                  <div class="input-color">
-                    <label class="input-color-swatch"><input type="color" id="cfg-color-foreground" /></label>
-                    <input type="text" class="input-color-value font-mono" id="cfg-color-foreground-hex" autocomplete="off" spellcheck="false" />
+                  <div class="palette-row-preview">
+                    <div class="flex flex-col gap-3">
+                      <div class="p-4" style="border-radius: var(--radius); border: 1px solid hsl(var(--border)); background-color: hsl(var(--background)); color: hsl(var(--foreground));">
+                        Приклад тексту на фоні сторінки.
+                      </div>
+                      <div class="card" style="max-width: 20rem;">
+                        <div class="card-header">
+                          <h3 class="card-title">Заголовок картки</h3>
+                        </div>
+                        <div class="card-content">
+                          <p class="text-sm">Приклад вмісту картки.</p>
+                        </div>
+                      </div>
+                      <input class="input" type="text" placeholder="Клікніть або натисніть Tab — фокус-кільце" style="max-width: 20rem;" />
+                    </div>
                   </div>
                 </div>
               </div>
-              <div class="preview-area">
-                <div class="p-4" style="width: 100%; border-radius: var(--radius); border: 1px solid hsl(var(--border)); background-color: hsl(var(--background)); color: hsl(var(--foreground));">
-                  Приклад тексту на фоні сторінки.
+
+              <!-- Кнопки -->
+              <div>
+                <h4>Кнопки</h4>
+
+                <div class="mt-2">
+                  <p class="label-text font-semibold">Первинний</p>
+                  <div class="palette-row mt-2">
+                    <div class="palette-row-fields">
+                      <div class="flex flex-col gap-3">
+                        <div class="field">
+                          <label class="label">Фон</label>
+                          <div class="input-color">
+                            <label class="input-color-swatch"><input type="color" id="cfg-color-primary" /></label>
+                            <input type="text" class="input-color-value font-mono" id="cfg-color-primary-hex" autocomplete="off" spellcheck="false" />
+                          </div>
+                        </div>
+                        <div class="field">
+                          <label class="label">Текст</label>
+                          <div class="input-color">
+                            <label class="input-color-swatch"><input type="color" id="cfg-color-primary-foreground" /></label>
+                            <input type="text" class="input-color-value font-mono" id="cfg-color-primary-foreground-hex" autocomplete="off" spellcheck="false" />
+                          </div>
+                        </div>
+                        <div class="field">
+                          <label class="label">Наведення</label>
+                          <div class="input-color">
+                            <label class="input-color-swatch"><input type="color" id="cfg-color-primary-hover" /></label>
+                            <input type="text" class="input-color-value font-mono" id="cfg-color-primary-hover-hex" autocomplete="off" spellcheck="false" />
+                          </div>
+                        </div>
+                        <div class="field">
+                          <label class="label">Вимкнено</label>
+                          <div class="input-color">
+                            <label class="input-color-swatch"><input type="color" id="cfg-color-primary-disabled" /></label>
+                            <input type="text" class="input-color-value font-mono" id="cfg-color-primary-disabled-hex" autocomplete="off" spellcheck="false" />
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="palette-row-preview">
+                      <div class="flex gap-3 items-center">
+                        <button type="button" class="btn btn-primary">Приклад</button>
+                        <button type="button" class="btn btn-primary" disabled>Приклад</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="mt-6">
+                  <p class="label-text font-semibold">Вторинний</p>
+                  <div class="palette-row mt-2">
+                    <div class="palette-row-fields">
+                      <div class="flex flex-col gap-3">
+                        <div class="field">
+                          <label class="label">Фон</label>
+                          <div class="input-color">
+                            <label class="input-color-swatch"><input type="color" id="cfg-color-secondary" /></label>
+                            <input type="text" class="input-color-value font-mono" id="cfg-color-secondary-hex" autocomplete="off" spellcheck="false" />
+                          </div>
+                        </div>
+                        <div class="field">
+                          <label class="label">Текст</label>
+                          <div class="input-color">
+                            <label class="input-color-swatch"><input type="color" id="cfg-color-secondary-foreground" /></label>
+                            <input type="text" class="input-color-value font-mono" id="cfg-color-secondary-foreground-hex" autocomplete="off" spellcheck="false" />
+                          </div>
+                        </div>
+                        <div class="field">
+                          <label class="label">Наведення</label>
+                          <div class="input-color">
+                            <label class="input-color-swatch"><input type="color" id="cfg-color-secondary-hover" /></label>
+                            <input type="text" class="input-color-value font-mono" id="cfg-color-secondary-hover-hex" autocomplete="off" spellcheck="false" />
+                          </div>
+                        </div>
+                        <div class="field">
+                          <label class="label">Вимкнено</label>
+                          <div class="input-color">
+                            <label class="input-color-swatch"><input type="color" id="cfg-color-secondary-disabled" /></label>
+                            <input type="text" class="input-color-value font-mono" id="cfg-color-secondary-disabled-hex" autocomplete="off" spellcheck="false" />
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="palette-row-preview">
+                      <div class="flex gap-3 items-center">
+                        <button type="button" class="btn btn-secondary">Приклад</button>
+                        <button type="button" class="btn btn-secondary" disabled>Приклад</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="mt-6">
+                  <p class="label-text font-semibold">Акцент</p>
+                  <p class="field-hint">Немає власної заповненої кнопки (<span class="font-mono">.btn-accent</span> не існує) — ці поля керують лише <span class="font-mono">.btn-outline</span>/<span class="font-mono">.btn-ghost</span>.</p>
+                  <div class="palette-row mt-2">
+                    <div class="palette-row-fields">
+                      <div class="flex flex-col gap-3">
+                        <div class="field">
+                          <label class="label">Заливка при наведенні</label>
+                          <div class="input-color">
+                            <label class="input-color-swatch"><input type="color" id="cfg-color-accent" /></label>
+                            <input type="text" class="input-color-value font-mono" id="cfg-color-accent-hex" autocomplete="off" spellcheck="false" />
+                          </div>
+                          <span class="field-hint">Фон .btn-outline/.btn-ghost при наведенні — <span class="font-mono">--accent</span> тут і є кольором hover.</span>
+                        </div>
+                        <div class="field">
+                          <label class="label">Текст при наведенні</label>
+                          <div class="input-color">
+                            <label class="input-color-swatch"><input type="color" id="cfg-color-accent-foreground" /></label>
+                            <input type="text" class="input-color-value font-mono" id="cfg-color-accent-foreground-hex" autocomplete="off" spellcheck="false" />
+                          </div>
+                        </div>
+                        <div class="field">
+                          <label class="label">Hover</label>
+                          <div class="input-color">
+                            <label class="input-color-swatch"><input type="color" id="cfg-color-accent-hover" /></label>
+                            <input type="text" class="input-color-value font-mono" id="cfg-color-accent-hover-hex" autocomplete="off" spellcheck="false" />
+                          </div>
+                          <span class="field-hint">Наразі не читається жодним компонентом — зарезервований токен.</span>
+                        </div>
+                        <div class="field">
+                          <label class="label">Рамка/текст вимкнено</label>
+                          <div class="input-color">
+                            <label class="input-color-swatch"><input type="color" id="cfg-color-accent-disabled" /></label>
+                            <input type="text" class="input-color-value font-mono" id="cfg-color-accent-disabled-hex" autocomplete="off" spellcheck="false" />
+                          </div>
+                          <span class="field-hint">Рамка/текст .btn-outline/.btn-ghost у стані disabled, не заливка фону.</span>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="palette-row-preview">
+                      <div class="flex gap-3 items-center flex-wrap">
+                        <button type="button" class="btn btn-outline">Outline</button>
+                        <button type="button" class="btn btn-outline" disabled>Outline</button>
+                        <button type="button" class="btn btn-ghost">Ghost</button>
+                        <button type="button" class="btn btn-ghost" disabled>Ghost</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="mt-6">
+                  <p class="label-text font-semibold">Небезпечний</p>
+                  <div class="palette-row mt-2">
+                    <div class="palette-row-fields">
+                      <div class="flex flex-col gap-3">
+                        <div class="field">
+                          <label class="label">Фон</label>
+                          <div class="input-color">
+                            <label class="input-color-swatch"><input type="color" id="cfg-color-destructive" /></label>
+                            <input type="text" class="input-color-value font-mono" id="cfg-color-destructive-hex" autocomplete="off" spellcheck="false" />
+                          </div>
+                        </div>
+                        <div class="field">
+                          <label class="label">Текст</label>
+                          <div class="input-color">
+                            <label class="input-color-swatch"><input type="color" id="cfg-color-destructive-foreground" /></label>
+                            <input type="text" class="input-color-value font-mono" id="cfg-color-destructive-foreground-hex" autocomplete="off" spellcheck="false" />
+                          </div>
+                        </div>
+                        <div class="field">
+                          <label class="label">Наведення</label>
+                          <div class="input-color">
+                            <label class="input-color-swatch"><input type="color" id="cfg-color-destructive-hover" /></label>
+                            <input type="text" class="input-color-value font-mono" id="cfg-color-destructive-hover-hex" autocomplete="off" spellcheck="false" />
+                          </div>
+                        </div>
+                        <div class="field">
+                          <label class="label">Вимкнено</label>
+                          <div class="input-color">
+                            <label class="input-color-swatch"><input type="color" id="cfg-color-destructive-disabled" /></label>
+                            <input type="text" class="input-color-value font-mono" id="cfg-color-destructive-disabled-hex" autocomplete="off" spellcheck="false" />
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="palette-row-preview">
+                      <div class="flex gap-3 items-center">
+                        <button type="button" class="btn btn-destructive">Приклад</button>
+                        <button type="button" class="btn btn-destructive" disabled>Приклад</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Success / Warning -->
+              <div>
+                <h4>Success / Warning</h4>
+
+                <div class="mt-2">
+                  <p class="label-text font-semibold">Success</p>
+                  <div class="palette-row mt-2">
+                    <div class="palette-row-fields">
+                      <div class="flex flex-col gap-3">
+                        <div class="field">
+                          <label class="label">Фон</label>
+                          <div class="input-color">
+                            <label class="input-color-swatch"><input type="color" id="cfg-color-success" /></label>
+                            <input type="text" class="input-color-value font-mono" id="cfg-color-success-hex" autocomplete="off" spellcheck="false" />
+                          </div>
+                        </div>
+                        <div class="field">
+                          <label class="label">Текст</label>
+                          <div class="input-color">
+                            <label class="input-color-swatch"><input type="color" id="cfg-color-success-foreground" /></label>
+                            <input type="text" class="input-color-value font-mono" id="cfg-color-success-foreground-hex" autocomplete="off" spellcheck="false" />
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="palette-row-preview">
+                      <div class="flex gap-3 items-center flex-wrap">
+                        <span class="badge badge-success">Активний</span>
+                        <div class="alert alert-success"><strong>Успіх.</strong><span>Ваші зміни збережено.</span></div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="mt-6">
+                  <p class="label-text font-semibold">Warning</p>
+                  <p class="field-hint"><span class="font-mono">.badge-warning</span> ще не існує в badges.css (є лише badge-success) — бейдж нижче використовує базовий <span class="font-mono">.badge</span> із кольором, заданим напряму для цього прев'ю.</p>
+                  <div class="palette-row mt-2">
+                    <div class="palette-row-fields">
+                      <div class="flex flex-col gap-3">
+                        <div class="field">
+                          <label class="label">Фон</label>
+                          <div class="input-color">
+                            <label class="input-color-swatch"><input type="color" id="cfg-color-warning" /></label>
+                            <input type="text" class="input-color-value font-mono" id="cfg-color-warning-hex" autocomplete="off" spellcheck="false" />
+                          </div>
+                        </div>
+                        <div class="field">
+                          <label class="label">Текст</label>
+                          <div class="input-color">
+                            <label class="input-color-swatch"><input type="color" id="cfg-color-warning-foreground" /></label>
+                            <input type="text" class="input-color-value font-mono" id="cfg-color-warning-foreground-hex" autocomplete="off" spellcheck="false" />
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="palette-row-preview">
+                      <div class="flex gap-3 items-center flex-wrap">
+                        <span class="badge" style="background-color: hsl(var(--warning)); color: hsl(var(--warning-foreground));">Попередження</span>
+                        <div class="alert alert-warning"><strong>Попередження.</strong><span>Перевірте це, перш ніж продовжити.</span></div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+          <!-- Reference-only cards below — no editable color fields (all
+               moved into Палітра above), just a note on which tokens this
+               component reads, plus the same live preview as before. -->
+
+          <div class="card">
+            <div class="card-header"><h3 class="card-title">Основа</h3></div>
+            <div class="card-content">
+              <div class="palette-row">
+                <div class="palette-row-fields">
+                  <p class="field-hint">Кольори: <span class="font-mono">--background</span>, <span class="font-mono">--foreground</span> — редагуються в Палітрі вище.</p>
+                </div>
+                <div class="palette-row-preview">
+                  <div class="p-4" style="border-radius: var(--radius); border: 1px solid hsl(var(--border)); background-color: hsl(var(--background)); color: hsl(var(--foreground));">
+                    Приклад тексту на фоні сторінки.
+                  </div>
                 </div>
               </div>
             </div>
           </div>
 
-          <!-- Картки -->
-          <div>
-            <h3>Картки</h3>
-            <div class="color-group-row mt-3">
-              <div class="flex flex-col gap-3">
-                <div class="field">
-                  <label class="label">Фон картки</label>
-                  <div class="input-color">
-                    <label class="input-color-swatch"><input type="color" id="cfg-color-card" /></label>
-                    <input type="text" class="input-color-value font-mono" id="cfg-color-card-hex" autocomplete="off" spellcheck="false" />
+          <div class="card">
+            <div class="card-header"><h3 class="card-title">Картки</h3></div>
+            <div class="card-content">
+              <div class="palette-row">
+                <div class="palette-row-fields">
+                  <p class="field-hint">Кольори: <span class="font-mono">--card</span>, <span class="font-mono">--card-foreground</span> — редагуються в Палітрі вище.</p>
+                  <div class="flex flex-col gap-3 mt-3">
+                    <div class="field">
+                      <label class="label">Рамка картки</label>
+                      <div class="input-color">
+                        <label class="input-color-swatch"><input type="color" id="cfg-color-card-border" /></label>
+                        <input type="text" class="input-color-value font-mono" id="cfg-color-card-border-hex" autocomplete="off" spellcheck="false" />
+                      </div>
+                      <span class="field-hint">Власний токен <span class="font-mono">--card-border</span> — за замовчуванням дорівнює <span class="font-mono">--border</span>, але редагується незалежно від нього.</span>
+                    </div>
+                    <label class="flex items-center gap-2">
+                      <input class="checkbox" type="checkbox" id="cfg-card-shadow" />
+                      Тінь картки
+                    </label>
                   </div>
                 </div>
-                <div class="field">
-                  <label class="label">Текст картки</label>
-                  <div class="input-color">
-                    <label class="input-color-swatch"><input type="color" id="cfg-color-card-foreground" /></label>
-                    <input type="text" class="input-color-value font-mono" id="cfg-color-card-foreground-hex" autocomplete="off" spellcheck="false" />
-                  </div>
-                </div>
-              </div>
-              <div class="preview-area">
-                <div class="card" style="width: 100%; max-width: 20rem;">
-                  <div class="card-header">
-                    <h3 class="card-title">Заголовок картки</h3>
-                  </div>
-                  <div class="card-content">
-                    <p class="text-sm">Приклад вмісту картки.</p>
+                <div class="palette-row-preview">
+                  <div class="card" id="palette-card-preview-example" style="max-width: 20rem;">
+                    <div class="card-header">
+                      <h3 class="card-title">Заголовок картки</h3>
+                    </div>
+                    <div class="card-content">
+                      <p class="text-sm">Приклад вмісту картки.</p>
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
           </div>
 
-          <!-- Кнопки -->
-          <div>
-            <h3>Кнопки</h3>
-
-            <div class="mt-3">
-              <h4>Первинний</h4>
-              <div class="color-group-row mt-2">
-                <div class="flex flex-col gap-3">
-                  <div class="field">
-                    <label class="label">Фон</label>
-                    <div class="input-color">
-                      <label class="input-color-swatch"><input type="color" id="cfg-color-primary" /></label>
-                      <input type="text" class="input-color-value font-mono" id="cfg-color-primary-hex" autocomplete="off" spellcheck="false" />
-                    </div>
-                  </div>
-                  <div class="field">
-                    <label class="label">Текст</label>
-                    <div class="input-color">
-                      <label class="input-color-swatch"><input type="color" id="cfg-color-primary-foreground" /></label>
-                      <input type="text" class="input-color-value font-mono" id="cfg-color-primary-foreground-hex" autocomplete="off" spellcheck="false" />
-                    </div>
-                  </div>
-                  <div class="field">
-                    <label class="label">Наведення</label>
-                    <div class="input-color">
-                      <label class="input-color-swatch"><input type="color" id="cfg-color-primary-hover" /></label>
-                      <input type="text" class="input-color-value font-mono" id="cfg-color-primary-hover-hex" autocomplete="off" spellcheck="false" />
-                    </div>
-                  </div>
-                  <div class="field">
-                    <label class="label">Вимкнено</label>
-                    <div class="input-color">
-                      <label class="input-color-swatch"><input type="color" id="cfg-color-primary-disabled" /></label>
-                      <input type="text" class="input-color-value font-mono" id="cfg-color-primary-disabled-hex" autocomplete="off" spellcheck="false" />
-                    </div>
-                  </div>
+          <div class="card">
+            <div class="card-header"><h3 class="card-title">Первинний</h3></div>
+            <div class="card-content">
+              <div class="palette-row">
+                <div class="palette-row-fields">
+                  <p class="field-hint">Кольори: <span class="font-mono">--primary</span>, <span class="font-mono">--primary-hover</span>, <span class="font-mono">--primary-disabled</span>, <span class="font-mono">--primary-foreground</span> — редагуються в Палітрі вище.</p>
                 </div>
-                <div class="preview-area">
+                <div class="palette-row-preview">
                   <div class="flex gap-3 items-center">
                     <button type="button" class="btn btn-primary">Приклад</button>
                     <button type="button" class="btn btn-primary" disabled>Приклад</button>
@@ -181,41 +540,16 @@
                 </div>
               </div>
             </div>
+          </div>
 
-            <div class="mt-6">
-              <h4>Вторинний</h4>
-              <div class="color-group-row mt-2">
-                <div class="flex flex-col gap-3">
-                  <div class="field">
-                    <label class="label">Фон</label>
-                    <div class="input-color">
-                      <label class="input-color-swatch"><input type="color" id="cfg-color-secondary" /></label>
-                      <input type="text" class="input-color-value font-mono" id="cfg-color-secondary-hex" autocomplete="off" spellcheck="false" />
-                    </div>
-                  </div>
-                  <div class="field">
-                    <label class="label">Текст</label>
-                    <div class="input-color">
-                      <label class="input-color-swatch"><input type="color" id="cfg-color-secondary-foreground" /></label>
-                      <input type="text" class="input-color-value font-mono" id="cfg-color-secondary-foreground-hex" autocomplete="off" spellcheck="false" />
-                    </div>
-                  </div>
-                  <div class="field">
-                    <label class="label">Наведення</label>
-                    <div class="input-color">
-                      <label class="input-color-swatch"><input type="color" id="cfg-color-secondary-hover" /></label>
-                      <input type="text" class="input-color-value font-mono" id="cfg-color-secondary-hover-hex" autocomplete="off" spellcheck="false" />
-                    </div>
-                  </div>
-                  <div class="field">
-                    <label class="label">Вимкнено</label>
-                    <div class="input-color">
-                      <label class="input-color-swatch"><input type="color" id="cfg-color-secondary-disabled" /></label>
-                      <input type="text" class="input-color-value font-mono" id="cfg-color-secondary-disabled-hex" autocomplete="off" spellcheck="false" />
-                    </div>
-                  </div>
+          <div class="card">
+            <div class="card-header"><h3 class="card-title">Вторинний</h3></div>
+            <div class="card-content">
+              <div class="palette-row">
+                <div class="palette-row-fields">
+                  <p class="field-hint">Кольори: <span class="font-mono">--secondary</span>, <span class="font-mono">--secondary-hover</span>, <span class="font-mono">--secondary-disabled</span>, <span class="font-mono">--secondary-foreground</span> — редагуються в Палітрі вище.</p>
                 </div>
-                <div class="preview-area">
+                <div class="palette-row-preview">
                   <div class="flex gap-3 items-center">
                     <button type="button" class="btn btn-secondary">Приклад</button>
                     <button type="button" class="btn btn-secondary" disabled>Приклад</button>
@@ -223,45 +557,17 @@
                 </div>
               </div>
             </div>
+          </div>
 
-            <div class="mt-6">
-              <h4>Акцент</h4>
-              <p class="field-hint">Немає власної заповненої кнопки (<span class="font-mono">.btn-accent</span> не існує) — ці поля керують лише <span class="font-mono">.btn-outline</span>/<span class="font-mono">.btn-ghost</span>.</p>
-              <div class="color-group-row mt-2">
-                <div class="flex flex-col gap-3">
-                  <div class="field">
-                    <label class="label">Заливка при наведенні</label>
-                    <div class="input-color">
-                      <label class="input-color-swatch"><input type="color" id="cfg-color-accent" /></label>
-                      <input type="text" class="input-color-value font-mono" id="cfg-color-accent-hex" autocomplete="off" spellcheck="false" />
-                    </div>
-                    <span class="field-hint">Фон .btn-outline/.btn-ghost при наведенні — <span class="font-mono">--accent</span> тут і є кольором hover.</span>
-                  </div>
-                  <div class="field">
-                    <label class="label">Текст при наведенні</label>
-                    <div class="input-color">
-                      <label class="input-color-swatch"><input type="color" id="cfg-color-accent-foreground" /></label>
-                      <input type="text" class="input-color-value font-mono" id="cfg-color-accent-foreground-hex" autocomplete="off" spellcheck="false" />
-                    </div>
-                  </div>
-                  <div class="field">
-                    <label class="label">Hover</label>
-                    <div class="input-color">
-                      <label class="input-color-swatch"><input type="color" id="cfg-color-accent-hover" /></label>
-                      <input type="text" class="input-color-value font-mono" id="cfg-color-accent-hover-hex" autocomplete="off" spellcheck="false" />
-                    </div>
-                    <span class="field-hint">Наразі не читається жодним компонентом — зарезервований токен.</span>
-                  </div>
-                  <div class="field">
-                    <label class="label">Рамка/текст вимкнено</label>
-                    <div class="input-color">
-                      <label class="input-color-swatch"><input type="color" id="cfg-color-accent-disabled" /></label>
-                      <input type="text" class="input-color-value font-mono" id="cfg-color-accent-disabled-hex" autocomplete="off" spellcheck="false" />
-                    </div>
-                    <span class="field-hint">Рамка/текст .btn-outline/.btn-ghost у стані disabled, не заливка фону.</span>
-                  </div>
+          <div class="card">
+            <div class="card-header"><h3 class="card-title">Акцент</h3></div>
+            <div class="card-content">
+              <div class="palette-row">
+                <div class="palette-row-fields">
+                  <p class="field-hint">Кольори: <span class="font-mono">--accent</span>, <span class="font-mono">--accent-hover</span>, <span class="font-mono">--accent-disabled</span>, <span class="font-mono">--accent-foreground</span> — редагуються в Палітрі вище.</p>
+                  <p class="field-hint">Немає власної заповненої кнопки (<span class="font-mono">.btn-accent</span> не існує) — застосовується лише до <span class="font-mono">.btn-outline</span>/<span class="font-mono">.btn-ghost</span>.</p>
                 </div>
-                <div class="preview-area">
+                <div class="palette-row-preview">
                   <div class="flex gap-3 items-center flex-wrap">
                     <button type="button" class="btn btn-outline">Outline</button>
                     <button type="button" class="btn btn-outline" disabled>Outline</button>
@@ -271,41 +577,16 @@
                 </div>
               </div>
             </div>
+          </div>
 
-            <div class="mt-6">
-              <h4>Небезпечний</h4>
-              <div class="color-group-row mt-2">
-                <div class="flex flex-col gap-3">
-                  <div class="field">
-                    <label class="label">Фон</label>
-                    <div class="input-color">
-                      <label class="input-color-swatch"><input type="color" id="cfg-color-destructive" /></label>
-                      <input type="text" class="input-color-value font-mono" id="cfg-color-destructive-hex" autocomplete="off" spellcheck="false" />
-                    </div>
-                  </div>
-                  <div class="field">
-                    <label class="label">Текст</label>
-                    <div class="input-color">
-                      <label class="input-color-swatch"><input type="color" id="cfg-color-destructive-foreground" /></label>
-                      <input type="text" class="input-color-value font-mono" id="cfg-color-destructive-foreground-hex" autocomplete="off" spellcheck="false" />
-                    </div>
-                  </div>
-                  <div class="field">
-                    <label class="label">Наведення</label>
-                    <div class="input-color">
-                      <label class="input-color-swatch"><input type="color" id="cfg-color-destructive-hover" /></label>
-                      <input type="text" class="input-color-value font-mono" id="cfg-color-destructive-hover-hex" autocomplete="off" spellcheck="false" />
-                    </div>
-                  </div>
-                  <div class="field">
-                    <label class="label">Вимкнено</label>
-                    <div class="input-color">
-                      <label class="input-color-swatch"><input type="color" id="cfg-color-destructive-disabled" /></label>
-                      <input type="text" class="input-color-value font-mono" id="cfg-color-destructive-disabled-hex" autocomplete="off" spellcheck="false" />
-                    </div>
-                  </div>
+          <div class="card">
+            <div class="card-header"><h3 class="card-title">Небезпечний</h3></div>
+            <div class="card-content">
+              <div class="palette-row">
+                <div class="palette-row-fields">
+                  <p class="field-hint">Кольори: <span class="font-mono">--destructive</span>, <span class="font-mono">--destructive-hover</span>, <span class="font-mono">--destructive-disabled</span>, <span class="font-mono">--destructive-foreground</span> — редагуються в Палітрі вище.</p>
                 </div>
-                <div class="preview-area">
+                <div class="palette-row-preview">
                   <div class="flex gap-3 items-center">
                     <button type="button" class="btn btn-destructive">Приклад</button>
                     <button type="button" class="btn btn-destructive" disabled>Приклад</button>
@@ -315,30 +596,14 @@
             </div>
           </div>
 
-          <!-- Success / Warning -->
-          <div>
-            <h3>Success / Warning</h3>
-
-            <div class="mt-3">
-              <h4>Success</h4>
-              <div class="color-group-row mt-2">
-                <div class="flex flex-col gap-3">
-                  <div class="field">
-                    <label class="label">Фон</label>
-                    <div class="input-color">
-                      <label class="input-color-swatch"><input type="color" id="cfg-color-success" /></label>
-                      <input type="text" class="input-color-value font-mono" id="cfg-color-success-hex" autocomplete="off" spellcheck="false" />
-                    </div>
-                  </div>
-                  <div class="field">
-                    <label class="label">Текст</label>
-                    <div class="input-color">
-                      <label class="input-color-swatch"><input type="color" id="cfg-color-success-foreground" /></label>
-                      <input type="text" class="input-color-value font-mono" id="cfg-color-success-foreground-hex" autocomplete="off" spellcheck="false" />
-                    </div>
-                  </div>
+          <div class="card">
+            <div class="card-header"><h3 class="card-title">Success</h3></div>
+            <div class="card-content">
+              <div class="palette-row">
+                <div class="palette-row-fields">
+                  <p class="field-hint">Кольори: <span class="font-mono">--success</span>, <span class="font-mono">--success-foreground</span> — редагуються в Палітрі вище.</p>
                 </div>
-                <div class="preview-area">
+                <div class="palette-row-preview">
                   <div class="flex gap-3 items-center flex-wrap">
                     <span class="badge badge-success">Активний</span>
                     <div class="alert alert-success"><strong>Успіх.</strong><span>Ваші зміни збережено.</span></div>
@@ -346,28 +611,17 @@
                 </div>
               </div>
             </div>
+          </div>
 
-            <div class="mt-6">
-              <h4>Warning</h4>
-              <p class="field-hint"><span class="font-mono">.badge-warning</span> ще не існує в badges.css (є лише badge-success) — бейдж нижче використовує базовий <span class="font-mono">.badge</span> із кольором, заданим напряму для цього прев'ю.</p>
-              <div class="color-group-row mt-2">
-                <div class="flex flex-col gap-3">
-                  <div class="field">
-                    <label class="label">Фон</label>
-                    <div class="input-color">
-                      <label class="input-color-swatch"><input type="color" id="cfg-color-warning" /></label>
-                      <input type="text" class="input-color-value font-mono" id="cfg-color-warning-hex" autocomplete="off" spellcheck="false" />
-                    </div>
-                  </div>
-                  <div class="field">
-                    <label class="label">Текст</label>
-                    <div class="input-color">
-                      <label class="input-color-swatch"><input type="color" id="cfg-color-warning-foreground" /></label>
-                      <input type="text" class="input-color-value font-mono" id="cfg-color-warning-foreground-hex" autocomplete="off" spellcheck="false" />
-                    </div>
-                  </div>
+          <div class="card">
+            <div class="card-header"><h3 class="card-title">Warning</h3></div>
+            <div class="card-content">
+              <div class="palette-row">
+                <div class="palette-row-fields">
+                  <p class="field-hint">Кольори: <span class="font-mono">--warning</span>, <span class="font-mono">--warning-foreground</span> — редагуються в Палітрі вище.</p>
+                  <p class="field-hint"><span class="font-mono">.badge-warning</span> ще не існує в badges.css — бейдж праворуч використовує базовий <span class="font-mono">.badge</span> із кольором, заданим напряму для цього прев'ю.</p>
                 </div>
-                <div class="preview-area">
+                <div class="palette-row-preview">
                   <div class="flex gap-3 items-center flex-wrap">
                     <span class="badge" style="background-color: hsl(var(--warning)); color: hsl(var(--warning-foreground));">Попередження</span>
                     <div class="alert alert-warning"><strong>Попередження.</strong><span>Перевірте це, перш ніж продовжити.</span></div>
@@ -377,68 +631,34 @@
             </div>
           </div>
 
-          <!-- Службові -->
-          <div>
-            <h3>Службові</h3>
-            <div class="color-group-row mt-3">
-              <div class="flex flex-col gap-3">
-                <div class="field">
-                  <label class="label">Рамка</label>
-                  <div class="input-color">
-                    <label class="input-color-swatch"><input type="color" id="cfg-color-border" /></label>
-                    <input type="text" class="input-color-value font-mono" id="cfg-color-border-hex" autocomplete="off" spellcheck="false" />
-                  </div>
+          <div class="card">
+            <div class="card-header"><h3 class="card-title">Службові</h3></div>
+            <div class="card-content">
+              <div class="palette-row">
+                <div class="palette-row-fields">
+                  <p class="field-hint">Кольори: <span class="font-mono">--border</span>, <span class="font-mono">--input</span>, <span class="font-mono">--ring</span> — редагуються в Палітрі вище.</p>
                 </div>
-                <div class="field">
-                  <label class="label">Поле</label>
-                  <div class="input-color">
-                    <label class="input-color-swatch"><input type="color" id="cfg-color-input" /></label>
-                    <input type="text" class="input-color-value font-mono" id="cfg-color-input-hex" autocomplete="off" spellcheck="false" />
+                <div class="palette-row-preview">
+                  <div class="flex flex-col gap-3" style="max-width: 20rem;">
+                    <input class="input" type="text" placeholder="Клікніть або натисніть Tab — фокус-кільце" />
+                    <div class="p-3" style="border-radius: var(--radius); border: 1px solid hsl(var(--border));">Приклад рамки (--border)</div>
                   </div>
-                </div>
-                <div class="field">
-                  <label class="label">Фокус (ring)</label>
-                  <div class="input-color">
-                    <label class="input-color-swatch"><input type="color" id="cfg-color-ring" /></label>
-                    <input type="text" class="input-color-value font-mono" id="cfg-color-ring-hex" autocomplete="off" spellcheck="false" />
-                  </div>
-                </div>
-              </div>
-              <div class="preview-area">
-                <div class="flex flex-col gap-3" style="width: 100%; max-width: 20rem;">
-                  <input class="input" type="text" placeholder="Клікніть або натисніть Tab — фокус-кільце" />
-                  <div class="p-3" style="border-radius: var(--radius); border: 1px solid hsl(var(--border));">Приклад рамки (--border)</div>
                 </div>
               </div>
             </div>
           </div>
 
-          <!-- Приглушений (muted) — structural/neutral per docs/SETTINGS_UX.md, kept here
-               since it was already editable before; no dedicated preview beyond the
-               Основа/Картки boxes above, which already use --muted-adjacent surfaces
-               indirectly via .preview-area's own background. -->
-          <div>
-            <h3>Приглушений</h3>
-            <div class="color-group-row mt-3">
-              <div class="flex flex-col gap-3">
-                <div class="field">
-                  <label class="label">Фон</label>
-                  <div class="input-color">
-                    <label class="input-color-swatch"><input type="color" id="cfg-color-muted" /></label>
-                    <input type="text" class="input-color-value font-mono" id="cfg-color-muted-hex" autocomplete="off" spellcheck="false" />
-                  </div>
+          <div class="card">
+            <div class="card-header"><h3 class="card-title">Приглушений</h3></div>
+            <div class="card-content">
+              <div class="palette-row">
+                <div class="palette-row-fields">
+                  <p class="field-hint">Кольори: <span class="font-mono">--muted</span>, <span class="font-mono">--muted-foreground</span> — редагуються в Палітрі вище.</p>
                 </div>
-                <div class="field">
-                  <label class="label">Текст</label>
-                  <div class="input-color">
-                    <label class="input-color-swatch"><input type="color" id="cfg-color-muted-foreground" /></label>
-                    <input type="text" class="input-color-value font-mono" id="cfg-color-muted-foreground-hex" autocomplete="off" spellcheck="false" />
+                <div class="palette-row-preview">
+                  <div class="p-4" style="border-radius: var(--radius); background-color: hsl(var(--muted)); color: hsl(var(--muted-foreground));">
+                    Приклад приглушеної поверхні з приглушеним текстом.
                   </div>
-                </div>
-              </div>
-              <div class="preview-area">
-                <div class="p-4" style="width: 100%; border-radius: var(--radius); background-color: hsl(var(--muted)); color: hsl(var(--muted-foreground));">
-                  Приклад приглушеної поверхні з приглушеним текстом.
                 </div>
               </div>
             </div>
@@ -599,6 +819,7 @@
             <button type="button" class="btn btn-outline btn-sm" id="builder-load-btn">Завантажити налаштування</button>
             <input type="file" id="builder-load-input" accept="application/json" style="display: none;" />
             <button type="button" class="btn btn-outline btn-sm" id="builder-undo" disabled>Скасувати останню зміну</button>
+            <button type="button" class="btn btn-outline btn-sm" id="builder-restore-shadcn">Відновити кольори</button>
             <button type="button" class="btn btn-ghost btn-sm" id="builder-reset">Скинути</button>
             <button type="button" class="btn btn-primary btn-sm" id="builder-export">Експортувати збірку (.zip)</button>
             <p class="field-hint" id="builder-export-status"></p>
