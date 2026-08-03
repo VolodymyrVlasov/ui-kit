@@ -213,7 +213,7 @@
 
 .container {
   width: 100%;
-  max-width: var(--container-max-width);
+  max-width: 95%;
   margin-left: auto;
   margin-right: auto;
   padding-left: 1.5rem;
@@ -224,5 +224,43 @@
   .container {
     padding-left: 1rem;
     padding-right: 1rem;
+  }
+}
+
+/* ==========================================================================
+   Page shell — 2-region wrapper for a page-level layout: a `.tabs--vertical`
+   block (which already renders its own nav+content split) fills the left
+   and center regions, and an optional `.page-shell-aside` sibling becomes a
+   narrow, persistent right-hand column (e.g. page-level actions that stay
+   visible regardless of which vertical tab is active). Mirrors the
+   .layout-sidebar narrow-aside + wide-content pattern in
+   css/components/layouts.css, reusing the same --layout-sidebar-width token.
+   ========================================================================== */
+
+.page-shell {
+  display: flex;
+  align-items: flex-start;
+  gap: 1.5rem;
+  width: 100%;
+}
+
+.page-shell > .tabs--vertical {
+  flex: 1 1 0%;
+  min-width: 0;
+}
+
+.page-shell-aside {
+  flex: 0 0 var(--layout-sidebar-width);
+  width: var(--layout-sidebar-width);
+}
+
+@media (max-width: 1023px) {
+  .page-shell {
+    flex-direction: column;
+  }
+
+  .page-shell-aside {
+    width: 100%;
+    flex: 1 1 auto;
   }
 }

@@ -72,18 +72,6 @@
   min-height: 4rem;
 }
 
-/* Main gallery nav (Компоненти/Інструменти groups) — reinforce horizontal
-   scroll instead of wrap/overflow on narrow screens. Breakpoints match
-   css/layout.css. */
-@media (max-width: 1023px) {
-  #components-tabs > .tabs-list,
-  #tools-tabs > .tabs-list {
-    overflow-x: auto;
-    flex-wrap: nowrap;
-    -webkit-overflow-scrolling: touch;
-  }
-}
-
 .component-info {
   border-radius: var(--radius);
   border: 1px solid hsl(var(--border));
