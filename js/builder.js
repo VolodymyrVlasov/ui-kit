@@ -704,8 +704,22 @@
       var fontHeadingInput = document.getElementById("font-heading-input");
       if (fontSansInput && config.fonts.sans !== undefined) fontSansInput.value = config.fonts.sans;
       if (fontHeadingInput && config.fonts.heading !== undefined) fontHeadingInput.value = config.fonts.heading;
-      if (config.fonts.sansVar) setVar("--font-sans", config.fonts.sansVar);
-      if (config.fonts.headingVar) setVar("--font-heading", config.fonts.headingVar);
+
+      // A saved family name means a Google Font was actually applied — redo
+      // the same fetch + blob + @font-face path applyFontToRole() uses for
+      // live selection, since the blob URL behind sansVar/headingVar's text
+      // does not survive a reload and setVar() alone can't recreate it.
+      if (config.fonts.sans) {
+        applyFontToRole("sans", "--font-sans", config.fonts.sans);
+      } else if (config.fonts.sansVar) {
+        setVar("--font-sans", config.fonts.sansVar);
+      }
+
+      if (config.fonts.heading) {
+        applyFontToRole("heading", "--font-heading", config.fonts.heading);
+      } else if (config.fonts.headingVar) {
+        setVar("--font-heading", config.fonts.headingVar);
+      }
     }
 
     if (config.table) {
