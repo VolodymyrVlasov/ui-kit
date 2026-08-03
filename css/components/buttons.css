@@ -51,7 +51,7 @@ body {
 }
 
 .btn:hover {
-  background-color: hsl(var(--secondary) / 0.8);
+  background-color: hsl(var(--secondary-hover));
 }
 
 .btn:focus-visible {
@@ -59,11 +59,16 @@ body {
   box-shadow: 0 0 0 2px hsl(var(--background)), 0 0 0 4px hsl(var(--ring));
 }
 
+/* Color comes from the per-variant :disabled/.is-disabled rules below —
+   this shared rule only covers non-color disabled behavior. .btn's own
+   default background (no variant class) is secondary-styled, so it gets
+   an explicit --secondary-disabled fill here rather than falling through
+   to opacity like before. */
 .btn:disabled,
 .btn.is-disabled {
   cursor: not-allowed;
-  opacity: 0.5;
   pointer-events: none;
+  background-color: hsl(var(--secondary-disabled));
 }
 
 .btn-primary {
@@ -72,7 +77,12 @@ body {
 }
 
 .btn-primary:hover {
-  background-color: hsl(var(--primary) / 0.9);
+  background-color: hsl(var(--primary-hover));
+}
+
+.btn-primary:disabled,
+.btn-primary.is-disabled {
+  background-color: hsl(var(--primary-disabled));
 }
 
 .btn-secondary {
@@ -81,7 +91,12 @@ body {
 }
 
 .btn-secondary:hover {
-  background-color: hsl(var(--secondary) / 0.8);
+  background-color: hsl(var(--secondary-hover));
+}
+
+.btn-secondary:disabled,
+.btn-secondary.is-disabled {
+  background-color: hsl(var(--secondary-disabled));
 }
 
 .btn-outline {
@@ -90,9 +105,24 @@ body {
   color: hsl(var(--foreground));
 }
 
+/* --accent already functions as "the hover color" for outline/ghost (it has
+   no other resting use here) — a separate --accent-hover would just be a
+   second layer on top of a token that's already the hover layer, so this
+   intentionally keeps referencing --accent directly rather than switching
+   to --accent-hover. See PR description for the fuller rationale. */
 .btn-outline:hover {
   background-color: hsl(var(--accent));
   color: hsl(var(--accent-foreground));
+}
+
+/* No --accent-disabled background here: outline's resting background is
+   transparent, and filling it on disabled would be a new filled look that
+   never existed before (a real regression, not just a token swap). Fading
+   the border/text instead preserves the "transparent, washed out" look. */
+.btn-outline:disabled,
+.btn-outline.is-disabled {
+  border-color: hsl(var(--accent-disabled));
+  color: hsl(var(--accent-disabled));
 }
 
 .btn-ghost {
@@ -106,13 +136,25 @@ body {
   color: hsl(var(--accent-foreground));
 }
 
+/* Same reasoning as .btn-outline:disabled — ghost has no background or
+   border to fade, only its text. */
+.btn-ghost:disabled,
+.btn-ghost.is-disabled {
+  color: hsl(var(--accent-disabled));
+}
+
 .btn-destructive {
   background-color: hsl(var(--destructive));
   color: hsl(var(--destructive-foreground));
 }
 
 .btn-destructive:hover {
-  background-color: hsl(var(--destructive) / 0.9);
+  background-color: hsl(var(--destructive-hover));
+}
+
+.btn-destructive:disabled,
+.btn-destructive.is-disabled {
+  background-color: hsl(var(--destructive-disabled));
 }
 
 .btn-sm {
