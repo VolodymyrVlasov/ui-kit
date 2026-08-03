@@ -40,6 +40,22 @@
   font-display: swap;
 }
 
+@font-face {
+  font-family: "JetBrains Mono";
+  src: url("../fonts/JetBrains_Mono/JetBrainsMono-Regular.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "JetBrains Mono";
+  src: url("../fonts/JetBrains_Mono/JetBrainsMono-Bold.woff2") format("woff2");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
 /* ==========================================================================
    Light theme (default)
    ========================================================================== */
@@ -112,6 +128,7 @@
   --border-width: 1px;
   --transition-duration: 150ms;
   --container-max-width: 72rem;
+  --layout-sidebar-width: 16rem;
 }
 
 /* ==========================================================================

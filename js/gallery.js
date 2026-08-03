@@ -58,21 +58,9 @@
   }
 
   function copyText(text, btn, label) {
-    if (navigator.clipboard && navigator.clipboard.writeText) {
-      navigator.clipboard.writeText(text).then(function () {
-        flashCopied(btn, label);
-      });
-    } else {
-      var textarea = document.createElement("textarea");
-      textarea.value = text;
-      textarea.style.position = "fixed";
-      textarea.style.opacity = "0";
-      document.body.appendChild(textarea);
-      textarea.select();
-      document.execCommand("copy");
-      document.body.removeChild(textarea);
+    UIKit.copyText(text).then(function () {
       flashCopied(btn, label);
-    }
+    });
   }
 
   document.querySelectorAll('[data-copy="html"]').forEach(function (btn) {
@@ -188,23 +176,10 @@
     UIKit.showToast(TOAST_DEMO_MESSAGES[variant] || TOAST_DEMO_MESSAGES[""], variant || undefined, position);
   });
 
-  /* ---------- Searchable select (demo) ---------- */
-  document.querySelectorAll(".select-search").forEach(function (wrap) {
-    var input = wrap.querySelector(".select-search-input");
-    var options = Array.prototype.slice.call(wrap.querySelectorAll(".select-search-option"));
-    input.addEventListener("input", function () {
-      var query = input.value.trim().toLowerCase();
-      options.forEach(function (opt) {
-        var match = opt.textContent.toLowerCase().indexOf(query) !== -1;
-        opt.classList.toggle("is-hidden", !match);
-      });
-    });
-    options.forEach(function (opt) {
-      opt.addEventListener("click", function () {
-        input.value = opt.textContent.trim();
-      });
-    });
-  });
+  /* ---------- Searchable select (demo) ----------
+     Filtering behavior now lives in UIKit.initSelectSearch(), auto-wired by
+     UIKit.autoInit() on DOMContentLoaded for every .select-search element —
+     no gallery-specific code needed here. */
 
   /* ---------- File button demo (result display) ---------- */
   var fileButtonDemo = document.querySelector("[data-file-button]");
